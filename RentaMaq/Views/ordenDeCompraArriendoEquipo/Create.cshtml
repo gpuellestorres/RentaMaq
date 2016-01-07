@@ -1,0 +1,265 @@
+﻿@model RentaMaq.Models.ordenDeCompraArriendoEquipo
+
+@{
+    ViewBag.Title = "Crear Orden De Compra Arriendo Equipo";
+    string textArea2 = " .... horas mínimas mensuales.\n" +
+                        "Tarifa hora extra .....\n" +
+                        "Arriendo por ......\n" +
+                        "Seguro de equipo móvil contratista, daños\n" +
+                        "propios y daños a terceros.\n" +
+                        "Mantenimiento cada ... horas.\n" +
+                        "Reparaciones propias del equipo.\n" +
+                        ".... desgaste neumático mensual.\n";
+}
+
+<h2>Nueva Orden de Compra Arriendo Equipos</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-inline">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+
+                    <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" value="@ViewBag.fechaActual" required">
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.numeroOrdenCompraArriendoEquipo, "Numero Orden de Compra Arriendo ", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.numeroOrdenCompraArriendoEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.numeroOrdenCompraArriendoEquipo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ProveedorID, "Señores:", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    <select name="ProveedorID" class="form-control proveedor" required>                        
+                        @foreach (RentaMaq.Models.Proveedor Proveedor in (List<RentaMaq.Models.Proveedor>)ViewData["Proveedores"])
+                        {
+                            <option value="@Proveedor.ProveedorID">@Proveedor.nombreProveedor</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div> 
+        <br />
+        @*
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.dirigidoA, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.dirigidoA, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dirigidoA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        *@
+        
+        
+        
+        
+              
+        <br /><br /> 
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-12">
+                    <textarea class="form-control"  name="texto1" id="texto1" style="max-width: 100% !important; width:100%;" placeholder="Por medio de la presente y junto con saludar,...."></textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead >
+                    <tr>
+                        <th style="vertical-align:top !important">Descripcion del Equipo</th>
+                        <th style="vertical-align:top !important">Valor Hora</th>
+                        <th>
+                            Horas Minimas
+                            <select class="form-control" name="tipoHorasMinimas">
+                                <option value="Diarias">Diarias</option>
+                                <option value="Semanales">Semanales</option>
+                                <option value="Mensuales">Mensuales</option>
+                            </select>
+                        </th>
+                        <th style="vertical-align:top !important">Duracion Del Arriendo</th>
+                        <th style="vertical-align:top !important">Lugar de Faena</th>
+                        <th style="vertical-align:top !important">Condiciones de Pago</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                    <tr id="trItems">                     
+                        <td>
+                            <input class="form-control descripcionProducto" type="text" name="descripcionProducto" id="descripcionProducto"  required />
+                        </td>
+
+                        <td>
+                            <input class="form-control valorHora" type="text" name="valorHora" id="valorHora"  required />
+                        </td>
+
+                        <td>
+                            <input class="form-control horasMinimasMensuales" type="number" name="horasMinimasMensuales" id="horasMinimasMensuales" required />
+                        </td>
+
+                        <td>
+                            <input class="form-control duracionDelArriendo" type="text" name="duracionDelArriendo" id="duracionDelArriendo" required />
+                        </td>
+                        <td>
+                            <input class="form-control lugarFaena" type="text" name="lugarFaena" id="lugarFaena" required />
+                        </td>
+                        <td>
+                            <input class="form-control condicionesPago" type="text" name="condicionesPago" id="condicionesPago" required />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarItem" id="botonEliminarItem"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>                           
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div class="col-sm-2">
+                <a id="botonAgregarItem" class="btn btn-block btn-primary botonAgregarItem"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+            </div>
+           
+        </div>
+        <br />
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label class="col-lg-12">Estas tarifas incluyen o consideran</label>
+                <div class="col-lg-12">
+                    <textarea class="form-control" rows="3" name="texto2" id="texto2" style="max-width: 100% !important; width:100%;">@textArea2</textarea>
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label class="col-lg-12">Estas tarifas incluyen NO consideran</label>
+                <div class="col-lg-12">
+                    <textarea class="form-control" rows="3" name="noIncluye" style="max-width: 100% !important; width:100%;"></textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.plazoEntrega, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+
+                        <input class="form-control fecha" id="plazoEntrega" name="plazoEntrega" data-val-date="El valor debe ser una fecha."
+                               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                               type="text" placeholder="Dejar en blanco si esta por confirmar">
+                    </div>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.personaRetira, "Persona que retira ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.personaRetira, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.personaRetira, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.formaPago, "Forma de Pago ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.formaPago, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.formaPago, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-9 col-lg-12">
+                    <input type="submit" value="Crear Orden de Compra" class="btn btn-success btn-lg btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a lista de Ordenes de Compra", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = 1;
+            $(".proveedor").select2();
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".botonAgregarItem").click(function () {
+              
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");              
+
+                $temp = $trLast.clone();
+                
+                $temp.find('.descripcionProducto').val('');
+                $temp.find('.valorHora').val('');
+                $temp.find('.horasMinimasMensuales').val('');
+                $temp.find('.duracionDelArriendo').val('');
+
+                $temp.find('.lugarFaena').val('');
+                $temp.find('.condicionesPago').val('');                
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                numeroItem++;
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarItem", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este item , ya que la solicitud debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+        });
+        
+    </script>
+
+
+}
+

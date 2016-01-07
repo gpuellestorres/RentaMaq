@@ -1,0 +1,139 @@
+﻿@model IEnumerable<RentaMaq.Models.listaCorreosStockCritico>
+@{
+    ViewBag.Title = "Lista Correos Stock Critico";
+    int contador = 0;
+}
+<h1>Lista de Persona con Alarma de Productos con Stock Critico</h1>
+<div class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+        &times;
+    </button>
+    Las siguientes direcciones de correo están registradas en el sistema para recibir alertas por correo electrónico cada vez que un producto tenga stock critico
+</div>
+<div class="row">
+    @if (ViewBag.verificador != null && ViewBag.verificador.Equals("true"))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;
+            </button>
+            Lista Guardada con exito
+        </div>
+    }
+    @if (ViewBag.verificador != null && ViewBag.verificador.Equals("false"))
+    {
+        <div class="alert alert-error alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;
+            </button>
+            Error al Guardar. Intente Nuevamente
+        </div>
+    }
+
+</div>
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="table-responsive" id="contenedorPersonas">
+        <table class="table" id="tablePersonas">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Persona</th>                    
+                </tr>
+            </thead>
+            <tbody id="tbodyPersonas">                
+                @foreach (var item in Model) {
+                    contador++;
+                    <tr>
+                        <td>
+                            <input class="form-control nombre" type="text" name="nombre" value="@item.nombre" required />
+                        </td>
+                            
+                        <td>
+                            <input class="form-control correo" type="email" name="correo"  value="@item.correo" required />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarPersona" id="botonEliminarPersona"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                }
+                @if(contador<=0){
+                    <text>                    
+                    <tr>
+                        <td>
+                            <input class="form-control nombre" type="text" name="nombre"  required />
+                        </td>
+                        <td>
+                            <input class="form-control correo" type="email" name="correo" required />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarPersona" id="botonEliminarPersona"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                
+                    </text>
+                }
+            </tbody>
+        </table>
+        <br />
+        <div class="col-sm-3">
+            <a id="botonAgregarPersona" class="btn btn-block btn-primary botonAgregarPersona"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nueva Persona</a>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="form-group col-md-12">
+            <div class="col-md-offset-9 col-lg-12">
+                <input type="submit" value="Guardar" class="btn btn-success btn-lg btn-default" />
+            </div>
+        </div>
+    </div>
+}    
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")    
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = @ViewBag.cont;
+            $(".botonAgregarPersona").click(function () {
+
+                var $tableBody = $('#tablePersonas').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+                $temp = $trLast.clone();
+                $temp.find('.correo').val('');
+                $temp.find('.nombre').val('');
+                $trNew = $temp;
+                $trLast.after($trNew);
+                numeroItem++;
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarPersona", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("La Lista por lo menos debe tener una persona")
+                }
+                return false;
+            });
+
+        });
+
+    </script>
+
+
+}
+
+

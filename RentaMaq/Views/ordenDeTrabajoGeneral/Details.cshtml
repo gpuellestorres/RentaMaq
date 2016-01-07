@@ -1,0 +1,311 @@
+﻿@model RentaMaq.Models.ordenDeTrabajoGeneral
+
+@{
+    List<RentaMaq.Models.ejecutanteTrabajoOT> ejecutantesTrabajoOT = (List<RentaMaq.Models.ejecutanteTrabajoOT>)ViewData["ejecutantesTrabajoOT"];
+    List<RentaMaq.Models.materialesRequeridosOT> materialesRequeridosOT = (List<RentaMaq.Models.materialesRequeridosOT>)ViewData["materialesRequeridosOT"];
+    List<RentaMaq.Models.materialesUtilizadosOT> materialesUtilizadosOT = (List<RentaMaq.Models.materialesUtilizadosOT>)ViewData["materialesUtilizadosOT"];
+    ViewBag.Title = "Orden de Trabajo";
+
+    string fechaOTAbierta = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fechaOTAbierta);
+    string fechaOTCerrada = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fechaOTCerrada);
+    string horasMantenimientoFecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.horasMantenimientoFecha);
+    string fechaTrabajosPendientesPorRealizar = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fechaTrabajosPendientesPorRealizar);
+
+}
+
+<h2>Orden De Trabajo General N° Folio: @Model.numeroFolio</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.fechaOTAbierta, "Fecha OT Abierta", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @fechaOTAbierta
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.fechaOTCerrada, "Fecha OT Cerrada", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @fechaOTCerrada
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.operador, "Operador", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.operador
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.faena, "Faena", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.faena
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.area, "Area", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.area
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.turno, "Turno", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.turno
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">                
+                <div class="form-group col-md-12">
+                    <label class="control-label col-md-6" style="text-align: left !important;">N° de AFI</label>
+                    <div class="col-md-6">
+                        @{
+                            int idEquipo = int.Parse(Model.idEquipo);
+                        }
+                        @(new RentaMaq.DAL.Context().Equipos.Find(idEquipo).numeroAFI)
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.tipoEquipo, "Tipo Equipo", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.tipoEquipo
+                    </div>
+                </div>                
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.horometro, "Horometro", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.horometro
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.kilometraje, "Kilometraje", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.kilometraje
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.tipoOTSegunMantenimiento, "Tipo Mantencion", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.tipoOTSegunMantenimiento
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <h4>Tipo de Mantenimiento a Realizar</h4>
+        <div class="row">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.tipoMantenimientoARealizar, "Tipo de Mantenimiento a Realizar", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                <div class="col-md-6">
+                    @Model.tipoMantenimientoARealizar
+                </div>
+            </div>
+        </div>
+        <hr />
+
+
+        <div class="table-responsive" id="contenedorEjecutantes">
+            <table class="table" id="tableEjecutantes">
+                <thead>
+                    <tr>
+                        <th>Ejecutantes del Trabajo</th>
+                        <th>Cargo</th>
+                        <th>HH</th>                        
+                    </tr>
+                </thead>
+                <tbody id="tbodyEjecutantes">
+                    @foreach (RentaMaq.Models.ejecutanteTrabajoOT ejecutante in ejecutantesTrabajoOT)
+                        {
+                            <tr>
+                                <td>
+                                    @ejecutante.nombreTrabajador
+                                </td>
+                                <td>
+                                    @ejecutante.cargo
+                                </td>
+                                <td>
+                                    @ejecutante.HH
+                                </td>                              
+                            </tr>
+                        }
+                    
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <br />
+        <h4>Horas en Mantenimiento</h4>
+        <div class="row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoNivelCombustible, "Nivel Combustible", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Model.horasMantenimientoNivelCombustible                   
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoFecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @horasMantenimientoFecha
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoHRInicio, "HR Inicio", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Model.horasMantenimientoHRInicio
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoHRTermino, "HR Termino", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Model.horasMantenimientoHRTermino
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoHRSDetenido, "HRS Detenido", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Model.horasMantenimientoHRSDetenido
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Trabajo por Realizar</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="trabajoRealizar" id="trabajoRealizar" style="max-width: 100% !important; width:100%;" readonly>@Model.trabajoRealizar</textarea>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Conclusiones Del Trabajo Realizado</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="conclusionesTrabajoRealizado" id="conclusionesTrabajoRealizado" style="max-width: 100% !important; width:100%;" readonly>@Model.conclusionesTrabajoRealizado</textarea>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    @Html.LabelFor(model => model.estadoEquipo, "Estado Equipo", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Model.estadoEquipo
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Trabajos Pendientes por Realizar</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="trabajosPendientesPorRealizar" id="trabajosPendientesPorRealizar" style="max-width: 100% !important; width:100%;" readonly>@Model.trabajosPendientesPorRealizar</textarea>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    @fechaTrabajosPendientesPorRealizar
+                </div>
+            </div>
+        </div>
+        <hr />
+        <br />
+        <div class="table-responsive">
+            <label class="control-label col-md-6">Materiales Utilizados</label>
+            <table class="table" id="tableMaterialesUtilizados">
+                <thead>
+                    <tr>
+                        <th>Materiales Utilizados</th>
+                        <th>Cantidad</th>
+                        <th>N° Parte</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>                   
+                        @foreach (RentaMaq.Models.materialesUtilizadosOT matUt in materialesUtilizadosOT)
+                        {
+                            <tr>
+                                <td>
+                                    @matUt.nombreMaterial
+                                </td>
+                                <td>
+                                    @matUt.cantidad
+                                </td>
+                                <td>
+                                    @matUt.numeroParte
+                                </td>                                
+                            </tr>
+                        }                    
+                </tbody>
+            </table>         
+        </div>
+
+        <br />
+        <br />
+        <div class="table-responsive">
+            <label class="control-label col-md-6">Materiales Requeridos</label>
+            <table class="table" id="tableMaterialesRequeridos">
+                <thead>
+                    <tr>
+                        <th>Materiales Requeridos</th>
+                        <th>Cantidad</th>
+                        <th>N° Parte</th>                        
+                    </tr>
+                </thead>
+                <tbody>                
+                        @foreach (RentaMaq.Models.materialesRequeridosOT matReq in materialesRequeridosOT)
+                        {
+                            <tr>
+                                <td>
+                                    @matReq.nombreMaterial
+                                </td>
+                                <td>
+                                    @matReq.cantidad
+                                </td>
+                                <td>
+                                    @matReq.numeroParte
+                                </td>                               
+                            </tr>
+                        }                    
+                </tbody>
+            </table>
+            <br /><br /><br /><br />
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="control-label col-md-12" style="text-align: left !important;">Nomber Mantenedor</label>
+                    @Model.nombreMantenedor
+
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label col-md-12" style="text-align: left !important;">Nombre Operador</label>
+                    @Model.nombreOperador
+
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label col-md-12" style="text-align: left !important;">Nombre Supervisor</label>
+                    @Model.nombreSupervisor
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<br /><br /><br />
+<div class="row">
+    <div class="col-md-4">   
+        @Html.ActionLink("Editar", "Edit", new { id = Model.ordenDeTrabajoGeneralID }) |
+        @Html.ActionLink("Volver Atras", "Index")
+    </div>
+    <div class="col-md-4 col-md-offset-4">        
+        <a target="_blank" class="btn btn-success btn-md" href="@Url.Action("ordenDeTrabajoGeneral", "Report", new { controller = "Report", id = Model.ordenDeTrabajoGeneralID })"><span class="glyphicon glyphicon-file" aria-hidden="true">Abrir PDF</span></a>
+        
+    </div>
+</div>

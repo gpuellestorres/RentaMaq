@@ -1,0 +1,79 @@
+﻿@model RentaMaq.Models.Producto
+
+@{
+    ViewBag.Title = "Detalle";
+}
+
+<h2>Detalle Producto</h2>
+
+<div>
+    <h4>Producto @Model.numeroDeParte ( @Model.descripcion)</h4>
+    <hr />
+    <dl class="dl-horizontal">       
+        <dt style="text-align: left !important;">
+            Codigo Interno
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.codigo)
+        </dd>
+        <dt style="text-align: left !important;">
+            Precio Unitario
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precioUnitario)
+        </dd>      
+
+        <dt style="text-align: left !important;">
+            Descripcion 2
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion2)
+        </dd>
+
+        <dt style="text-align: left !important;">
+            Stock Actual
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockActual)
+        </dd>
+
+        <dt style="text-align: left !important;">
+            Stock Minimo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockMinimo)
+        </dd>
+
+        <dt style="text-align: left !important;">
+            Unidad de Medida
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unidadDeMedida)
+        </dd>
+
+        <dt style="text-align: left !important;">
+            Ubicacion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ubicacion)
+        </dd>        
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Volver atras", "Index")
+
+    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(1, int.Parse(Session["ID"].ToString())))
+    {
+        <text>|</text>
+        @Html.ActionLink("Editar", "Edit", new { id = @Model.ProductoID })
+                                                                           
+    }                                                                                                                                                     
+</p>

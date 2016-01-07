@@ -1,0 +1,236 @@
+﻿@model List<RentaMaq.Models.detalleReporteExistenciasProducto>
+@{
+    ViewBag.Title = "Reporte de Existencias Individual";
+}
+@{
+    string FECHA1 = "", FECHA2 = "", Producto = "";
+    if (Model.Count > 0)
+    {
+        FECHA1 = Model[0].Inicio.Day + "/" + Model[0].Inicio.Month + "/" + Model[0].Inicio.Year;
+        FECHA2 = Model[0].Termino.Day + "/" + Model[0].Termino.Month + "/" + Model[0].Termino.Year;
+        Producto= "\""+ @Model[0].descripcionProducto +"\" - " + Model[0].ProductoID;
+    }
+}
+
+<br />
+<div class="col-md-4">
+    <h3>Detalle de stock entrante y saliente de producto @Producto</h3>
+</div>
+<div class="col-md-8">
+    <br />
+    <div class="col-md-4">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+<br />
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                ID Registro Maestro
+            </th>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Stock Entrante
+            </th>
+            <th>
+                Stock Saliente
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+    {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", "Maestro", new { id = item.MaestroID })" target="_blank">@item.MaestroID</a>
+                    
+                </td>
+                @{
+        string FECHA = "";
+        if (Model.Count > 0)
+        {
+            FECHA = item.fechaMaestro.Day + "/" + item.fechaMaestro.Month + "/" + item.fechaMaestro.Year;
+        }
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => FECHA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stockIngresado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stockSaliente)
+                </td>
+            </tr>
+    }
+
+    </table>
+</div>
+
+@{
+    RentaMaq.Models.reportExistenciasProductos Rep = (RentaMaq.Models.reportExistenciasProductos)ViewBag.ReporteGeneral;
+}
+
+<hr />
+<div class="col-md-6" style="border-right: 1px solid #D8D8D8 !important">
+    <h4><strong>Total de stock entrante durante el periodo: </strong>@Rep.stockProductosIngresadosPeriodo</h4>
+    <h4><strong>Total de stock saliente durante el periodo: </strong>@Rep.stockProductosSalientesPeriodo</h4>
+</div>
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+    <a href="@Url.Action("ExistenciasProducto", "Report", new { idProducto = Model[0].ProductoID, inicio = FECHA1.Replace("/", "-"), termino = FECHA2.Replace("/", "-") })"
+       target="_blank" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Descargar Reporte</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="~/amcharts/serial.js"></script>
+    <script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+    <script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+
+
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/Producto/reporteExistenciasIndividual?id=" +@ViewBag.IDPRODUCTO +"&inicio=" + fecha1 + "&termino=" + fecha2;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+
+<script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "theme": "light",
+            "categoryAxis": {
+                "gridPosition": "start"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] de [[category]]: [[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "Ingresos",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] de [[category]]: [[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "Salidas",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "titles": [
+		        {
+		            "id": "Title-1",
+		            "size": 15,
+		            "text": "Ingresos y salidas de productos del periodo"
+		        }
+            ],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "title": "Cantidad"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": "Ingresos y salidas de productos durante el periodo"
+                }
+            ],
+            "dataProvider": [
+                {
+                    @for(int i=0;i<Model.Count;i++)
+                {
+                    <text>
+                    @{string fecha = Model[i].fechaMaestro.Day + "/" + Model[i].fechaMaestro.Month + "/" + Model[i].fechaMaestro.Year;}
+                    "category": "@fecha",
+                    "column-1": @Model[i].stockIngresado,
+                    "column-2": @Model[i].stockSaliente
+                 @if(i==Model.Count-1){
+                    <text>
+                    }
+                    </text>
+                 }
+                 else {
+                    <text>
+            },
+                    {
+                        </text>
+                 }
+                        </text>
+                }
+                    ],
+                    "export": {
+                        "enabled": true,
+                        "libs": {
+                            "path": "/amcharts/plugins/export/libs/"
+                        }
+                    }
+    }
+    );
+</script>
+}

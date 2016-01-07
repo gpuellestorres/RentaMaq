@@ -1,0 +1,25 @@
+﻿@model RentaMaq.Models.tipoEquipo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles de tipo de Equipo</h2>
+
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Volver", "Index")
+</p>

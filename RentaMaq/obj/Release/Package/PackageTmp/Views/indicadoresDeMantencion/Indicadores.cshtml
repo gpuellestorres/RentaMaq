@@ -1,0 +1,132 @@
+﻿@model IEnumerable<RentaMaq.Models.equipos>
+
+@{
+    ViewBag.Title = "Indicadores";
+    System.Collections.Hashtable Disponibilidad = (System.Collections.Hashtable)ViewData["Disponibilidad"];
+    System.Collections.Hashtable tiempoMedioParaReparar = (System.Collections.Hashtable)ViewData["tiempoMedioParaReparar"];
+    System.Collections.Hashtable Confiabilidad = (System.Collections.Hashtable)ViewData["Confiabilidad"];
+    System.Collections.Hashtable tiempoMedioEntreFallas = (System.Collections.Hashtable)ViewData["TiempoMedioEntreFallas"];
+    System.Collections.Hashtable tiempoMedioOperacionAntesDeFalla = (System.Collections.Hashtable)ViewData["TiempoMedioOperacionAntesDeFalla"];
+    System.Collections.Hashtable Utilizacion = (System.Collections.Hashtable)ViewData["Utilizacion"];
+    
+   
+    string FECHA1 = "", FECHA2 = "";
+
+    DateTime Inicio = (DateTime)ViewBag.Inicio;
+    DateTime Termino = (DateTime)ViewBag.Termino;
+
+    FECHA1 = Inicio.Day + "/" + Inicio.Month + "/" + Inicio.Year;
+    FECHA2 = Termino.Day + "/" + Termino.Month + "/" + Termino.Year;
+    
+}
+
+<h2>Disponibilidad de Equipos</h2>
+<div class="col-md-11">
+    <div class="col-md-4">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>    
+    <div class="col-md-2">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="table-responsive">
+    <table class="table table-condensed">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.patenteEquipo)
+            </th>                     
+            <th>
+                @Html.DisplayNameFor(model => model.numeroAFI)
+            </th>
+            <th>Disponibilidad</th>
+            <th>Confiabilidad</th>
+            <th>Tiempo Medio Entre Fallas</th>
+            <th>Tiempo Medio Para Reparar</th>
+            <th>Tiempo Medio de Operacion Antes de Falla</th>
+            <th>Utilizacion</th>                        
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.patenteEquipo)
+                </td>               
+                <td>
+                    @Html.DisplayFor(modelItem => item.numeroAFI)
+                </td>
+                <td>
+                    @(((double)Disponibilidad[item.ID])*100) %
+                </td>
+                <td>
+                    @(((double)Confiabilidad[item.ID]))
+                </td>
+                <td>
+                    @(((double)tiempoMedioEntreFallas[item.ID])) Horas
+                </td>                
+                <td>
+                    @(((double)tiempoMedioParaReparar[item.ID])) Horas
+                </td>
+                <td>
+                    @(((double)tiempoMedioOperacionAntesDeFalla[item.ID])) Horas
+                </td>
+                <td>
+                    @(((double)Utilizacion[item.ID])*100) %
+                </td>
+                <td>@Html.ActionLink("Detalle", "Detalle", new { id = item.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-") })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<div class="modal-footer">
+    <a href="@Url.Action("indicadoresEquiposGeneral", "Report", new { fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-")})" class="btn btn-lg btn-primary">Descargar Reporte</a>
+    
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")    
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+        $(document).ready(function () {
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+           
+            $("#Boton").click(function () {
+                var fecha1 = $("#fecha1").val();
+                var fecha2 = $("#fecha2").val();               
+
+                fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                if (fecha1 == "" || fecha2 == "") {
+                    alert("Debe ingresar ambas fechas");
+                }
+                else {
+                    console.log(fecha1 + "-" + fecha2);
+                    ruta = "/indicadoresDeMantencion/Indicadores?fechaInicio=" + fecha1 + "&fechaFinal=" + fecha2;
+                    console.log(ruta);
+                    window.location.href = ruta
+                }
+            });
+        });
+    </script>
+}

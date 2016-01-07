@@ -1,0 +1,100 @@
+﻿@model RentaMaq.Models.pedidos
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Autorizar Cotizacion de Pedido</h2>
+
+@{
+    string fecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+}
+
+@using (Html.BeginForm("autorizarPedido","pedidos"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-inline">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            @Html.HiddenFor(model => model.pedidosID)
+            @Html.HiddenFor(model => model.estado)
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.fecha, "Fecha de Solicitud", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @fecha
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-12">
+                    <textarea class="form-control" name="nota" id="nota" style="max-width: 100% !important; width:100%;" placeholder="Mediante el presente y junto con saludarle...">@Model.nota</textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Numero de Parte</th>
+                        <th>Cantidad</th>
+                        <th>Tipo Pedido</th>
+                        <th>Codigo Interno</th>
+                        <th>Prioridad</th>                        
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                    @foreach (RentaMaq.Models.detallePedido detallePedido in (List<RentaMaq.Models.detallePedido>)ViewData["detallePedido"])
+                    {
+                        <tr id="trItems">
+
+                            <td>
+                                @detallePedido.numeroParte
+                            </td>
+                            <td>
+                                @detallePedido.cantidad
+                            </td>
+
+                            <td class="tdSelect">
+                                @detallePedido.tipoPedido
+                            </td>
+
+                            <td>
+                                @detallePedido.detalleTipoPedido
+                            </td>
+                            <td>
+                                @detallePedido.prioridad
+                            </td>                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />            
+        </div>
+        <br /><br />
+        
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="col-md-offset-10 col-lg-12">
+                        <input type="submit" value="Autorizar Cotizacion" class="btn btn-success btn-lg btn-default" />
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+}
+
+<div>
+    <p>       
+        @Html.ActionLink("Volver a la lista de Pedidos", "Index")
+    </p>
+</div>

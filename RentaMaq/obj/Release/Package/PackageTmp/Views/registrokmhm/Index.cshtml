@@ -1,0 +1,279 @@
+﻿@model List<RentaMaq.Models.registrokmhm>
+
+@{
+    ViewBag.Title = "Registros de KM/HM";
+    bool tienePermiso = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(12, int.Parse(Session["ID"].ToString()))) 
+    {
+        tienePermiso = true;
+    }
+}
+<div class="col-sm-4">
+    <h3>Registros de Horómetro y/o Kilometraje de Equipos</h3>
+</div>
+
+@{
+    string FECHA1 = "", FECHA2 = "";
+
+    DateTime Inicio = (DateTime)ViewBag.Inicio;
+    DateTime Termino = (DateTime)ViewBag.Termino;
+    string EquipoID = (string)ViewBag.EquipoID;
+    
+    FECHA1 = Inicio.Day + "/" + Inicio.Month + "/" + Inicio.Year;
+    FECHA2 = Termino.Day + "/" + Termino.Month + "/" + Termino.Year;
+
+    System.Collections.Hashtable tablaEquipos = new System.Collections.Hashtable();
+    
+    foreach (RentaMaq.Models.registrokmhm reporte in Model)
+    {
+        if (!tablaEquipos.ContainsKey(reporte.equipoID))
+        {
+            tablaEquipos.Add(reporte.equipoID, RentaMaq.Models.equipos.Obtener(reporte.equipoID));
+        }
+    }
+}
+
+<div class="col-md-8">
+    <br />
+    <div class="col-md-12">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-3">
+        <select id="equipoID" name="equipoID" class="form-control equipos">
+            <option value="todos">Todos</option>
+            @foreach (RentaMaq.Models.equipos Equipo in tablaEquipos.Values)
+            {
+                if (EquipoID != null && EquipoID.Equals(Equipo.ID.ToString()))
+                {
+                    <option value="@Equipo.ID" selected>@Equipo.numeroAFI - @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca</option>
+                }
+                else
+                {
+                    <option value="@Equipo.ID">@Equipo.numeroAFI - @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca</option>
+                }
+            }
+        </select>
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-3">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+<br />
+@if (tienePermiso)
+{
+    <p>
+        @Html.ActionLink("Crear Nuevo Registro", "Create")
+    </p>
+}
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Equipo
+            </th>
+            <th>
+                Kilometraje
+            </th>
+            <th>
+                Horómetro
+            </th>
+            <th>
+                Fecha
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+{
+            <tr>
+                <td>
+                    @{
+                    RentaMaq.Models.equipos Equipo = (RentaMaq.Models.equipos)tablaEquipos[item.equipoID];
+                    }
+                    @Equipo.numeroAFI / @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca;
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.kilometraje)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.horometro)
+                </td>
+                <td>
+                    @{
+    string dia = item.fecha.Day.ToString();
+    if (dia.Length == 1)
+    {
+        dia = "0" + dia;
+    }
+    string mes = item.fecha.Month.ToString();
+    if (mes.Length == 1)
+    {
+        mes = "0" + mes;
+    }
+    string FECHA = dia + "/" + mes + "/" + item.fecha.Year;
+                    }
+                    @FECHA
+                </td>
+                <td>
+                    @if (tienePermiso)
+            {
+                        <text>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.registrokmhmID }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.registrokmhmID })
+                        </text>
+            }
+                </td>
+            </tr>
+}
+
+    </table>
+</div>
+
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+                $(".equipos").select2();
+                
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+                    var equipoID = $("#equipoID").val();
+
+                    if (fecha1 == "" || fecha2 == "") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/registrokmhm/Index?inicio=" + fecha1 + "&termino=" + fecha2 + "&equipoID=" + equipoID;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+
+<script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+<script type="text/javascript" src="~/amcharts/serial.js"></script>
+<script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+<script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+
+@if (ViewBag.EquipoID != null && ViewBag.EquipoID != "todos")
+{
+
+        <!-- amCharts javascript code -->
+    <script type="text/javascript">
+        AmCharts.makeChart("chartdiv",
+            {
+                "type": "serial",
+                "categoryField": "category",
+                "startDuration": 1,
+                "theme": "light",
+                "categoryAxis": {
+                    "gridPosition": "start"
+                },
+                "trendLines": [],
+                "graphs": [
+                    {
+                        "balloonText": "Registro de HM/KM de equipo en fecha [[category]]: [[value]]",
+                        "fillAlphas": 1,
+                        "id": "AmGraph-1",
+                        "title": "Registros de HM/KM de equipo",
+                        "type": "column",
+                        "valueField": "column-1"
+                    }
+                ],
+                "guides": [],
+                "titles": [
+                    {
+                        "id": "Title-1",
+                        "size": 15,
+                        "text": "Registros de HM/KM de equipo"
+                    }
+                ],
+                "valueAxes": [
+                    {
+                        "id": "ValueAxis-1",
+                        "title": "HM/KM"
+                    }
+                ],
+                "allLabels": [],
+                "balloon": {},
+                "legend": {
+                    "useGraphSettings": true
+                },
+                "dataProvider": [
+               {
+                   @for (int i=Model.Count-1;i>=0;i--)
+            {
+                <text>
+                   "category": "@RentaMaq.Models.formatearString.fechaSinHoraDiaPrimero(Model[i].fecha)",
+                   @if(Model[i].horometro!=0){
+                    <text>
+                   "column-1": @Model[i].horometro
+                    </text>
+                }
+            else
+            {
+                <text>
+                "column-1": @Model[i].kilometraje
+        </text>
+            }
+        @if(i==0){
+         <text>
+        }
+        </text>
+            }
+            else {
+                <text>
+        },
+        {
+            </text>
+            }
+            </text>
+            }
+        ],
+                    "export": {
+                        "enabled": true,
+                        "libs": {
+                            "path": "/amcharts/plugins/export/libs/"
+                        }
+                    }
+        }
+    );
+    </script>
+    }
+}

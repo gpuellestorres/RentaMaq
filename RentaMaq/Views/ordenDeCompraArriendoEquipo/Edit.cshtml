@@ -1,0 +1,289 @@
+﻿@model RentaMaq.Models.ordenDeCompraArriendoEquipo
+
+@{
+    ViewBag.Title = "Editar Orden De Compra Arriendo Equipo";
+    string fecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+    string fechaPlazoEntrega = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.plazoEntrega);
+    if (Model.plazoEntrega.Year == 2000) 
+        fechaPlazoEntrega = "";
+    
+}
+
+<h2>Editar Orden de Compra Arriendo Equipos</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ordenDeCompraArriendoEquipoID)
+        @Html.HiddenFor(model => model.fechaLlegadaReal)
+        @Html.HiddenFor(model => model.estado)
+        @Html.HiddenFor(model => model.anio)
+
+        @{    
+    string FECHA = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+        }
+        <div class="form-group">
+            <label class="control-label col-md-2" for="fecha">Fecha de Orden de Compra</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@fecha" required">
+            </div>
+            @Html.LabelFor(model => model.numeroOrdenCompraArriendoEquipo, "Numero Orden de Compra Arriendo ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input type="text" name="numeroOrdenCompraArriendoEquipo" value="@Model.numeroOrdenCompraArriendoEquipo" class="form-control hidden" />
+                <input type="text" name="anio" value="@Model.anio" class="form-control hidden" />
+                <input type="text" name="estado" value="@Model.estado" class="form-control hidden" />
+                <input type="text" name="falso" value="@(Model.numeroOrdenCompraArriendoEquipo + "/" + Model.anio)" class="form-control" readonly />
+            </div>
+        </div>
+        <hr />
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ProveedorID">Se&#241;ores:</label>
+            <div class="col-md-4">
+                <select name="ProveedorID" class="form-control proveedor" required>
+                    @foreach (RentaMaq.Models.Proveedor Proveedor in (List<RentaMaq.Models.Proveedor>)ViewData["Proveedores"])
+                    {
+                        if (@Model.ProveedorID.Equals(@Proveedor.ProveedorID))
+                        {
+                            <option value="@Proveedor.ProveedorID" selected>@Proveedor.nombreProveedor</option>
+                        }
+                        else
+                        {
+                            <option value="@Proveedor.ProveedorID">@Proveedor.nombreProveedor</option>
+                        }
+                    }
+                </select>
+
+            </div>
+            @*
+            <label class="control-label col-md-2" for="dirigidoA">Atencion A:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="dirigidoA" name="dirigidoA" type="text" value="@Model.dirigidoA" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="dirigidoA" data-valmsg-replace="true"></span>
+            </div>
+            *@
+        </div>
+        <hr />
+
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-2">Texto de Orden de Compra:</label>
+            <div class="col-md-10">
+                <textarea class="form-control" name="texto1" id="texto1" rows="5" style="max-width: 100% !important; width:97%;" placeholder="Por medio de la presente y junto con saludar,....">@Model.texto1</textarea>
+            </div>
+        </div>
+        <hr />
+
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Descripcion del Equipo</th>
+                        <th>Valor Hora</th>
+                        <th>Horas Minimas 
+                            <select class="form-control" name="tipoHorasMinimas">
+                                @if (@Model.tipoHorasMinimas.Equals("Diarias"))
+                                {
+                                    <option value="Diarias" selected>Diarias</option>
+                                    <option value="Semanales">Semanales</option>
+                                    <option value="Mensuales">Mensuales</option>
+                                }
+                                else if (@Model.tipoHorasMinimas.Equals("Semanales"))
+                                {
+                                    <option value="Diarias">Diarias</option>
+                                    <option value="Semanales" selected>Semanales</option>
+                                    <option value="Mensuales">Mensuales</option>
+                                }
+                                else { 
+                                    <option value="Diarias">Diarias</option>
+                                    <option value="Semanales">Semanales</option>
+                                    <option value="Mensuales" selected>Mensuales</option>
+                                }
+                            </select>
+                        </th>
+                        <th>Duracion Del Arriendo</th>
+                        <th>Lugar de Faena</th>
+                        <th>Condiciones de Pago</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                    @foreach (RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo detalleOrdenDeCompraArriendoEquipo in (List<RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo>)ViewData["detalleOrdenDeCompraArriendoEquipo"])
+                    {
+                        <tr>
+                            <td>
+                                <input class="form-control descripcionProducto" type="text" name="descripcionProducto" id="descripcionProducto" value="@detalleOrdenDeCompraArriendoEquipo.descripcionEquipo" required />
+                            </td>
+
+                            <td>
+                                <input class="form-control valorHora" type="text" name="valorHora" id="valorHora" value="@detalleOrdenDeCompraArriendoEquipo.valorHora" required />
+                            </td>
+
+                            <td>
+                                <input class="form-control horasMinimasMensuales" type="text" name="horasMinimasMensuales" id="horasMinimasMensuales" value="@detalleOrdenDeCompraArriendoEquipo.horasMinimasMensuales" required />
+                            </td>
+
+                            <td>
+                                <input class="form-control duracionDelArriendo" type="text" name="duracionDelArriendo" id="duracionDelArriendo" value="@detalleOrdenDeCompraArriendoEquipo.duracionArriendo" required />
+                            </td>
+                            <td>
+                                <input class="form-control lugarFaena" type="text" name="lugarFaena" id="lugarFaena" value="@detalleOrdenDeCompraArriendoEquipo.lugarDeFaena" required />
+                            </td>
+                            <td>
+                                <input class="form-control condicionesPago" type="text" name="condicionesPago" id="condicionesPago" value="@detalleOrdenDeCompraArriendoEquipo.condicionesDePago" required />
+                            </td>
+                            <td>
+                                <a class="btn btn-danger botonEliminarItem" id="botonEliminarItem"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-sm-2">
+                <a id="botonAgregarItem" class="btn btn-block btn-primary botonAgregarItem"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="clearfix"></div>
+        <hr />
+        <br /><br />
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label class="col-lg-12">Estas tarifas incluyen o consideran</label>
+                <div class="col-lg-12">
+                    <textarea class="form-control" rows="3" name="texto2" id="texto2" style="max-width: 100% !important; width:100%;">@Model.texto2</textarea>
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label class="col-lg-12">Estas tarifas incluyen NO consideran</label>
+                <div class="col-lg-12">
+                    <textarea class="form-control" rows="3" name="noIncluye" style="max-width: 100% !important; width:100%;">@Model.noIncluye</textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.plazoEntrega, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @{
+                        fechaPlazoEntrega = Model.plazoEntrega.Day + "/" + Model.plazoEntrega.Month + "/" + Model.plazoEntrega.Year;
+                        }
+                        @if (Model.plazoEntrega.Equals(new DateTime(2000, 1, 1)))
+                        {
+                            <input class="form-control fecha" id="plazoEntrega" name="plazoEntrega" data-val-date="El valor debe ser una fecha."
+                                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                                   type="text" />
+                        }
+                        else
+                        {
+                            <input class="form-control fecha" id="plazoEntrega" name="plazoEntrega" data-val-date="El valor debe ser una fecha."
+                                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                                   type="text" value="@fechaPlazoEntrega" />
+                        }
+                        
+                    </div>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.personaRetira, "Persona que retira ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.personaRetira, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.personaRetira, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.formaPago, "Forma de Pago ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.formaPago, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.formaPago, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-lg-3">
+                    <a href="/OrdenDeCompraArriendoEquipo">Volver a lista de Ordenes de Compra</a>
+                </div>
+            </div>            
+            <input type="submit" value="Guardar Cambios" class="btn btn-success btn-lg btn-default" />
+        </div>
+    </div>
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    @{
+        List<RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo> detalle =(List<RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo>)ViewData["detalleOrdenDeCompraArriendoEquipo"];
+    }
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = @detalle.Count;
+            $(".proveedor").select2();
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".botonAgregarItem").click(function () {
+
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find('.descripcionProducto').val('');
+                $temp.find('.valorHora').val('');
+                $temp.find('.horasMinimasMensuales').val('');
+                $temp.find('.duracionDelArriendo').val('');
+
+                $temp.find('.lugarFaena').val('');
+                $temp.find('.condicionesPago').val('');
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                numeroItem++;
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarItem", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este item , ya que la solicitud debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+        });
+
+    </script>
+
+
+}
+
+

@@ -1,0 +1,139 @@
+﻿@model IEnumerable<RentaMaq.Models.cotizacionArriendoEquipo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-md-4">
+    <h3>Lista Cotizaciones de Arriendo</h3>
+</div>
+@{
+    string FECHA1 = "", FECHA2 = "";
+    DateTime fecha1 = (DateTime)ViewBag.Fecha1, fecha2 = (DateTime)ViewBag.Fecha2;
+    FECHA1 = fecha1.Day + "/" + fecha1.Month + "/" + fecha1.Year;
+    FECHA2 = fecha2.Day + "/" + fecha2.Month + "/" + fecha2.Year;
+}
+<div class="col-md-8">
+    <div class="col-md-12">
+        <h4>Filtros:</h4>
+    </div>
+    <div class="col-md-4">
+        <label class="control-label">Inicio:</label>
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-4">
+        <label class="control-label">Término:</label>
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-4">
+        <br />
+        <input class="btn btn-lg btn-default btn-block" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<p>
+
+    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(6, int.Parse(Session["ID"].ToString())))
+    {
+
+        @Html.ActionLink("Crear Nueva Cotizacion", "Create")
+    }
+    
+</p>
+<div class="table-responsive">
+<table class="table">
+    <tr>
+        <th>
+            Cotizacion de Arriendo N°
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Tipo
+        </th>
+        <th>
+            Referencia
+        </th>
+        
+        <th>
+            Empresa
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.numeroCotizacionArriendo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha)
+        </td>
+        <td>
+            Arriendo Equipo @Html.DisplayFor(modelItem => item.tipoCotizacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.referencia)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.datosClienteEmpresa)
+        </td>       
+        <td>
+            @Html.ActionLink("Detalle", "Details", new { id = item.cotizacionArriendoEquipoID }) |
+            @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(6, int.Parse(Session["ID"].ToString())))
+            {
+
+                @Html.ActionLink("Editar", "Edit", new { id=item.cotizacionArriendoEquipoID }) <text>|</text>
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.cotizacionArriendoEquipoID }) <text>|</text>
+            }
+            <br />
+            <a target="_blank" href="@Url.Action("cotizacionArriendoEquipo","Report", new {id=item.cotizacionArriendoEquipoID})">Descargar Reporte</a>
+        </td>
+    </tr>
+}
+
+</table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/cotizacionArriendoEquipos/Index?inicio=" + fecha1 + "&termino=" + fecha2;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+}

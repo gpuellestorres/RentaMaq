@@ -1,0 +1,49 @@
+﻿@model IEnumerable<RentaMaq.Models.Usuario>
+
+@{
+    ViewBag.Title = "Usuarios del Sistema";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreUsuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreCompleto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.correoElectronico)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreUsuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreCompleto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.correoElectronico)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.usuarioID }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.usuarioID }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.usuarioID })|
+            <br />
+            @Html.ActionLink("Cambiar Contraseña", "modificarContraseña", new { id = item.usuarioID }) | 
+            <br />
+            @Html.ActionLink("Gestionar Permisos", "gestionarPermisos", new { id = item.usuarioID })
+        </td>
+    </tr>
+}
+
+</table>

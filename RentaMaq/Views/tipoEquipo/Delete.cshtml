@@ -1,0 +1,32 @@
+﻿@model RentaMaq.Models.tipoEquipo
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar Tipo de Equipo</h2>
+
+<h3>¿Está seguro/a de eliminar el tipo de equipo?</h3>
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

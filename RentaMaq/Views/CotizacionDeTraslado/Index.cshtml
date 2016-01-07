@@ -1,0 +1,142 @@
+﻿@model IEnumerable<RentaMaq.Models.CotizacionDeTraslado>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="col-md-4">
+    <h3>Cotizaciones de Traslado</h3>
+</div>
+@{
+    string FECHA1 = "", FECHA2 = "";
+    DateTime fecha1 = (DateTime)ViewBag.Fecha1, fecha2 = (DateTime)ViewBag.Fecha2;
+    FECHA1 = fecha1.Day + "/" + fecha1.Month + "/" + fecha1.Year;
+    FECHA2 = fecha2.Day + "/" + fecha2.Month + "/" + fecha2.Year;
+}
+<div class="col-md-8">
+    <div class="col-md-12">
+        <h4>Filtros:</h4>
+    </div>
+    <div class="col-md-4">
+        <label class="control-label">Inicio:</label>
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-4">
+        <label class="control-label">Término:</label>
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-4">
+        <br />
+        <input class="btn btn-lg btn-default btn-block" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<p>
+
+    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(6, int.Parse(Session["ID"].ToString())))
+    {
+
+        @Html.ActionLink("Crear nueva", "Create")
+    }
+
+    
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroDeCotizacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.año)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.atencionA)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroDeCotizacion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.año)
+                </td>
+                @{
+    string FECHA = item.fecha.Day + "/" + item.fecha.Month + "/" + item.fecha.Year;
+                }
+                <td>
+                    @FECHA
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cliente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.atencionA)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalles", "Details", new { id = item.CotizacionDeTrasladoID }) |
+                    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(6, int.Parse(Session["ID"].ToString())))
+                    {
+                        @Html.ActionLink("Editar", "Edit", new { id=item.CotizacionDeTrasladoID }) <text>|</text>
+                        @Html.ActionLink("Eliminar", "Delete", new { id=item.CotizacionDeTrasladoID }) <text>|</text>
+                    }
+
+
+                    
+                    <br />
+                    <a target="_blank" href="@Url.Action("CotizacionDeTraslado", "Report", new { id = item.CotizacionDeTrasladoID })">Descargar Reporte</a>     
+                    
+                </td>
+            </tr>
+}
+
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/CotizacionDeTraslado/Index?inicio=" + fecha1 + "&termino=" + fecha2;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+}

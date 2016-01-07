@@ -1,0 +1,96 @@
+﻿@model RentaMaq.Models.OrdenDeCompraGeneral
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar Orden de Compra</h2>
+
+<h3>¿Está seguro/a de eliminar la Orden de Compra?</h3>
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            N° de Orden de Compra
+        </dt>
+
+        <dd>
+            @(Model.numeroOC + "/" + Model.añoOC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaEntrega)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaEntrega)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.formaRetiro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.formaRetiro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.formaPago)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.formaPago)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.subtotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.subtotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.miscelaneos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.miscelaneos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalNeto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalNeto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IVA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IVA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default btn-danger" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,582 @@
+﻿@model RentaMaq.Models.ordenDeTrabajoGeneral
+
+@{
+    ViewBag.Title = "Nueva Orden de Trabajo";
+    List<RentaMaq.Models.Producto> listaProducto = (List<RentaMaq.Models.Producto>)ViewData["materiales"];
+    List<RentaMaq.Models.equipos> listaEquipos = (List<RentaMaq.Models.equipos>)ViewData["equipos"];
+}
+
+<h2>Nueva Orden De Trabajo General</h2>
+
+@using (Html.BeginForm("Create", "ordenDeTrabajoGeneral", FormMethod.Post, new { @enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.numeroFolio, "Folio N°", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.numeroFolio, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.numeroFolio, "", new { @class = "text-danger" })
+                    <div id="mensajeErrorCodigo" class="alert alert-danger hidden">
+                        <strong>Error: </strong> Ya existe una OT con este número de folio
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="nombre" class="control-label col-md-4">Adjuntar Copia Pauta Ev.</label>
+
+                <input type="file" class="filestyle" name="file" id="file" data-input="false" data-buttontext="Elegir Imagen"
+                       multiple accept="image/*">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.fechaOTAbierta, "Fecha OT Abierta", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        <input class="form-control fecha" id="fechaOTAbierta" name="fechaOTAbierta" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" required> 
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.fechaOTCerrada, "Fecha OT Cerrada", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        <input class="form-control fecha" id="fechaOTCerrada" name="fechaOTCerrada" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.operador, "Operador", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.operador, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.operador, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.faena, "Faena", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.faena, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.faena, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.area, "Area", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.area, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.area, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.turno, "Turno", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.turno, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.turno, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">               
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.idEquipo, "Equipo", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        <select class="form-control equipos" name="idEquipo">
+                            @foreach(RentaMaq.Models.equipos equipo in listaEquipos){
+                                <option value="@equipo.ID">@equipo.numeroAFI/@equipo.tipoEquipo</option>    
+                            }
+                        </select>
+                    </div>
+                </div>                
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.horometro, "Horometro", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.horometro, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.horometro, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.kilometraje, "Kilometraje", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.kilometraje, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.kilometraje, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.tipoOTSegunMantenimiento, "Tipo Mantencion", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        <select name="tipoOTSegunMantenimiento" class="form-control">
+                            <option value="400">400</option>
+                            <option value="800">800</option>
+                            <option value="1200">1200</option>
+                            <option value="1600">1600(400)</option>
+                            <option value="2000">2000</option>
+                            <option value="10000">10000 (KM)</option>
+                            <option value="20000">20000 (KM)</option>
+                            <option value="10000">40000 (KM)</option>
+                            <option value="20000">80000 (KM)</option>
+                            <option value="neumatico">Neumático</option>
+                            <option value="inspeccion">Inspección</option>
+                        </select>
+                    </div>
+                </div>                
+
+            </div>
+        </div>
+        <hr />
+        <h4>Tipo de Mantenimiento a Realizar</h4>                                                                    
+        <div class="row">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.tipoMantenimientoARealizar, "Tipo de Mantenimiento a Realizar", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                <div class="col-md-6">
+                    <select class="form-control" name="tipoMantenimientoARealizar">                        
+                        <option value="Preventivo">Preventivo</option>
+                        <option value="Mejorativo">Mejorativo</option>
+                        <option value="Predictivo">Predictivo</option>
+                        <option value="Correctivo">Correctivo</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <hr />
+        
+
+        <div class="table-responsive" id="contenedorEjecutantes">
+            <table class="table" id="tableEjecutantes">
+                <thead>
+                    <tr>
+                        <th>Ejecutantes del Trabajo</th>
+                        <th>Cargo</th>
+                        <th>HH</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyEjecutantes">
+                    <tr>
+                        <td>
+                            <input class="form-control ejecutanteDelTrabajo" type="text" name="ejecutanteDelTrabajo" />
+                        </td>
+                        <td>
+                            <input class="form-control cargo" type="text" name="cargo" />
+                        </td>
+                        <td>
+                            <input class="form-control HH double" type="number" name="HH" />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarEjecutante" id="botonEliminarEjecutante"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          
+            <div class="col-sm-2">
+                <a id="botonAgregarEjecutante" class="btn btn-block btn-primary botonAgregarEjecutante"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Ejecutante</a>
+            </div>
+           <br />  
+        </div>
+        <hr />
+
+
+
+
+
+        <br />
+        <h4>Horas en Mantenimiento</h4> 
+        <div class="row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoNivelCombustible,"Nivel Combustible", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    <select class="form-control" name="horasMantenimientoNivelCombustible">
+                        <option value="0">0</option>
+                        <option value="0.05">0.05</option>
+                        <option value="0.10">0.10</option>
+                        <option value="0.15">0.15</option>
+                        <option value="0.20">0.20</option>
+                        <option value="0.25">0.25</option>
+                        <option value="0.30">0.30</option>
+                        <option value="0.35">0.35</option>
+                        <option value="0.40">0.40</option>
+                        <option value="0.45">0.45</option>
+                        <option value="0.50">0.50</option>
+                        <option value="0.55">0.55</option>
+                        <option value="0.60">0.60</option>
+                        <option value="0.65">0.65</option>
+                        <option value="0.70">0.70</option>
+                        <option value="0.75">0.75</option>
+                        <option value="0.80">0.80</option>
+                        <option value="0.85">0.85</option>
+                        <option value="0.90">0.90</option>
+                        <option value="0.95">0.95</option>
+                        <option value="1">1</option>
+
+                    </select>
+                    <label>Empty:0/Full:1</label>
+                    
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoFecha,"Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    <input class="form-control fecha" id="horasMantenimientoFecha" name="horasMantenimientoFecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" required>                    
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoHRInicio,"HR Inicio" ,htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.horasMantenimientoHRInicio, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.horasMantenimientoHRInicio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoHRTermino,"HR Termino", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.horasMantenimientoHRTermino, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.horasMantenimientoHRTermino, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.horasMantenimientoHRSDetenido,"HRS Detenido", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.horasMantenimientoHRSDetenido, new { htmlAttributes = new { @class = "form-control double" } })
+                    @Html.ValidationMessageFor(model => model.horasMantenimientoHRSDetenido, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+               <h4>Trabajo por Realizar</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="trabajoRealizar" id="trabajoRealizar" style="max-width: 100% !important; width:100%;"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Conclusiones Del Trabajo Realizado</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="conclusionesTrabajoRealizado" id="conclusionesTrabajoRealizado" style="max-width: 100% !important; width:100%;"></textarea>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    @Html.LabelFor(model => model.estadoEquipo, "Estado Equipo", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        <select class="form-control" name="estadoEquipo" id="estadoEquipo">
+                            <option value="Operativo">Operativo</option>
+                            <option value="Detenido">Detenido</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <hr /> 
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Trabajos Pendientes por Realizar</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="trabajosPendientesPorRealizar" id="trabajosPendientesPorRealizar" style="max-width: 100% !important; width:100%;"></textarea>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    @Html.LabelFor(model => model.fechaTrabajosPendientesPorRealizar, "Fecha Plazo Trabajo Pendiente", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })                    
+                    <input class="form-control fecha" id="fechaTrabajosPendientesPorRealizar" name="fechaTrabajosPendientesPorRealizar" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" required">                    
+                </div>
+            </div>            
+        </div>    
+        <hr />
+        <br />
+        <div class="table-responsive">
+            <label class="control-label col-md-6">Materiales Utilizados</label>
+            <table class="table" id="tableMaterialesUtilizados">
+                <thead>
+                    <tr>
+                        <th>Materiales Utilizados</th>
+                        <th>Cantidad</th>
+                        <th>N° Parte</th>                        
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input class="form-control materialUtilizado" type="text" name="materialUtilizado" />
+                        </td>
+                        <td>
+                            <input class="form-control matUtcantidad double" type="text" name="matUtcantidad" />
+                        </td>
+                        <td class="tdSelect">
+                            <select class="form-control matUtNumeroParte" name="matUtNumeroParte">
+                                @foreach (RentaMaq.Models.Producto material in listaProducto)
+                                {
+                                    <option value="@material.ProductoID">@material.numeroDeParte</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarMatUt"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="col-sm-3">
+                <a id="botonAgregarMaterialUtilizado" class="btn btn-block btn-primary botonAgregarMaterialUtilizado"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Material Utilizado</a>
+            </div>
+            <br />
+        </div>
+
+        <br />
+        <br />
+        <div class="table-responsive">
+            <label class="control-label col-md-6">Materiales Requeridos</label>
+            <table class="table" id="tableMaterialesRequeridos">
+                <thead>
+                    <tr>                       
+                        <th>Materiales Requeridos</th>
+                        <th>Cantidad</th>
+                        <th>N° Parte</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input class="form-control materialRequerido" type="text" name="materialRequerido" />
+                        </td>
+                        <td>
+                            <input class="form-control matReqCantidad double" type="text" name="matReqCantidad" />
+                        </td>
+                        <td class="tdSelect">
+                            <select class="form-control matReqNumeroParte" name="matReqNumeroParte">
+                                @foreach (RentaMaq.Models.Producto material in listaProducto)
+                                {
+                                    <option value="@material.ProductoID">@material.numeroDeParte</option>    
+                                }
+                            </select>                            
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarMatReq"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="col-sm-3">
+                <a id="botonAgregarMaterialRequerido" class="btn btn-block btn-primary botonAgregarMaterialRequerido"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Material Requerido</a>
+            </div>
+            <br />
+        </div>
+
+
+        <br /><br /><br /><br />
+        <div class="row">
+            <div class="col-md-4">
+                <label class="control-label col-md-12" style="text-align: left !important;">Nomber Mantenedor</label>
+                <input type="text" class="form-control" name="nombreMantenedor"/>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label col-md-12" style="text-align: left !important;">Nombre Operador</label>
+                <input type="text" class="form-control"  name="nombreOperador" />
+            </div>
+            <div class="col-md-4">
+                <label class="control-label col-md-12" style="text-align: left !important;">Nombre Supervisor</label>
+                <input type="text" class="form-control" name="nombreSupervisor" />
+            </div>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-9 col-lg-12">
+                    <input type="submit" value="Crear OT" id="BtnCrear" class="btn btn-success btn-lg btn-default col-md-3" />
+                </div>
+            </div>
+        </div>       
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a Lista de Ordenes de Trabajo", "Index")
+</div>
+@section Scripts {
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.filestyle/1.1.0/js/bootstrap-filestyle.min.js"> </script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")  
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>  
+    <script>
+        $(document).ready(function () {            
+            var numeroItem = 1;
+            var numeroMatUt = 1;
+            var numeroMatReq = 1;
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+            
+            $("#numeroFolio").change(function () {
+                var codigo = $("#numeroFolio").val();
+                $.ajax({
+                    url: "/ordenDeTrabajoGeneral/verificarnumeroFolio",
+                    data: { "numeroFolio": codigo },
+
+                    success: function (retorno) {
+
+                        if (retorno == 'false') {
+
+                            $("#mensajeErrorCodigo").addClass("hidden");
+                            $("#BtnCrear").removeAttr("disabled");
+                        } else {
+
+                            $("#mensajeErrorCodigo").removeClass("hidden");
+                            $("#BtnCrear").attr("disabled", "disabled");
+                        }
+                    }
+                });
+            });
+
+            $(".equipos").select2();            
+            $(".matReqNumeroParte").select2();
+            $(".matUtNumeroParte").select2();
+            
+            $('.double').bind('keypress', function (event) {
+                var regex = new RegExp("^([0-9]*.[0-9]*)$");
+                var textoActual = $(this).val();
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+                else if (key == '.' && textoActual.indexOf(".") >= 0) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            $(".botonAgregarEjecutante").click(function () {
+
+                numeroItem++;
+                var $tableBody = $('#tableEjecutantes').find("tbody");
+                $trLast = $tableBody.find("tr:last");               
+
+                $temp = $trLast.clone();
+               
+                $temp.find('.ejecutanteDelTrabajo').val('');
+                $temp.find('.cargo').val('');
+                $temp.find('.HH').val('');
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                return false;
+            });
+            $(document).on("click", ".botonEliminarEjecutante", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este trabajador , ya que la OT debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+
+
+
+            $(".botonAgregarMaterialUtilizado").click(function () {
+                numeroMatUt++;
+                var $tableBody = $('#tableMaterialesUtilizados').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find('.materialUtilizado').val('');
+                $temp.find('.matUtcantidad').val('');
+                var $options = $trLast.find(".matUtNumeroParte > option").clone();
+                $temp.find(".tdSelect").html('');
+                $temp.find(".tdSelect").append("<select class='form-control matUtNumeroParte' name='matUtNumeroParte'></select>");
+                $temp.find(".matUtNumeroParte").append($options);
+                $temp.find(".matUtNumeroParte").select2();
+                $temp.find(".select2-container--default").css({ 'width': "278px" });
+                
+                //$temp.find('.matUtNumeroParte').val('');
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                return false;
+            });
+            $(document).on("click", ".botonEliminarMatUt", function () {
+                var element = this;
+                if (numeroMatUt > 1) {
+                    $(element).closest('tr').remove();
+                    numeroMatUt--;
+                } else {
+                    alert("Imposible Eliminar. Debe existir aunque este vacio.")
+                }
+                return false;
+            });
+
+
+
+
+            $(".botonAgregarMaterialRequerido").click(function () {
+
+                numeroMatReq++;
+                var $tableBody = $('#tableMaterialesRequeridos').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find('.materialRequerido').val('');
+                $temp.find('.matReqCantidad').val('');
+                var $options = $trLast.find(".matReqNumeroParte > option").clone();
+                $temp.find(".tdSelect").html('');
+                $temp.find(".tdSelect").append("<select class='form-control matReqNumeroParte' name='matReqNumeroParte'></select>");
+                $temp.find(".matReqNumeroParte").append($options);
+                $temp.find(".matReqNumeroParte").select2();
+                $temp.find(".select2-container--default").css({ 'width': "278px" });
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarMatReq", function () {
+                var element = this;
+                if (numeroMatReq > 1) {
+                    $(element).closest('tr').remove();
+                    numeroMatReq--;
+                } else {
+                    alert("Imposible Eliminar. Debe existir aunque este vacio.")
+                }
+                return false;
+            });
+
+
+        });
+
+
+
+    </script>
+
+
+}

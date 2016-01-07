@@ -1,0 +1,40 @@
+﻿@model RentaMaq.Models.avisosCorreoOrdenCompraGeneral
+@{
+    ViewBag.Title = "AgregarCorreo";
+}
+
+<h2>Eliminar alerta de correo para órdenes de compra de productos</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <input type="text" name="id" value="@Model.avisosCorreoOrdenCompraGeneralID" class="hidden" required readonly />
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="texto">Nombre de contacto:</label>
+            <div class="col-md-10">
+                <input type="text" id="contacto" name="contacto" class="form-control" value="@Model.nombreContacto" readonly />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="texto">Correo electrónico:</label>
+            <div class="col-md-10">
+                <input type="email" id="correo" name="correo" class="form-control" value="@Model.correo" required readonly />
+            </div>
+        </div>
+        <hr />
+        <div class="clearfix"></div>
+        <div class="modal-footer">
+            <a href="@Url.Action("avisosCorreo", "OrdenDeCompraGeneral")">Volver</a>&nbsp;
+            <input type="submit" value="Eliminar" class="btn btn-danger btn-lg btn-default" />
+        </div>
+    </div>
+
+}
+

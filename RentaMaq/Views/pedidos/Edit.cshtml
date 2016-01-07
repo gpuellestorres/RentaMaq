@@ -1,0 +1,217 @@
+﻿@model RentaMaq.Models.pedidos
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Editar Pedido</h2>
+@{
+
+
+    string fecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-inline">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            @Html.HiddenFor(model => model.pedidosID)
+            @Html.HiddenFor(model => model.estado)
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.fecha, "Fecha de Solicitud", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+
+                    <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" value="@fecha" required">
+                </div>
+            </div>
+        </div>
+            
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-12">
+                    <textarea class="form-control" name="nota" id="nota" style="max-width: 100% !important; width:100%;" placeholder="Mediante el presente y junto con saludarle...">@Model.nota</textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Numero de Parte</th>
+                        <th>Descripcion</th>
+                        <th>Cantidad</th>
+                        <th>Tipo Pedido</th>
+                        <th>Codigo Interno</th>
+                        <th>Prioridad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                    @foreach (RentaMaq.Models.detallePedido detallePedido in (List<RentaMaq.Models.detallePedido>)ViewData["detallePedido"])
+                    {
+                        <tr id="trItems">
+
+                            <td>
+                                <input class="form-control numeroDeParte" type="text" name="numeroDeParte" value="@detallePedido.numeroParte" required />
+                            </td>
+                            <td>
+                                <input class="form-control descripcion" type="text" name="descripcion" value="@detallePedido.descripcion" required />
+                            </td>
+                            <td>
+                                <input class="form-control cantidad double" type="text" name="cantidad" value="@detallePedido.cantidad" required />
+                            </td>
+
+                            <td class="tdSelect">
+                                <select class="form-control tipoPedido" name="tipoPedido">
+                                    @if (@detallePedido.tipoPedido.Equals("STOCK"))
+                                    {
+
+                                        <option value="STOCK" selected>Stock</option>
+                                        <option value="DIRECTA">Directa</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="STOCK">Stock</option>
+                                        <option value="DIRECTA" selected>Directa</option>
+                                    }
+                                </select>
+                            </td>
+
+                            <td>
+                                <input class="form-control detalleTipoPedido" type="text" name="detalleTipoPedido" value="@detallePedido.detalleTipoPedido" required />
+                            </td>
+                            <td>
+                                <select class="form-control prioridad" name="prioridad">
+                                    @if (Object.ReferenceEquals(null, detallePedido.prioridad))
+                                    {
+
+                                        <option value="URGENTE" selected>Urgente</option>
+                                        <option value="3-5 DIAS">3-5 Dias</option>
+                                    }
+                                    else { 
+                                    
+                                    
+                                        if (@detallePedido.prioridad.Equals("URGENTE"))
+                                        {
+                                                
+                                            <option value="URGENTE" selected>Urgente</option>
+                                            <option value="3-5 DIAS">3-5 Dias</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="URGENTE">Urgente</option>
+                                            <option value="3-5 DIAS" selected>3-5 Dias</option>
+                                        }
+                                    }
+                                </select>
+
+                            </td>
+                            <td>
+                                <a class="btn btn-danger botonEliminarItem" id="botonEliminarItem"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <div class="col-sm-2">
+                <a id="botonAgregarItem" class="btn btn-block btn-primary botonAgregarItem"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+            </div>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-10 col-lg-12">
+                    <input type="submit" value="Guardar Cambios" class="btn btn-success btn-lg btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a lista de Pedidos", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = @ViewBag.cantidadDetalle;
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".botonAgregarItem").click(function () {
+
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find('.numeroDeParte').val('');
+                $temp.find('.cantidad').val('');
+                $temp.find('.detalleTipoPedido').val('');
+                $temp.find('.descripcion').val('');
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                numeroItem++;
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarItem", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este producto , ya que el pedido debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+            $('.double').bind('keypress', function (event) {
+                var regex = new RegExp("^([0-9]*.[0-9]*)$");
+                var textoActual = $(this).val();
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+                else if (key == '.' && textoActual.indexOf(".") >= 0) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+        });
+
+    </script>
+
+
+}

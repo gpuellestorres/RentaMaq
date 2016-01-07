@@ -1,0 +1,1089 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52D02020-7282-48D8-B31B-13AE12146FEA}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RentaMaq</RootNamespace>
+    <AssemblyName>RentaMaq</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.DataVisualization\11.0.0.0__89845dcd8080cc91\Microsoft.ReportViewer.DataVisualization.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="SendGrid.SmtpApi">
+      <HintPath>..\packages\SendGrid.SmtpApi.1.3.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGridMail">
+      <HintPath>..\packages\Sendgrid.6.1.0\lib\SendGridMail.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=__MvcPagesVersion__, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\alertasMantenimientoController.cs" />
+    <Compile Include="Controllers\BodegasController.cs" />
+    <Compile Include="Controllers\chequeoPreventivoController.cs" />
+    <Compile Include="Controllers\cotizacionArriendoEquiposController.cs" />
+    <Compile Include="Controllers\CotizacionDeTrasladoController.cs" />
+    <Compile Include="Controllers\cotizacionServiciosController.cs" />
+    <Compile Include="Controllers\equiposController.cs" />
+    <Compile Include="Controllers\hojaRutaMantenedoresController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\indicadoresDeMantencionController.cs" />
+    <Compile Include="Controllers\indicadorPorEquipoController.cs" />
+    <Compile Include="Controllers\MaestroController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\mantencionPreventivaController.cs" />
+    <Compile Include="Controllers\MarcasController.cs" />
+    <Compile Include="Controllers\ModelosController.cs" />
+    <Compile Include="Controllers\ordenDeCompraArriendoEquipoController.cs" />
+    <Compile Include="Controllers\OrdenDeCompraGeneralController.cs" />
+    <Compile Include="Controllers\OrdenDePedidoController.cs" />
+    <Compile Include="Controllers\ordenDeTrabajoGeneralController.cs" />
+    <Compile Include="Controllers\ordenPedidoCombustibleController.cs" />
+    <Compile Include="Controllers\pedidosController.cs" />
+    <Compile Include="Controllers\ProductoController.cs" />
+    <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\registrokmhmController.cs" />
+    <Compile Include="Controllers\reportCombustibleController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\solicitudDeCotizacionController.cs" />
+    <Compile Include="Controllers\tipoEquipoController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="DAL\Context.cs" />
+    <Compile Include="DAL\Inicializador.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\alertasMantenimiento.cs" />
+    <Compile Include="Models\avisosCorreoOrdenCompraGeneral.cs" />
+    <Compile Include="Models\Bodegas.cs" />
+    <Compile Include="Models\chequeoPreventivo.cs" />
+    <Compile Include="Models\conexion.cs" />
+    <Compile Include="Models\CotizacionDeTraslado.cs" />
+    <Compile Include="Models\cotizacionArriendoEquipo.cs" />
+    <Compile Include="Models\cotizacionServicios.cs" />
+    <Compile Include="Models\datosEntregaOrdenCompraGeneral.cs" />
+    <Compile Include="Models\detalleCotizacionDeTraslado.cs" />
+    <Compile Include="Models\DetalleEntregaOrdenCompraGeneral.cs" />
+    <Compile Include="Models\detalleEquipo.cs" />
+    <Compile Include="Models\detalleEquiposCotizacionServicios.cs" />
+    <Compile Include="Models\DetalleOrdenCompra.cs" />
+    <Compile Include="Models\detalleOrdenPedido.cs" />
+    <Compile Include="Models\detalleReporteExistenciasProducto.cs" />
+    <Compile Include="Models\detalleServicioCotizacionServicios.cs" />
+    <Compile Include="Models\encriptacion.cs" />
+    <Compile Include="Models\envioCorreos.cs" />
+    <Compile Include="Models\equipos.cs" />
+    <Compile Include="Models\Formateador.cs" />
+    <Compile Include="Models\formatearString.cs" />
+    <Compile Include="Models\hojaRutaMantenedores.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IndicadoresClaveProducto.cs" />
+    <Compile Include="Models\IndicadoresClaveProveedor.cs" />
+    <Compile Include="Models\IndicadoresCostosActivosOT.cs" />
+    <Compile Include="Models\indicadoresDeMantencion.cs" />
+    <Compile Include="Models\indicadoresPorEquipo.cs" />
+    <Compile Include="Models\listaCorreosStockCritico.cs" />
+    <Compile Include="Models\Maestro.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\mantencionPreventiva.cs" />
+    <Compile Include="Models\marca.cs" />
+    <Compile Include="Models\Modelo.cs" />
+    <Compile Include="Models\ordenDeCompraArriendoEquipo.cs" />
+    <Compile Include="Models\OrdenDeCompraGeneral.cs" />
+    <Compile Include="Models\OrdenDePedido.cs" />
+    <Compile Include="Models\ordenDeTrabajoGeneral.cs" />
+    <Compile Include="Models\ordenPedidoCombustible.cs" />
+    <Compile Include="Models\pedidos.cs" />
+    <Compile Include="Models\Producto.cs" />
+    <Compile Include="Models\Proveedor.cs" />
+    <Compile Include="Models\registrokmhm.cs" />
+    <Compile Include="Models\reportCombustible.cs" />
+    <Compile Include="Models\reporteConsumoCombustible.cs" />
+    <Compile Include="Models\reportExistenciasProducto.cs" />
+    <Compile Include="Models\roles.cs" />
+    <Compile Include="Models\solicitudDeCotizacion.cs" />
+    <Compile Include="Models\tipoEquipo.cs" />
+    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\costosOrdenTrabajoGeneral.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>costosOrdenTrabajoGeneral.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\cotizacionArriendoEquipo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cotizacionArriendoEquipo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\cotizacionDeTraslado.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cotizacionDeTraslado.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\CotizacionServicios.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CotizacionServicios.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\DataSetordenDeTrabajoGeneral.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetordenDeTrabajoGeneral.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\Existencias.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Existencias.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ExistenciasProducto.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExistenciasProducto.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\HojaRutaMantenedores.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HojaRutaMantenedores.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\IndicadoresClaveProvProd.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IndicadoresClaveProvProd.xsd</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Report\IndicadoresMantencion.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IndicadoresMantencion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ordenCompraArriendoEquipo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ordenCompraArriendoEquipo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\OrdenCompraGeneral.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrdenCompraGeneral.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\OrdenDePedido.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrdenDePedido.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ordenPedidoCombustible.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ordenPedidoCombustible.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\solicitudDeCotizacion.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>solicitudDeCotizacion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\stockCritico.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>stockCritico.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="amcharts\amcharts.js" />
+    <Content Include="amcharts\changeLog.txt" />
+    <Content Include="amcharts\funnel.js" />
+    <Content Include="amcharts\gantt.js" />
+    <Content Include="amcharts\gauge.js" />
+    <Content Include="amcharts\images\dragIcon.gif" />
+    <Content Include="amcharts\images\dragIconBlack.gif" />
+    <Content Include="amcharts\images\dragIconH.gif" />
+    <Content Include="amcharts\images\dragIconHBlack.gif" />
+    <Content Include="amcharts\images\dragIconRectBig.png" />
+    <Content Include="amcharts\images\dragIconRectBigBlack.png" />
+    <Content Include="amcharts\images\dragIconRectBigBlackH.png" />
+    <Content Include="amcharts\images\dragIconRectBigH.png" />
+    <Content Include="amcharts\images\dragIconRectSmall.png" />
+    <Content Include="amcharts\images\dragIconRectSmallBlack.png" />
+    <Content Include="amcharts\images\dragIconRectSmallBlackH.png" />
+    <Content Include="amcharts\images\dragIconRectSmallH.png" />
+    <Content Include="amcharts\images\dragIconRoundBig.png" />
+    <Content Include="amcharts\images\dragIconRoundBigBlack.png" />
+    <Content Include="amcharts\images\dragIconRoundBigBlackH.png" />
+    <Content Include="amcharts\images\dragIconRoundBigH.png" />
+    <Content Include="amcharts\images\dragIconRoundSmall.png" />
+    <Content Include="amcharts\images\dragIconRoundSmallBlack.png" />
+    <Content Include="amcharts\images\dragIconRoundSmallBlackH.png" />
+    <Content Include="amcharts\images\dragIconRoundSmallH.png" />
+    <Content Include="amcharts\images\export.png" />
+    <Content Include="amcharts\images\exportWhite.png" />
+    <Content Include="amcharts\images\lens.png" />
+    <Content Include="amcharts\images\lensWhite.png" />
+    <Content Include="amcharts\images\lensWhite_old.png" />
+    <Content Include="amcharts\images\lens_old.png" />
+    <Content Include="amcharts\lang\az.js" />
+    <Content Include="amcharts\lang\bg.js" />
+    <Content Include="amcharts\lang\de.js" />
+    <Content Include="amcharts\lang\es.js" />
+    <Content Include="amcharts\lang\fi.js" />
+    <Content Include="amcharts\lang\fo.js" />
+    <Content Include="amcharts\lang\fr.js" />
+    <Content Include="amcharts\lang\hr.js" />
+    <Content Include="amcharts\lang\hu.js" />
+    <Content Include="amcharts\lang\id.js" />
+    <Content Include="amcharts\lang\is.js" />
+    <Content Include="amcharts\lang\it.js" />
+    <Content Include="amcharts\lang\lt.js" />
+    <Content Include="amcharts\lang\lv.js" />
+    <Content Include="amcharts\lang\mk.js" />
+    <Content Include="amcharts\lang\mn.js" />
+    <Content Include="amcharts\lang\mt.js" />
+    <Content Include="amcharts\lang\nl.js" />
+    <Content Include="amcharts\lang\no.js" />
+    <Content Include="amcharts\lang\pl.js" />
+    <Content Include="amcharts\lang\pt.js" />
+    <Content Include="amcharts\lang\ro.js" />
+    <Content Include="amcharts\lang\ru.js" />
+    <Content Include="amcharts\lang\rw.js" />
+    <Content Include="amcharts\lang\sk.js" />
+    <Content Include="amcharts\lang\so.js" />
+    <Content Include="amcharts\lang\th.js" />
+    <Content Include="amcharts\lang\tr.js" />
+    <Content Include="amcharts\licence.txt" />
+    <Content Include="amcharts\patterns\black\pattern1.png" />
+    <Content Include="amcharts\patterns\black\pattern10.png" />
+    <Content Include="amcharts\patterns\black\pattern11.png" />
+    <Content Include="amcharts\patterns\black\pattern12.png" />
+    <Content Include="amcharts\patterns\black\pattern13.png" />
+    <Content Include="amcharts\patterns\black\pattern14.png" />
+    <Content Include="amcharts\patterns\black\pattern15.png" />
+    <Content Include="amcharts\patterns\black\pattern16.png" />
+    <Content Include="amcharts\patterns\black\pattern17.png" />
+    <Content Include="amcharts\patterns\black\pattern18.png" />
+    <Content Include="amcharts\patterns\black\pattern19.png" />
+    <Content Include="amcharts\patterns\black\pattern2.png" />
+    <Content Include="amcharts\patterns\black\pattern20.png" />
+    <Content Include="amcharts\patterns\black\pattern21.png" />
+    <Content Include="amcharts\patterns\black\pattern3.png" />
+    <Content Include="amcharts\patterns\black\pattern4.png" />
+    <Content Include="amcharts\patterns\black\pattern5.png" />
+    <Content Include="amcharts\patterns\black\pattern6.png" />
+    <Content Include="amcharts\patterns\black\pattern7.png" />
+    <Content Include="amcharts\patterns\black\pattern8.png" />
+    <Content Include="amcharts\patterns\black\pattern9.png" />
+    <Content Include="amcharts\patterns\chalk\pattern1.jpg" />
+    <Content Include="amcharts\patterns\chalk\pattern1r.jpg" />
+    <Content Include="amcharts\patterns\chalk\pattern2.jpg" />
+    <Content Include="amcharts\patterns\chalk\pattern3.jpg" />
+    <Content Include="amcharts\patterns\chalk\pattern4.jpg" />
+    <Content Include="amcharts\patterns\chalk\pattern5.jpg" />
+    <Content Include="amcharts\patterns\chalk\pattern6.jpg" />
+    <Content Include="amcharts\patterns\white\pattern1.png" />
+    <Content Include="amcharts\patterns\white\pattern10.png" />
+    <Content Include="amcharts\patterns\white\pattern11.png" />
+    <Content Include="amcharts\patterns\white\pattern12.png" />
+    <Content Include="amcharts\patterns\white\pattern13.png" />
+    <Content Include="amcharts\patterns\white\pattern14.png" />
+    <Content Include="amcharts\patterns\white\pattern15.png" />
+    <Content Include="amcharts\patterns\white\pattern16.png" />
+    <Content Include="amcharts\patterns\white\pattern17.png" />
+    <Content Include="amcharts\patterns\white\pattern18.png" />
+    <Content Include="amcharts\patterns\white\pattern19.png" />
+    <Content Include="amcharts\patterns\white\pattern2.png" />
+    <Content Include="amcharts\patterns\white\pattern20.png" />
+    <Content Include="amcharts\patterns\white\pattern21.png" />
+    <Content Include="amcharts\patterns\white\pattern3.png" />
+    <Content Include="amcharts\patterns\white\pattern4.png" />
+    <Content Include="amcharts\patterns\white\pattern5.png" />
+    <Content Include="amcharts\patterns\white\pattern6.png" />
+    <Content Include="amcharts\patterns\white\pattern7.png" />
+    <Content Include="amcharts\patterns\white\pattern8.png" />
+    <Content Include="amcharts\patterns\white\pattern9.png" />
+    <Content Include="amcharts\pie.js" />
+    <Content Include="amcharts\plugins\dataloader\dataloader.js" />
+    <Content Include="amcharts\plugins\dataloader\dataloader.min.js" />
+    <Content Include="amcharts\plugins\dataloader\examples\map_json.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\pie_csv.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\pie_json.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\serial2_json.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\serial_csv.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\serial_json.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\serial_with_dynamic_graphs.html" />
+    <Content Include="amcharts\plugins\dataloader\examples\stock_csv_data_and_events.html" />
+    <Content Include="amcharts\plugins\dataloader\lang\en.js" />
+    <Content Include="amcharts\plugins\dataloader\lang\lt.js" />
+    <Content Include="amcharts\plugins\dataloader\license.txt" />
+    <Content Include="amcharts\plugins\export\examples\export.config.advanced.js" />
+    <Content Include="amcharts\plugins\export\examples\export.config.default.js" />
+    <Content Include="amcharts\plugins\export\examples\funnel.html" />
+    <Content Include="amcharts\plugins\export\examples\gantt.html" />
+    <Content Include="amcharts\plugins\export\examples\gauge.html" />
+    <Content Include="amcharts\plugins\export\examples\images\bicycle.png" />
+    <Content Include="amcharts\plugins\export\examples\images\car.png" />
+    <Content Include="amcharts\plugins\export\examples\images\motorcycle.png" />
+    <Content Include="amcharts\plugins\export\examples\index.html" />
+    <Content Include="amcharts\plugins\export\examples\map.html" />
+    <Content Include="amcharts\plugins\export\examples\pie1.html" />
+    <Content Include="amcharts\plugins\export\examples\pie2.html" />
+    <Content Include="amcharts\plugins\export\examples\pie3.html" />
+    <Content Include="amcharts\plugins\export\examples\pie4.html" />
+    <Content Include="amcharts\plugins\export\examples\radar.html" />
+    <Content Include="amcharts\plugins\export\examples\serial1.html" />
+    <Content Include="amcharts\plugins\export\examples\serial2.html" />
+    <Content Include="amcharts\plugins\export\examples\serial3.html" />
+    <Content Include="amcharts\plugins\export\examples\stock.html" />
+    <Content Include="amcharts\plugins\export\examples\xy.html" />
+    <Content Include="amcharts\plugins\export\export.css" />
+    <Content Include="amcharts\plugins\export\export.js" />
+    <Content Include="amcharts\plugins\export\export.min.js" />
+    <Content Include="amcharts\plugins\export\lang\de.js" />
+    <Content Include="amcharts\plugins\export\lang\en.js" />
+    <Content Include="amcharts\plugins\export\lang\lt.js" />
+    <Content Include="amcharts\plugins\export\libs\blob.js\blob.js" />
+    <Content Include="amcharts\plugins\export\libs\fabric.js\fabric.js" />
+    <Content Include="amcharts\plugins\export\libs\fabric.js\fabric.min.js" />
+    <Content Include="amcharts\plugins\export\libs\FileSaver.js\FileSaver.js" />
+    <Content Include="amcharts\plugins\export\libs\FileSaver.js\FileSaver.min.js" />
+    <Content Include="amcharts\plugins\export\libs\jszip\jszip.js" />
+    <Content Include="amcharts\plugins\export\libs\jszip\jszip.min.js" />
+    <Content Include="amcharts\plugins\export\libs\pdfmake\pdfmake.js" />
+    <Content Include="amcharts\plugins\export\libs\pdfmake\pdfmake.min.js" />
+    <Content Include="amcharts\plugins\export\libs\pdfmake\vfs_fonts.js" />
+    <Content Include="amcharts\plugins\export\libs\xlsx\xlsx.js" />
+    <Content Include="amcharts\plugins\export\libs\xlsx\xlsx.min.js" />
+    <Content Include="amcharts\plugins\responsive\examples\funnel.html" />
+    <Content Include="amcharts\plugins\responsive\examples\gantt.html" />
+    <Content Include="amcharts\plugins\responsive\examples\gauge.html" />
+    <Content Include="amcharts\plugins\responsive\examples\images\bicycle.png" />
+    <Content Include="amcharts\plugins\responsive\examples\images\car.png" />
+    <Content Include="amcharts\plugins\responsive\examples\images\motorcycle.png" />
+    <Content Include="amcharts\plugins\responsive\examples\index.html" />
+    <Content Include="amcharts\plugins\responsive\examples\map.html" />
+    <Content Include="amcharts\plugins\responsive\examples\pie1.html" />
+    <Content Include="amcharts\plugins\responsive\examples\pie2.html" />
+    <Content Include="amcharts\plugins\responsive\examples\pie3.html" />
+    <Content Include="amcharts\plugins\responsive\examples\radar.html" />
+    <Content Include="amcharts\plugins\responsive\examples\serial1.html" />
+    <Content Include="amcharts\plugins\responsive\examples\serial2.html" />
+    <Content Include="amcharts\plugins\responsive\examples\serial3.html" />
+    <Content Include="amcharts\plugins\responsive\examples\stock.html" />
+    <Content Include="amcharts\plugins\responsive\examples\xy.html" />
+    <Content Include="amcharts\plugins\responsive\license.txt" />
+    <Content Include="amcharts\plugins\responsive\responsive.js" />
+    <Content Include="amcharts\plugins\responsive\responsive.min.js" />
+    <Content Include="amcharts\radar.js" />
+    <Content Include="amcharts\serial.js" />
+    <Content Include="amcharts\themes\black.js" />
+    <Content Include="amcharts\themes\chalk.js" />
+    <Content Include="amcharts\themes\dark.js" />
+    <Content Include="amcharts\themes\light.js" />
+    <Content Include="amcharts\themes\patterns.js" />
+    <Content Include="amcharts\thirdPartySoftwareList.txt" />
+    <Content Include="amcharts\xy.js" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\sticky-footer.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Images\firmaH.PNG" />
+    <Content Include="Images\firmaM.PNG" />
+    <Content Include="Images\LOGO RENTAMAQ..jpg" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\datetimepicker\desktop.ini" />
+    <Content Include="Report\Existencias.xsc">
+      <DependentUpon>Existencias.xsd</DependentUpon>
+    </Content>
+    <Content Include="amcharts\plugins\responsive\responsive.min.js.map" />
+    <Content Include="amcharts\plugins\responsive\readme.md" />
+    <Content Include="amcharts\plugins\export\README.md" />
+    <Content Include="amcharts\plugins\export\LICENSE" />
+    <Content Include="amcharts\plugins\export\libs\xlsx\xlsx.min.map" />
+    <Content Include="amcharts\plugins\export\libs\xlsx\LICENSE" />
+    <Content Include="amcharts\plugins\export\libs\pdfmake\pdfmake.min.map" />
+    <Content Include="amcharts\plugins\export\libs\pdfmake\pdfmake.min.js.map" />
+    <Content Include="amcharts\plugins\export\libs\fabric.js\.travis.yml" />
+    <Content Include="amcharts\plugins\dataloader\readme.md" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\TXN.csv" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\serial2.json" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\serial.json" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\serial.csv" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\pie.json" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\pie.csv" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\MSFT_events.csv" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\MSFT.csv" />
+    <Content Include="amcharts\plugins\dataloader\examples\data\map.json" />
+    <Content Include="Content\stock.xls" />
+    <None Include="Properties\PublishProfiles\RentaMaq - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\RentaMaq - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\RentaMaq.pubxml" />
+    <Content Include="Report\cotizacionArriendoEquipo.xsc">
+      <DependentUpon>cotizacionArriendoEquipo.xsd</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\rentamaqpruebas.pubxml" />
+    <Content Include="Report\costosOrdenTrabajoGeneral.xsc">
+      <DependentUpon>costosOrdenTrabajoGeneral.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\costosOrdenTrabajoGeneral.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>costosOrdenTrabajoGeneral.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Report\costosOrdenTrabajoGeneral.xss">
+      <DependentUpon>costosOrdenTrabajoGeneral.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\cotizacionArriendoEquipo.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>cotizacionArriendoEquipo.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\cotizacionArriendoEquipo.xss">
+      <DependentUpon>cotizacionArriendoEquipo.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\cotizacionDeTraslado.xsc">
+      <DependentUpon>cotizacionDeTraslado.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\cotizacionDeTraslado.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>cotizacionDeTraslado.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\cotizacionDeTraslado.xss">
+      <DependentUpon>cotizacionDeTraslado.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\CotizacionServicios.xsc">
+      <DependentUpon>CotizacionServicios.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\CotizacionServicios.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CotizacionServicios.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\CotizacionServicios.xss">
+      <DependentUpon>CotizacionServicios.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\DataSetordenDeTrabajoGeneral.xsc">
+      <DependentUpon>DataSetordenDeTrabajoGeneral.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\DataSetordenDeTrabajoGeneral.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetordenDeTrabajoGeneral.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\DataSetordenDeTrabajoGeneral.xss">
+      <DependentUpon>DataSetordenDeTrabajoGeneral.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\Existencias.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Existencias.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\Existencias.xss">
+      <DependentUpon>Existencias.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\stockCritico.xsc">
+      <DependentUpon>stockCritico.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\ExistenciasProducto.xsc">
+      <DependentUpon>ExistenciasProducto.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\ExistenciasProducto.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ExistenciasProducto.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\ExistenciasProducto.xss">
+      <DependentUpon>ExistenciasProducto.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\solicitudDeCotizacion.xsc">
+      <DependentUpon>solicitudDeCotizacion.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\OrdenCompraGeneral.xsc">
+      <DependentUpon>OrdenCompraGeneral.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\ordenCompraArriendoEquipo.xsc">
+      <DependentUpon>ordenCompraArriendoEquipo.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\IndicadoresClaveProvProd.xsc">
+      <DependentUpon>IndicadoresClaveProvProd.xsd</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\HojaRutaMantenedores.xsc">
+      <DependentUpon>HojaRutaMantenedores.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\HojaRutaMantenedores.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>HojaRutaMantenedores.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\HojaRutaMantenedores.xss">
+      <DependentUpon>HojaRutaMantenedores.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\IndicadoresClaveProvProd.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>IndicadoresClaveProvProd.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Report\IndicadoresClaveProvProd.xss">
+      <DependentUpon>IndicadoresClaveProvProd.xsd</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\IndicadoresMantencion.xsc">
+      <DependentUpon>IndicadoresMantencion.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\IndicadoresMantencion.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>IndicadoresMantencion.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\IndicadoresMantencion.xss">
+      <DependentUpon>IndicadoresMantencion.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\ordenCompraArriendoEquipo.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ordenCompraArriendoEquipo.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\ordenCompraArriendoEquipo.xss">
+      <DependentUpon>ordenCompraArriendoEquipo.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\OrdenCompraGeneral.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>OrdenCompraGeneral.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\OrdenCompraGeneral.xss">
+      <DependentUpon>OrdenCompraGeneral.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\ordenPedidoCombustible.xsc">
+      <DependentUpon>ordenPedidoCombustible.xsd</DependentUpon>
+    </Content>
+    <Content Include="Report\OrdenDePedido.xsc">
+      <DependentUpon>OrdenDePedido.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\OrdenDePedido.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>OrdenDePedido.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\OrdenDePedido.xss">
+      <DependentUpon>OrdenDePedido.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\ordenPedidoCombustible.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ordenPedidoCombustible.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\ordenPedidoCombustible.xss">
+      <DependentUpon>ordenPedidoCombustible.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\solicitudDeCotizacion.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>solicitudDeCotizacion.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\solicitudDeCotizacion.xss">
+      <DependentUpon>solicitudDeCotizacion.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\stockCritico.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>stockCritico.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\stockCritico.xss">
+      <DependentUpon>stockCritico.xsd</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\customJquery.js" />
+    <Content Include="Scripts\datetimepicker\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\datetimepicker\moment.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqueryMaestro.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\multiSelectIcon.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Maestro\Create.cshtml" />
+    <Content Include="Views\Maestro\Delete.cshtml" />
+    <Content Include="Views\Maestro\Details.cshtml" />
+    <Content Include="Views\Maestro\Edit.cshtml" />
+    <Content Include="Views\Maestro\Index.cshtml" />
+    <Content Include="Views\equipos\Create.cshtml" />
+    <Content Include="Views\equipos\Delete.cshtml" />
+    <Content Include="Views\equipos\Details.cshtml" />
+    <Content Include="Views\equipos\Edit.cshtml" />
+    <Content Include="Views\equipos\Index.cshtml" />
+    <Content Include="Views\Modelos\Create.cshtml" />
+    <Content Include="Views\Modelos\Delete.cshtml" />
+    <Content Include="Views\Modelos\Details.cshtml" />
+    <Content Include="Views\Modelos\Edit.cshtml" />
+    <Content Include="Views\Modelos\Index.cshtml" />
+    <Content Include="Views\Marcas\Create.cshtml" />
+    <Content Include="Views\Marcas\Delete.cshtml" />
+    <Content Include="Views\Marcas\Details.cshtml" />
+    <Content Include="Views\Marcas\Edit.cshtml" />
+    <Content Include="Views\Marcas\Index.cshtml" />
+    <Content Include="Views\Producto\Create.cshtml" />
+    <Content Include="Views\Producto\Delete.cshtml" />
+    <Content Include="Views\Producto\Details.cshtml" />
+    <Content Include="Views\Producto\Edit.cshtml" />
+    <Content Include="Views\Producto\Index.cshtml" />
+    <Content Include="Views\Proveedor\Create.cshtml" />
+    <Content Include="Views\Proveedor\Delete.cshtml" />
+    <Content Include="Views\Proveedor\Details.cshtml" />
+    <Content Include="Views\Proveedor\Edit.cshtml" />
+    <Content Include="Views\Proveedor\Index.cshtml" />
+    <Content Include="Views\reportCombustible\Create.cshtml" />
+    <Content Include="Views\reportCombustible\Delete.cshtml" />
+    <Content Include="Views\reportCombustible\Details.cshtml" />
+    <Content Include="Views\reportCombustible\Edit.cshtml" />
+    <Content Include="Views\reportCombustible\Index.cshtml" />
+    <Content Include="Views\Producto\reporteExistencias.cshtml" />
+    <Content Include="Views\Producto\productosStockCritico.cshtml" />
+    <Content Include="Views\indicadorPorEquipo\Index.cshtml" />
+    <Content Include="Views\indicadorPorEquipo\Detalle.cshtml" />
+    <Content Include="Views\Producto\reporteExistenciasIndividual.cshtml" />
+    <Content Include="Views\solicitudDeCotizacion\Create.cshtml" />
+    <Content Include="Views\solicitudDeCotizacion\Delete.cshtml" />
+    <Content Include="Views\solicitudDeCotizacion\Details.cshtml" />
+    <Content Include="Views\solicitudDeCotizacion\Edit.cshtml" />
+    <Content Include="Views\solicitudDeCotizacion\Index.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\Create.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\Delete.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\Details.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\Edit.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\Index.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\Create.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\Delete.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\Details.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\Edit.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\Index.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\Cancelar.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\RegistrarEntrega.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\registroIngresoOrdenCompraArriendoEquipo.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\ActualizarEntrega.cshtml" />
+    <Content Include="Views\Proveedor\IndicadoresClave.cshtml" />
+    <Content Include="Views\Proveedor\indicadoresClaveProveedor.cshtml" />
+    <Content Include="Views\Producto\indicadoresClave.cshtml" />
+    <Content Include="Views\Producto\indicadoresClaveProducto.cshtml" />
+    <Content Include="Views\ordenDeCompraArriendoEquipo\Cancelar.cshtml" />
+    <Content Include="Views\Maestro\listaCorreosStockCritico.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\avisosCorreo.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\AgregarCorreo.cshtml" />
+    <Content Include="Views\pedidos\Create.cshtml" />
+    <Content Include="Views\pedidos\Delete.cshtml" />
+    <Content Include="Views\pedidos\Details.cshtml" />
+    <Content Include="Views\pedidos\Edit.cshtml" />
+    <Content Include="Views\pedidos\Index.cshtml" />
+    <Content Include="Views\OrdenDeCompraGeneral\EliminarCorreo.cshtml" />
+    <Content Include="Views\CotizacionDeTraslado\Create.cshtml" />
+    <Content Include="Views\CotizacionDeTraslado\Delete.cshtml" />
+    <Content Include="Views\CotizacionDeTraslado\Details.cshtml" />
+    <Content Include="Views\CotizacionDeTraslado\Edit.cshtml" />
+    <Content Include="Views\CotizacionDeTraslado\Index.cshtml" />
+    <Content Include="Views\pedidos\Autorizar.cshtml" />
+    <Content Include="Views\Usuarios\Create.cshtml" />
+    <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
+    <Content Include="Views\Usuarios\Edit.cshtml" />
+    <Content Include="Views\Usuarios\gestionarPermisos.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Usuarios\ModificarContraseña.cshtml" />
+    <Content Include="Views\pedidos\OrdenDeCompra.cshtml" />
+    <Content Include="Views\pedidos\Completada.cshtml" />
+    <Content Include="Views\Usuarios\Login.cshtml" />
+    <Content Include="Views\Usuarios\ModificarMiContraseña.cshtml" />
+    <Content Include="Views\OrdenDePedido\Create.cshtml" />
+    <Content Include="Views\OrdenDePedido\Delete.cshtml" />
+    <Content Include="Views\OrdenDePedido\Details.cshtml" />
+    <Content Include="Views\OrdenDePedido\Edit.cshtml" />
+    <Content Include="Views\OrdenDePedido\Index.cshtml" />
+    <Content Include="Views\cotizacionArriendoEquipos\Create.cshtml" />
+    <Content Include="Views\cotizacionArriendoEquipos\Delete.cshtml" />
+    <Content Include="Views\cotizacionArriendoEquipos\Details.cshtml" />
+    <Content Include="Views\cotizacionArriendoEquipos\Edit.cshtml" />
+    <Content Include="Views\cotizacionArriendoEquipos\Index.cshtml" />
+    <Content Include="Views\ordenPedidoCombustible\Create.cshtml" />
+    <Content Include="Views\ordenPedidoCombustible\Delete.cshtml" />
+    <Content Include="Views\ordenPedidoCombustible\Details.cshtml" />
+    <Content Include="Views\ordenPedidoCombustible\Edit.cshtml" />
+    <Content Include="Views\ordenPedidoCombustible\Index.cshtml" />
+    <Content Include="Views\cotizacionServicios\Create.cshtml" />
+    <Content Include="Views\cotizacionServicios\Delete.cshtml" />
+    <Content Include="Views\cotizacionServicios\Details.cshtml" />
+    <Content Include="Views\cotizacionServicios\Edit.cshtml" />
+    <Content Include="Views\cotizacionServicios\Index.cshtml" />
+    <Content Include="Views\pedidos\Cotizacion.cshtml" />
+    <Content Include="Views\Bodegas\Create.cshtml" />
+    <Content Include="Views\Bodegas\Delete.cshtml" />
+    <Content Include="Views\Bodegas\Details.cshtml" />
+    <Content Include="Views\Bodegas\Edit.cshtml" />
+    <Content Include="Views\Bodegas\Index.cshtml" />
+    <Content Include="Views\registrokmhm\Create.cshtml" />
+    <Content Include="Views\registrokmhm\Delete.cshtml" />
+    <Content Include="Views\registrokmhm\Edit.cshtml" />
+    <Content Include="Views\registrokmhm\Index.cshtml" />
+    <Content Include="Views\mantencionPreventiva\Create.cshtml" />
+    <Content Include="Views\mantencionPreventiva\Delete.cshtml" />
+    <Content Include="Views\mantencionPreventiva\Details.cshtml" />
+    <Content Include="Views\mantencionPreventiva\Edit.cshtml" />
+    <Content Include="Views\mantencionPreventiva\Index.cshtml" />
+    <Content Include="Views\mantencionPreventiva\Pendientes.cshtml" />
+    <Content Include="Views\equipos\equiposVencidas.cshtml" />
+    <Content Include="Views\hojaRutaMantenedores\Create.cshtml" />
+    <Content Include="Views\hojaRutaMantenedores\Delete.cshtml" />
+    <Content Include="Views\hojaRutaMantenedores\Details.cshtml" />
+    <Content Include="Views\hojaRutaMantenedores\Edit.cshtml" />
+    <Content Include="Views\hojaRutaMantenedores\Index.cshtml" />
+    <Content Include="Views\tipoEquipo\Create.cshtml" />
+    <Content Include="Views\tipoEquipo\Delete.cshtml" />
+    <Content Include="Views\tipoEquipo\Details.cshtml" />
+    <Content Include="Views\tipoEquipo\Edit.cshtml" />
+    <Content Include="Views\tipoEquipo\Index.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\Create.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\Delete.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\Details.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\Edit.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\Index.cshtml" />
+    <Content Include="Views\alertasMantenimiento\Create.cshtml" />
+    <Content Include="Views\alertasMantenimiento\Delete.cshtml" />
+    <Content Include="Views\alertasMantenimiento\Edit.cshtml" />
+    <Content Include="Views\alertasMantenimiento\Index.cshtml" />
+    <Content Include="Views\chequeoPreventivo\Create.cshtml" />
+    <Content Include="Views\chequeoPreventivo\Delete.cshtml" />
+    <Content Include="Views\chequeoPreventivo\Details.cshtml" />
+    <Content Include="Views\chequeoPreventivo\Edit.cshtml" />
+    <Content Include="Views\chequeoPreventivo\Index.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\trabajosPendientes.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\marcarComoRealizado.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\Costos.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\CostosDetalle.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\CostosPorEquipo.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\DetalleCostosPorEquipo.cshtml" />
+    <Content Include="Views\ordenDeTrabajoGeneral\generarOTTrabajoPendiente.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\Indicadores.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\Detalle.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\DetalleDisponibilidad.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\DetalleUtilizacion.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\DetalleConfiabilidad.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\DetalleTiempoMedioOperacionAntesFalla.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\DetalleTiempoEntreFallas.cshtml" />
+    <Content Include="Views\indicadoresDeMantencion\DetalleTiempoMedioParaReparar.cshtml" />
+    <Content Include="Views\equipos\programaMantencion.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Report\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\DetalleExistencias.rdlc" />
+    <Content Include="Report\Existencias.rdlc" />
+    <Content Include="Report\reporteStockCritico.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\reporteSolicitudDeCotizacion.rdlc">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\IndicadoresTiempoEquiposProveedorIndividual.rdlc" />
+    <Content Include="Report\CotizacionDeTraslado.rdlc" />
+    <Content Include="Report\IndicadoresClaveProductos.rdlc" />
+    <Content Include="Report\IndicadoresClaveProveedores.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\IndicadoresMontosProveedorIndividual.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\IndicadoresTiempoProveedorIndividual.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\IndicadoresProductoIndividual.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\OrdenCompraGeneral.rdlc" />
+    <Content Include="Report\reporteOrdenCompraArriendoEquipo.rdlc" />
+    <Content Include="Report\reporteCotizacionArriendoEquipo.rdlc" />
+    <Content Include="Report\OrdenDePedido.rdlc" />
+    <Content Include="Report\CotizacionServicios.rdlc" />
+    <Content Include="Report\reporteOrdenPedidoCombustible.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\OrdenCompraGeneralTaltal.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\hojaRutaMantenedores.rdlc" />
+    <Content Include="Report\hojaRutaMantenedoresPrevia.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\ordenDeTrabajoGeneral.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\IndicadorOTEquipo.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\IndicadorOTEquipoDetalle.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\indicadorDetalleOT.rdlc" />
+    <Content Include="Report\indicadoresEquipoIndividual.rdlc" />
+    <EmbeddedResource Include="Report\indicadorOT.rdlc" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49465</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49465/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

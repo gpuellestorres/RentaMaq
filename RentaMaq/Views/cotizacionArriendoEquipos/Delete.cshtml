@@ -1,0 +1,90 @@
+﻿@model RentaMaq.Models.cotizacionArriendoEquipo
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Esta seguro que quiere eliminar esta cotizacion de Arriendo de Equipo?</h3>
+<div>
+    <h4>Cotizacion de Arriendo de Equipo @Model.tipoCotizacion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Numero de Cotización
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroCotizacionArriendo)
+        </dd>       
+
+        <dt>
+            Referencia
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.referencia)
+        </dd>
+
+        <dt>
+            Fecha
+        </dt>
+
+        <dd>
+            @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha)
+        </dd>
+
+        
+        <dt>
+            Encabezado
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.encabezado)
+        </dd>
+
+        <dt>
+            Incluye
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.incluye)
+        </dd>
+
+        <dt>
+            No incluye
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.noIncluye)
+        </dd>
+
+        <dt>
+            Tiempo de Arriendo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tiempoArriendo)
+        </dd>
+
+        <dt>
+            Faena
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.faena)
+        </dd>
+        
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver Atras", "Index")
+        </div>
+    }
+</div>

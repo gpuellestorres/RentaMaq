@@ -1,0 +1,179 @@
+﻿@model RentaMaq.Models.equipos
+
+@{
+    ViewBag.Title = "Agregar Equipo";
+}
+
+<h2>Agregar</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    if (((List<RentaMaq.Models.Modelo>)ViewBag.Modelos).Count > 0)
+    {
+        <div class="form-horizontal">
+            <h4>Equipo</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @{
+                List<RentaMaq.Models.tipoEquipo> TiposEquipo = new RentaMaq.DAL.Context().tipoEquipoes.ToList();
+            }
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.tipoEquipo, htmlAttributes: new { @class = "control-label col-md-2", @style="text-align:left !important;" })
+                <div class="col-md-10">
+                    <select id="tipoEquipo" name="tipoEquipo" class="form-control" required>
+                        @foreach (RentaMaq.Models.tipoEquipo tipoEquipo in TiposEquipo)
+                        {
+                            <option value="@tipoEquipo.tipoEquipoID">@tipoEquipo.nombre</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.patenteEquipo, htmlAttributes: new { @class = "control-label col-md-2", @style="text-align:left !important;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.patenteEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.patenteEquipo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ModeloID, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-align:left !important;" })
+                <div class="col-md-10">
+                    <select name="ModeloID" id="ModeloID" class="form-control">
+                        @foreach (RentaMaq.Models.Modelo modelo in (List<RentaMaq.Models.Modelo>)ViewBag.Modelos)
+                        {
+                            <option value="@modelo.ModeloID">@modelo.nombreModelo - @modelo.MarcaID.NombreMarca</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.año, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-align:left !important;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.año, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.año, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.numeroAFI, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-align:left !important;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.numeroAFI, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.numeroAFI, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.areaTrabajo, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-align:left !important;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.areaTrabajo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.areaTrabajo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-align:left !important;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" style="text-align:left !important;">Inicio Certificacion</label>
+               
+                <div class="col-md-10">
+                    <input class="form-control fecha" name="inicioCertificacion" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text"> 
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" style="text-align:left !important;">Termino Certificacion</label>                
+                <div class="col-md-10">
+                    <input class="form-control fecha" name="terminoCertificacion" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" style="text-align:left !important;">Revision Tecnica</label>
+                <div class="col-md-10">
+                    <input class="form-control fecha" name="revisionTecnica" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text"> 
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" style="text-align:left !important;">Permiso Circulacion</label>
+                <div class="col-md-10">
+                    <input class="form-control fecha" name="permisoCirculacion" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" style="text-align:left !important;">Seguro</label>
+                <div class="col-md-10">
+                    <input class="form-control fecha" name="seguro" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" style="text-align:left !important;">Proveedor</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="text" name="proveedor" />
+                </div>
+            </div>            
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Agregar" class="btn btn-success btn-lg btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <br />
+        <div class="col-md-8">
+            <h3>No posee todavía ningún modelo de equipos en el sistema. <br>Por favor, agregue un modelo antes de agregar un equipo</h3>
+        </div>
+        <br />
+    <div class="clearfix"></div>
+    <br />
+
+    }
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")    
+    <script>
+        $(document).ready(function () {           
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });                       
+        });        
+    </script>
+
+
+}
+
+

@@ -1,0 +1,113 @@
+﻿@model RentaMaq.Models.Maestro
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Maestro</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt style="text-align: left">
+            Fecha
+        </dt>
+
+        <dd>
+            @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha)
+        </dd>
+
+        <dt style="text-align: left">
+            Codigo Producto
+        </dt>
+
+        <dd>
+            @(new RentaMaq.DAL.Context().Productos.Find(int.Parse(Model.ProductoID)).numeroDeParte)
+        </dd>
+
+        <dt style="text-align: left">
+            Cantidad Entrante
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidadEntrante)
+        </dd>
+
+        <dt style="text-align: left">
+            Cantidad Saliente
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidadSaliente)
+        </dd>
+
+        <dt style="text-align: left">
+            Factura o Guia de Despacho
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.facturaDespacho)
+        </dd>
+
+        <dt style="text-align: left">
+            Proveedor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proveedor)
+        </dd>
+
+        <dt style="text-align: left">
+            Valor Unitario
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorUnitario)
+        </dd>
+
+        <dt style="text-align: left">
+            Valor Total
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorTotal)
+        </dd>
+
+        <dt style="text-align: left">
+            Afi.Equipo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.afiEquipo)
+        </dd>
+
+        <dt style="text-align: left">
+            Entregado A:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.entragadoA)
+        </dd>
+
+        <dt style="text-align: left">
+            Motivo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.motivo)
+        </dd>
+
+        <dt style="text-align: left">
+            N° Formulario
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroFormulario)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Volver Atras", "Index")
+</p>

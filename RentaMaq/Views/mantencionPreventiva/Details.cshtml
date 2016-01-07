@@ -1,0 +1,73 @@
+﻿@model RentaMaq.Models.mantencionPreventiva
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Mantención Preventiva</h2>
+
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.equipoID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.equipoID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometroActual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometroActual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometrajeActual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometrajeActual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometroProximaMantencion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometroProximaMantencion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometrajeProximaMantencion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometrajeProximaMantencion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nota)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nota)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Volver", "Index")
+</p>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="HojaRutaMantenedores" targetNamespace="http://tempuri.org/HojaRutaMantenedores.xsd" xmlns:mstns="http://tempuri.org/HojaRutaMantenedores.xsd" xmlns="http://tempuri.org/HojaRutaMantenedores.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="HojaRutaMantenedores" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="HojaRutaMantenedores" msprop:Generator_UserDSName="HojaRutaMantenedores">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="HojaRutaMantenedores" msprop:Generator_TableClassName="HojaRutaMantenedoresDataTable" msprop:Generator_TableVarName="tableHojaRutaMantenedores" msprop:Generator_TablePropName="_HojaRutaMantenedores" msprop:Generator_RowDeletingName="HojaRutaMantenedoresRowDeleting" msprop:Generator_RowChangingName="HojaRutaMantenedoresRowChanging" msprop:Generator_RowEvHandlerName="HojaRutaMantenedoresRowChangeEventHandler" msprop:Generator_RowDeletedName="HojaRutaMantenedoresRowDeleted" msprop:Generator_UserTableName="HojaRutaMantenedores" msprop:Generator_RowChangedName="HojaRutaMantenedoresRowChanged" msprop:Generator_RowEvArgName="HojaRutaMantenedoresRowChangeEvent" msprop:Generator_RowClassName="HojaRutaMantenedoresRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="equipo" msprop:Generator_ColumnVarNameInTable="columnequipo" msprop:Generator_ColumnPropNameInRow="equipo" msprop:Generator_ColumnPropNameInTable="equipoColumn" msprop:Generator_UserColumnName="equipo" type="xs:string" minOccurs="0" />
+              <xs:element name="horometroAnterior" msprop:Generator_ColumnVarNameInTable="columnhorometroAnterior" msprop:Generator_ColumnPropNameInRow="horometroAnterior" msprop:Generator_ColumnPropNameInTable="horometroAnteriorColumn" msprop:Generator_UserColumnName="horometroAnterior" type="xs:string" minOccurs="0" />
+              <xs:element name="numero" msprop:Generator_ColumnVarNameInTable="columnnumero" msprop:Generator_ColumnPropNameInRow="numero" msprop:Generator_ColumnPropNameInTable="numeroColumn" msprop:Generator_UserColumnName="numero" type="xs:string" minOccurs="0" />
+              <xs:element name="mantenedores" msprop:Generator_ColumnVarNameInTable="columnmantenedores" msprop:Generator_ColumnPropNameInRow="mantenedores" msprop:Generator_ColumnPropNameInTable="mantenedoresColumn" msprop:Generator_UserColumnName="mantenedores" type="xs:string" minOccurs="0" />
+              <xs:element name="lugar" msprop:Generator_ColumnVarNameInTable="columnlugar" msprop:Generator_ColumnPropNameInRow="lugar" msprop:Generator_ColumnPropNameInTable="lugarColumn" msprop:Generator_UserColumnName="lugar" type="xs:string" minOccurs="0" />
+              <xs:element name="horometro" msprop:Generator_ColumnVarNameInTable="columnhorometro" msprop:Generator_ColumnPropNameInRow="horometro" msprop:Generator_ColumnPropNameInTable="horometroColumn" msprop:Generator_UserColumnName="horometro" type="xs:string" minOccurs="0" />
+              <xs:element name="trabajoRealizado" msprop:Generator_ColumnVarNameInTable="columntrabajoRealizado" msprop:Generator_ColumnPropNameInRow="trabajoRealizado" msprop:Generator_ColumnPropNameInTable="trabajoRealizadoColumn" msprop:Generator_UserColumnName="trabajoRealizado" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

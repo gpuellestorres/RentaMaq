@@ -1,0 +1,46 @@
+﻿@model IEnumerable<RentaMaq.Models.Modelo>
+
+@{
+    ViewBag.Title = "Índice Modelos";
+}
+
+<h2>Módelos</h2>
+
+<p>
+    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(11, int.Parse(Session["ID"].ToString())))
+    {
+        @Html.ActionLink("Crear Nuevo", "Create")
+    }
+    
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MarcaID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreModelo)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MarcaID.NombreMarca)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreModelo)
+        </td>
+        <td>
+            @Html.ActionLink("Detalles", "Details", new { id = item.ModeloID }) |
+            @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(11, int.Parse(Session["ID"].ToString())))
+            {
+                @Html.ActionLink("Editar", "Edit", new { id=item.ModeloID }) <text>|</text>
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.ModeloID })
+            }
+            
+        </td>
+    </tr>
+}
+
+</table>

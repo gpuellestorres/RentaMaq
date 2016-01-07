@@ -1,0 +1,69 @@
+﻿@model RentaMaq.Models.Modelo
+
+@{
+    ViewBag.Title = "Agregar Modelo";
+}
+
+<h2>Agregar</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    if (((List<RentaMaq.Models.Marca>)ViewBag.Marcas).Count > 0)
+    {
+        
+    <div class="form-horizontal">
+        <h4>Modelo</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.MarcaID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="MarcaID" id="MarcaID" class="form-control">
+                    @foreach (RentaMaq.Models.Marca Marca in (List<RentaMaq.Models.Marca>)ViewBag.Marcas)
+                    {
+                        <option value="@Marca.MarcaID">@Marca.NombreMarca</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.nombreModelo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nombreModelo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombreModelo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Agregar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    }
+    else
+    {
+        <br />
+        <div class="col-md-8">
+            <h3>No posee todavía ninguna marca de equipos en el sistema. <br>Por favor, agregue una marca antes de agregar un modelo</h3>
+        </div>
+        <br />
+        <div class="clearfix"></div>
+        <br />
+
+    }
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

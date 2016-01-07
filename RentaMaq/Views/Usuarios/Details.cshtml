@@ -1,0 +1,42 @@
+﻿@model RentaMaq.Models.Usuario
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles de Usuario</h2>
+
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombreUsuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombreUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nombreCompleto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombreCompleto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.correoElectronico)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.correoElectronico)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.usuarioID }) |
+    @Html.ActionLink("Volver", "Index")
+</p>

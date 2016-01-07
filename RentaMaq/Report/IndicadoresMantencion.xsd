@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="IndicadoresMantencion" targetNamespace="http://tempuri.org/IndicadoresMantencion.xsd" xmlns:mstns="http://tempuri.org/IndicadoresMantencion.xsd" xmlns="http://tempuri.org/IndicadoresMantencion.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="IndicadoresMantencion" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="IndicadoresMantencion" msprop:Generator_UserDSName="IndicadoresMantencion">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="IndicadoresMantencion" msprop:Generator_TableClassName="IndicadoresMantencionDataTable" msprop:Generator_TableVarName="tableIndicadoresMantencion" msprop:Generator_TablePropName="_IndicadoresMantencion" msprop:Generator_RowDeletingName="IndicadoresMantencionRowDeleting" msprop:Generator_RowChangingName="IndicadoresMantencionRowChanging" msprop:Generator_RowEvHandlerName="IndicadoresMantencionRowChangeEventHandler" msprop:Generator_RowDeletedName="IndicadoresMantencionRowDeleted" msprop:Generator_UserTableName="IndicadoresMantencion" msprop:Generator_RowChangedName="IndicadoresMantencionRowChanged" msprop:Generator_RowEvArgName="IndicadoresMantencionRowChangeEvent" msprop:Generator_RowClassName="IndicadoresMantencionRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="fechaInicio" msprop:Generator_ColumnVarNameInTable="columnfechaInicio" msprop:Generator_ColumnPropNameInRow="fechaInicio" msprop:Generator_ColumnPropNameInTable="fechaInicioColumn" msprop:Generator_UserColumnName="fechaInicio" type="xs:string" minOccurs="0" />
+              <xs:element name="fechaTermino" msprop:Generator_ColumnVarNameInTable="columnfechaTermino" msprop:Generator_ColumnPropNameInRow="fechaTermino" msprop:Generator_ColumnPropNameInTable="fechaTerminoColumn" msprop:Generator_UserColumnName="fechaTermino" type="xs:string" minOccurs="0" />
+              <xs:element name="equipo" msprop:Generator_ColumnVarNameInTable="columnequipo" msprop:Generator_ColumnPropNameInRow="equipo" msprop:Generator_ColumnPropNameInTable="equipoColumn" msprop:Generator_UserColumnName="equipo" type="xs:string" minOccurs="0" />
+              <xs:element name="disponibilidad" msprop:Generator_ColumnVarNameInTable="columndisponibilidad" msprop:Generator_ColumnPropNameInRow="disponibilidad" msprop:Generator_ColumnPropNameInTable="disponibilidadColumn" msprop:Generator_UserColumnName="disponibilidad" type="xs:string" minOccurs="0" />
+              <xs:element name="confiabilidad" msprop:Generator_ColumnVarNameInTable="columnconfiabilidad" msprop:Generator_ColumnPropNameInRow="confiabilidad" msprop:Generator_ColumnPropNameInTable="confiabilidadColumn" msprop:Generator_UserColumnName="confiabilidad" type="xs:string" minOccurs="0" />
+              <xs:element name="utilizacion" msprop:Generator_ColumnVarNameInTable="columnutilizacion" msprop:Generator_ColumnPropNameInRow="utilizacion" msprop:Generator_ColumnPropNameInTable="utilizacionColumn" msprop:Generator_UserColumnName="utilizacion" type="xs:string" minOccurs="0" />
+              <xs:element name="tiempoMedioEntreFallas" msprop:Generator_ColumnVarNameInTable="columntiempoMedioEntreFallas" msprop:Generator_ColumnPropNameInRow="tiempoMedioEntreFallas" msprop:Generator_ColumnPropNameInTable="tiempoMedioEntreFallasColumn" msprop:Generator_UserColumnName="tiempoMedioEntreFallas" type="xs:string" minOccurs="0" />
+              <xs:element name="tiempoMedioParaReparar" msprop:Generator_ColumnVarNameInTable="columntiempoMedioParaReparar" msprop:Generator_ColumnPropNameInRow="tiempoMedioParaReparar" msprop:Generator_ColumnPropNameInTable="tiempoMedioParaRepararColumn" msprop:Generator_UserColumnName="tiempoMedioParaReparar" type="xs:string" minOccurs="0" />
+              <xs:element name="tiempoMedioOperacionAntesDeFalla" msprop:Generator_ColumnVarNameInTable="columntiempoMedioOperacionAntesDeFalla" msprop:Generator_ColumnPropNameInRow="tiempoMedioOperacionAntesDeFalla" msprop:Generator_ColumnPropNameInTable="tiempoMedioOperacionAntesDeFallaColumn" msprop:Generator_UserColumnName="tiempoMedioOperacionAntesDeFalla" type="xs:string" minOccurs="0" />
+              <xs:element name="periodo" msprop:Generator_ColumnVarNameInTable="columnperiodo" msprop:Generator_ColumnPropNameInRow="periodo" msprop:Generator_ColumnPropNameInTable="periodoColumn" msprop:Generator_UserColumnName="periodo" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

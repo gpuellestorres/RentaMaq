@@ -1,0 +1,83 @@
+﻿@model RentaMaq.Models.Proveedor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Proveedor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nombre Proveedor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombreProveedor)
+        </dd>
+
+        <dt>
+            Requerimiento
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requerimiento)
+        </dd>
+
+        <dt>
+           Persona Contacto 1
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personaContacto1)
+        </dd>
+
+        <dt>
+            Persona Contacto 2
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personaContacto2)
+        </dd>
+
+        <dt>
+            Telefonos
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.telefonos)
+        </dd>
+
+        <dt>
+            Correo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.correo)
+        </dd>
+
+
+        <dt>
+            Rut
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rut)
+        </dd>
+
+        <dt>
+            Domicilio
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.domicilio)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ProveedorID }) |
+    @Html.ActionLink("Volver a la lista", "Index")
+</p>

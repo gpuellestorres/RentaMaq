@@ -1,0 +1,367 @@
+﻿@model List<RentaMaq.Models.reportCombustible>
+
+@{
+    ViewBag.Title = "Índice de Reports";
+    bool tienePermiso = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(2, int.Parse(Session["ID"].ToString())))
+    {
+        tienePermiso = true;
+    }
+}
+
+<div class="col-md-4">
+    <h3>Reports de Combustible</h3>
+</div>
+
+@{
+    string FECHA1 = "", FECHA2 = "";
+
+    DateTime Inicio = (DateTime)ViewBag.Inicio;
+    DateTime Termino = (DateTime)ViewBag.Termino;
+    string EquipoID = (string)ViewBag.EquipoID;
+    
+    FECHA1 = Inicio.Day + "/" + Inicio.Month + "/" + Inicio.Year;
+    FECHA2 = Termino.Day + "/" + Termino.Month + "/" + Termino.Year;
+
+    System.Collections.Hashtable tablaEquipos = new System.Collections.Hashtable();
+    
+    foreach (RentaMaq.Models.reportCombustible reporte in Model) 
+    {
+        if (!tablaEquipos.ContainsKey(reporte.equiposID.ID)) 
+        {
+            tablaEquipos.Add(reporte.equiposID.ID, reporte.equiposID);
+        }
+    }
+}
+
+<div class="col-md-8">
+    <br />
+    <div class="col-md-12">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-3">
+        <select id="equipoID" name="equipoID" class="form-control equipos">
+            <option value="todos">Todos</option>
+            @foreach (RentaMaq.Models.equipos Equipo in tablaEquipos.Values)
+            {
+                if (EquipoID != null && EquipoID.Equals(Equipo.ID.ToString()))
+                {
+                    <option value="@Equipo.ID" selected>@Equipo.numeroAFI - @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca</option>
+                }
+                else
+                {
+                    <option value="@Equipo.ID">@Equipo.numeroAFI - @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca</option>
+                }
+            }
+        </select>
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-3">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+<br />
+@if (tienePermiso)
+{
+    <p>
+        @Html.ActionLink("Crear Nuevo", "Create")
+    </p>
+}
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Equipo
+            </th>
+            <th>
+                Número de Report
+            </th>
+            <th>
+                Usuario
+            </th>
+            <th>
+                Horómetro
+            </th>
+            <th>
+                Kilometraje
+            </th>
+            <th>
+                Fecha/Hora
+            </th>
+            <th>
+                Litros
+            </th>
+            <th>
+                Rendimiento Lts/Hr
+            </th>
+            <th>
+                Rendimiento Kms/Lt
+            </th>
+            <th></th>
+        </tr>
+
+        @{
+            string itemAnterior = "";
+            bool color=false;
+          }
+        @foreach (var item in Model)
+        {
+            if (itemAnterior.Equals("") || !itemAnterior.Equals(item.equiposID.ID.ToString()))
+            {
+                color = !color;
+            }
+            RentaMaq.Models.reporteConsumoCombustible Report = new RentaMaq.Models.reporteConsumoCombustible(item);
+            <tr @if(color){
+                     <text>
+                        style="background-color:#FAFAFA !important"
+                    </text>
+            }>
+
+                @if (itemAnterior.Equals("") || !itemAnterior.Equals(item.equiposID.ID.ToString()))
+                {
+                    
+                    itemAnterior = item.equiposID.ID.ToString();
+                    <text>
+                        <td class="text-info">
+                            @item.equiposID.numeroAFI - @item.equiposID.ModeloID.nombreModelo - @item.equiposID.ModeloID.MarcaID.NombreMarca
+                        </td>
+                    </text>
+                }
+                else
+                {
+                    <td>
+                        @item.equiposID.numeroAFI - @item.equiposID.ModeloID.nombreModelo - @item.equiposID.ModeloID.MarcaID.NombreMarca
+                    </td>
+                }
+                @if (itemAnterior.Equals(""))
+                {
+                    itemAnterior = item.equiposID.ID.ToString();
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.numeroReport)
+                </td>
+
+
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.usuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.horometro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.kilometraje)
+                </td>
+                @{
+                string fecha = item.fechaHora.Year + "";
+                string mes = item.fechaHora.Month + "";
+                if (mes.Length == 1) { mes = "0" + mes; }
+                string dia = item.fechaHora.Day + "";
+                if (dia.Length == 1) { dia = "0" + dia; }
+
+                string hora = item.fechaHora.Hour + "";
+                if (hora.Length == 1) { hora = "0" + hora; }
+                string minuto = item.fechaHora.Minute + "";
+                if (minuto.Length == 1) { minuto = "0" + minuto; }
+
+
+                fecha += "/" + mes + "/" + dia + " " + hora + ":" + minuto;
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.litros)
+                </td>
+                @if (Report.rendimientoLitrosHora != 0)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => Report.rendimientoLitrosHora)
+                    </td>
+                }
+                else
+                {
+                    <td> - </td>
+                }
+                @if (Report.rendimientoKilometrosLitro != 0)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => Report.rendimientoKilometrosLitro)
+                    </td>
+                }
+                else
+                {
+                    <td> - </td>
+                }
+                <td>
+                    @if (tienePermiso)
+                    {
+                        <text>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Detalles", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.ID })
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            @Html.ActionLink("Detalles", "Details", new { id = item.ID })
+                        </text>
+                    }
+                </td>
+            </tr>
+        }
+
+</table>
+</div>
+
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+                $(".equipos").select2();
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+                    var equipoID = $("#equipoID").val();
+
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/reportCombustible/Index?inicio=" + fecha1 + "&termino=" + fecha2 + "&equipoID=" + equipoID;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+
+
+<script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+<script type="text/javascript" src="~/amcharts/serial.js"></script>
+<script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+<script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+
+    @if (ViewBag.EquipoID != null && ViewBag.EquipoID!= "todos")
+    { 
+
+        <!-- amCharts javascript code -->
+    <script type="text/javascript">
+        AmCharts.makeChart("chartdiv",
+            {
+                "type": "serial",
+                "categoryField": "category",
+                "startDuration": 1,
+                "theme": "light",
+                "categoryAxis": {
+                    "gridPosition": "start"
+                },
+                "trendLines": [],
+                "graphs": [
+                    {
+                        "balloonText": "Rendimiento de Equipo en Report N° [[category]]: [[value]]",
+                        "fillAlphas": 1,
+                        "id": "AmGraph-1",
+                        "title": "Rendimiento de Equipo",
+                        "type": "column",
+                        "valueField": "column-1"
+                    }
+                ],
+                "guides": [],
+                "titles": [
+                    {
+                        "id": "Title-1",
+                        "size": 15,
+                        "text": "Rendimiento de Equipo"
+                    }
+                ],
+                "valueAxes": [
+                    {
+                        "id": "ValueAxis-1",
+                        "title": "Rendimiento"
+                    }
+                ],
+                "allLabels": [],
+                "balloon": {},
+                "legend": {
+                    "useGraphSettings": true
+                },
+                "dataProvider": [
+               {
+                   @for(int i=0;i<Model.Count;i++)
+            {
+                RentaMaq.Models.reporteConsumoCombustible Report = new RentaMaq.Models.reporteConsumoCombustible(Model[i]);
+                <text>
+                   "category": "@Model[i].numeroReport",
+                @if(Report.rendimientoKilometrosLitro!=0){
+                    <text>
+                   "column-1": @Report.rendimientoKilometrosLitro
+                    </text>
+                }
+            else 
+            {
+                <text>
+                "column-1": @Report.rendimientoLitrosHora
+                </text>
+            }
+     @if(i==Model.Count-1){
+         <text>
+         }
+            </text>
+            }
+            else {
+                <text>
+                },
+            {
+            </text>
+            }
+                        </text>
+            }
+            ],
+                        "export": {
+                            "enabled": true,
+                            "libs": {
+                                "path": "/amcharts/plugins/export/libs/"
+                            }
+                        }
+        }
+    );
+    </script>
+    }
+}

@@ -1,0 +1,119 @@
+﻿@model RentaMaq.Models.reportCombustible
+
+@{
+    ViewBag.Title = "Eliminar Report";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Estás seguro/a que deseas eliminar este Report de Combustible?</h3>
+<div>
+    <h4>Datos:</h4>    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.numeroReport)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroReport)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.denominacionEquipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.denominacionEquipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometraje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometraje)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaHora)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaHora)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.litros)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.litros)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ubicacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ubicacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.operador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.operador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quienCarga)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quienCarga)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.responsable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.responsable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comentario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comentario)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

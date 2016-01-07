@@ -1,0 +1,96 @@
+﻿@model RentaMaq.Models.Producto
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminacion de Producto</h2>
+
+<h3>¿Esta seguro que desea eliminar el producto @Html.DisplayFor(model => model.numeroDeParte) ?</h3>
+<div>
+    <h4>Producto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+        <dt>
+            N° de Parte
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroDeParte)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.codigo)
+        </dd>
+
+        <dt>
+            Descripcion 2
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.descripcion2)
+        </dd>
+        <dt>
+            Precio Unitario
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precioUnitario)
+        </dd>      
+
+        <dt>
+            Stock Actual
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockActual)
+        </dd>
+
+        <dt>
+            Stock Minimo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockMinimo)
+        </dd>
+
+        <dt>
+           Unidad de Medida
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unidadDeMedida)
+        </dd>
+
+        <dt>
+            Ubicacion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ubicacion)
+        </dd>
+
+        
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar Producto" class="btn btn-default" /> |
+            @Html.ActionLink("Volver atras", "Index")
+        </div>
+    }
+</div>

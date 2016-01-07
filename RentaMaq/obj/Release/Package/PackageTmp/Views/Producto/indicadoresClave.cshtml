@@ -1,0 +1,158 @@
+﻿@model List<RentaMaq.Models.IndicadoresClaveProducto>
+@{
+    ViewBag.Title = "IndicadoresClave";
+}
+
+
+
+<br />
+<div class="col-md-12">
+    <h2>Indicadores Clave de Productos</h2>
+</div>
+<div class="clearfix"></div>
+<br />
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Producto
+            </th>
+            <th>
+                Tiempo Medio de Respuesta (días)
+            </th>
+            <th>
+            </th>
+            <th></th>
+        </tr>
+        @{
+            RentaMaq.DAL.Context db = new RentaMaq.DAL.Context();
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => db.Productos.Find(item.ProductoID).descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tiempoRespuestaPromedio)
+                </td>
+                <td>
+                    @Html.ActionLink("Ver en Detalle", "indicadoresClaveProducto", new { id = item.ProductoID })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="clearfix"></div>
+<hr />
+@if (Model.Count > 0)
+{
+    <div class="col-md-6" style="border-right: 1px solid #D8D8D8 !important">
+        <h4><strong>Producto con mejor tiempo de respuesta: </strong>@db.Productos.Find(Model[0].ProductoID).descripcion</h4>
+        <h4><strong>Tiempo: </strong>@Model[0].tiempoRespuestaPromedio día(s)</h4>
+    </div>
+}
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+    <a href="@Url.Action("IndicadoresProductos", "Report")"
+       target="_blank" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>Descargar Reporte</a>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+            });
+    </script>
+
+    <script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="~/amcharts/serial.js"></script>
+    <script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+    <script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+
+    <!-- amCharts javascript code -->
+    <script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "theme": "light",
+            "categoryAxis": {
+                "gridPosition": "start"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "Tiempo Promedio de Respuesta de [[category]]: [[value]] día(s)",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "Días promedio de respuesta",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "titles": [
+		        {
+		            "id": "Title-1",
+		            "size": 15,
+		            "text": "Tiempos promedio de respuesta de productos"
+		        }
+            ],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "title": "Días"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "useGraphSettings": true
+            },
+            "dataProvider": [
+                {
+                    @for(int i=0;i<Model.Count;i++)
+                {
+                    <text>
+                    "category": "@(db.Productos.Find(Model[i].ProductoID).descripcion)",
+                    "column-1": @Model[i].tiempoRespuestaPromedio
+                 @if(i==Model.Count-1){
+                    <text>
+                    }
+                    </text>
+                 }
+                 else {
+                    <text>
+                    },
+                    {
+                    </text>
+                 }
+                        </text>
+                }
+            ],
+            "export": {
+                "enabled": true,
+                "libs": {
+                    "path": "/amcharts/plugins/export/libs/"
+                }
+            }
+        }
+    );
+    </script>
+}

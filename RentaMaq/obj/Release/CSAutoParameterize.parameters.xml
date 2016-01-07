@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Context-Web.config Connection String" description="Context Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:l6075v0r5s.database.windows.net,1433;Database=RentaMaq;User ID=pdBD@l6075v0r5s;Password=Puntodesa2015*;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Guillermo\\Documents\\Visual\ Studio\ 2013\\Projects\\RentaMaq\\RentaMaq\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Context']/@connectionString" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="DefaultConnection_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Guillermo\\Documents\\Visual\ Studio\ 2013\\Projects\\RentaMaq\\RentaMaq\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

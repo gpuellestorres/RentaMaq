@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ordenPedidoCombustible" targetNamespace="http://tempuri.org/ordenPedidoCombustible.xsd" xmlns:mstns="http://tempuri.org/ordenPedidoCombustible.xsd" xmlns="http://tempuri.org/ordenPedidoCombustible.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ordenPedidoCombustible" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ordenPedidoCombustible" msprop:Generator_UserDSName="ordenPedidoCombustible">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ordenPedidoCombustible" msprop:Generator_TableClassName="ordenPedidoCombustibleDataTable" msprop:Generator_TableVarName="tableordenPedidoCombustible" msprop:Generator_RowChangedName="ordenPedidoCombustibleRowChanged" msprop:Generator_TablePropName="_ordenPedidoCombustible" msprop:Generator_RowDeletingName="ordenPedidoCombustibleRowDeleting" msprop:Generator_RowChangingName="ordenPedidoCombustibleRowChanging" msprop:Generator_RowEvHandlerName="ordenPedidoCombustibleRowChangeEventHandler" msprop:Generator_RowDeletedName="ordenPedidoCombustibleRowDeleted" msprop:Generator_RowClassName="ordenPedidoCombustibleRow" msprop:Generator_UserTableName="ordenPedidoCombustible" msprop:Generator_RowEvArgName="ordenPedidoCombustibleRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="numeroOrdenPedido" msprop:Generator_ColumnVarNameInTable="columnnumeroOrdenPedido" msprop:Generator_ColumnPropNameInRow="numeroOrdenPedido" msprop:Generator_ColumnPropNameInTable="numeroOrdenPedidoColumn" msprop:Generator_UserColumnName="numeroOrdenPedido" type="xs:string" minOccurs="0" />
+              <xs:element name="destinatario" msprop:Generator_ColumnVarNameInTable="columndestinatario" msprop:Generator_ColumnPropNameInRow="destinatario" msprop:Generator_ColumnPropNameInTable="destinatarioColumn" msprop:Generator_UserColumnName="destinatario" type="xs:string" minOccurs="0" />
+              <xs:element name="fecha" msprop:Generator_ColumnVarNameInTable="columnfecha" msprop:Generator_ColumnPropNameInRow="fecha" msprop:Generator_ColumnPropNameInTable="fechaColumn" msprop:Generator_UserColumnName="fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="nombreQuienAutoriza" msprop:Generator_ColumnVarNameInTable="columnnombreQuienAutoriza" msprop:Generator_ColumnPropNameInRow="nombreQuienAutoriza" msprop:Generator_ColumnPropNameInTable="nombreQuienAutorizaColumn" msprop:Generator_UserColumnName="nombreQuienAutoriza" type="xs:string" minOccurs="0" />
+              <xs:element name="anio" msprop:Generator_ColumnVarNameInTable="columnanio" msprop:Generator_ColumnPropNameInRow="anio" msprop:Generator_ColumnPropNameInTable="anioColumn" msprop:Generator_UserColumnName="anio" type="xs:string" minOccurs="0" />
+              <xs:element name="encabezado" msprop:Generator_ColumnVarNameInTable="columnencabezado" msprop:Generator_ColumnPropNameInRow="encabezado" msprop:Generator_ColumnPropNameInTable="encabezadoColumn" msprop:Generator_UserColumnName="encabezado" type="xs:string" minOccurs="0" />
+              <xs:element name="trabajoRealizar" msprop:Generator_ColumnVarNameInTable="columntrabajoRealizar" msprop:Generator_ColumnPropNameInRow="trabajoRealizar" msprop:Generator_ColumnPropNameInTable="trabajoRealizarColumn" msprop:Generator_UserColumnName="trabajoRealizar" type="xs:string" minOccurs="0" />
+              <xs:element name="personaResponsable" msprop:Generator_ColumnVarNameInTable="columnpersonaResponsable" msprop:Generator_ColumnPropNameInRow="personaResponsable" msprop:Generator_ColumnPropNameInTable="personaResponsableColumn" msprop:Generator_UserColumnName="personaResponsable" type="xs:string" minOccurs="0" />
+              <xs:element name="detalle" msprop:Generator_ColumnVarNameInTable="columndetalle" msprop:Generator_ColumnPropNameInRow="detalle" msprop:Generator_ColumnPropNameInTable="detalleColumn" msprop:Generator_UserColumnName="detalle" type="xs:string" minOccurs="0" />
+              <xs:element name="cantidad" msprop:Generator_ColumnVarNameInTable="columncantidad" msprop:Generator_ColumnPropNameInRow="cantidad" msprop:Generator_ColumnPropNameInTable="cantidadColumn" msprop:Generator_UserColumnName="cantidad" type="xs:string" minOccurs="0" />
+              <xs:element name="pathImageFirma" msprop:Generator_ColumnVarNameInTable="columnpathImageFirma" msprop:Generator_ColumnPropNameInRow="pathImageFirma" msprop:Generator_ColumnPropNameInTable="pathImageFirmaColumn" msprop:Generator_UserColumnName="pathImageFirma" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,80 @@
+﻿@model RentaMaq.Models.mantencionPreventiva
+
+@{
+    ViewBag.Title = "Eliminar mantención preventiva";
+}
+
+<h2>Eliminar mantención preventiva</h2>
+
+<h3>¿Está seguro/a de eliminar el registro de mantención preventiva?</h3>
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.equipoID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.equipoID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometroActual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometroActual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometrajeActual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometrajeActual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometroProximaMantencion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometroProximaMantencion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometrajeProximaMantencion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometrajeProximaMantencion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nota)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nota)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

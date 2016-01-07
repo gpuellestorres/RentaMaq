@@ -1,0 +1,129 @@
+﻿@model RentaMaq.Models.reportCombustible
+
+@{
+    ViewBag.Title = "Detalles de Report";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Report de Combustible</h4>    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.numeroReport)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroReport)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.denominacionEquipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.denominacionEquipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometraje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometraje)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaHora)
+        </dt>
+
+        @{
+            string fecha = Model.fechaHora.Year + "";
+            string mes = Model.fechaHora.Month + "";
+            if (mes.Length == 1) { mes = "0" + mes; }
+            string dia = Model.fechaHora.Day + "";
+            if (dia.Length == 1) { dia = "0" + dia; }
+
+            string hora = Model.fechaHora.Hour + "";
+            if (hora.Length == 1) { hora = "0" + hora; }
+            string minuto = Model.fechaHora.Minute + "";
+            if (minuto.Length == 1) { minuto = "0" + minuto; }
+
+
+            fecha += "/" + mes + "/" + dia + " " + hora + ":" + minuto;
+        }
+
+        <dd>
+            @Html.DisplayFor(model => fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.litros)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.litros)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ubicacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ubicacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.operador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.operador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quienCarga)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quienCarga)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.responsable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.responsable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comentario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comentario)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Editar", new { id = Model.ID }) |
+    @Html.ActionLink("Volver", "Index")
+</p>

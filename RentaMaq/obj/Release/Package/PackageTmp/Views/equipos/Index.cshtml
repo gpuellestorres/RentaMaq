@@ -1,0 +1,112 @@
+﻿@model IEnumerable<RentaMaq.Models.equipos> 
+
+@{
+    ViewBag.Title = "Índice";
+    bool tienePermiso = false;
+    if(Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(11, int.Parse(Session["ID"].ToString())))
+    {
+        tienePermiso=true;
+    }
+}
+
+<h2>Equipos</h2>
+
+<p>
+    @if (tienePermiso)
+    {
+
+        @Html.ActionLink("Crear Nuevo", "Create")
+    }
+
+    
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoEquipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.patenteEquipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.año)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.numeroAFI)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModeloID)
+            </th>
+            <th>
+                Horómetro
+            </th>
+            <th>
+                Kilometraje
+            </th>
+            <th></th>
+        </tr>
+
+        @{
+            RentaMaq.DAL.Context db = new RentaMaq.DAL.Context();
+            List<RentaMaq.Models.tipoEquipo> tiposEquipos = db.tipoEquipoes.ToList();
+
+            System.Collections.Hashtable tiposEquiposHash = new System.Collections.Hashtable();
+
+            foreach (RentaMaq.Models.tipoEquipo te in tiposEquipos)
+            {
+                tiposEquiposHash.Add(te.tipoEquipoID, te.nombre);
+            }
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @((string)tiposEquiposHash[int.Parse(item.tipoEquipo)])
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.patenteEquipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.año)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.numeroAFI)
+                </td>
+                <td>
+                    @(item.ModeloID.ModeloID + " - " + item.ModeloID.MarcaID.NombreMarca)
+                </td>
+                @{
+            RentaMaq.Models.registrokmhm registro = RentaMaq.Models.registrokmhm.obtenerUltimo(item.ID);
+                }
+                <td>
+                    @registro.horometro
+                </td>
+                <td>
+                    @registro.kilometraje
+                </td>
+                <td>
+                    @Html.ActionLink("Detalles", "Details", new { id = item.ID })
+                    @if (tienePermiso)
+                    {
+                        <text>
+                            | @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.ID })
+                        </text>
+                    }
+                    @{
+                        DateTime fecha = DateTime.Now;
+                        string TERMINO = fecha.Day + "-" + fecha.Month + "-" + fecha.Year;
+
+                        fecha = fecha.AddYears(-1);                        
+                        string INICIO = fecha.Day + "-" + fecha.Month + "-" + fecha.Year;
+                    }
+                    <br />
+                     | <a href="@Url.Action("Index", "registrokmhm", new { inicio = INICIO, termino = TERMINO, equipoID = item.ID.ToString() })">Ver historial de HM/KM</a> 
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

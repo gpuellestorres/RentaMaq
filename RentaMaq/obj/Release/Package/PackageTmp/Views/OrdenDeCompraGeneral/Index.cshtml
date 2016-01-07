@@ -1,0 +1,208 @@
+﻿@model IEnumerable<RentaMaq.Models.OrdenDeCompraGeneral>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="col-md-4">
+    <h3>Órdenes de Compra de Productos</h3>
+</div>
+@{
+    string FECHA1 = "", FECHA2 = "";
+    DateTime fecha1 = (DateTime) ViewBag.Fecha1, fecha2 = (DateTime) ViewBag.Fecha2;
+    FECHA1 = fecha1.Day + "/" + fecha1.Month + "/" + fecha1.Year;
+    FECHA2 = fecha2.Day + "/" + fecha2.Month + "/" + fecha2.Year;
+    string ESTADO = ViewBag.Estado;
+}
+<div class="col-md-8">
+    <div class="col-md-12">
+        <h4>Filtros:</h4>
+    </div>
+    <div class="col-md-3">
+        <label class="control-label">Inicio:</label>
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-3">
+        <label class="control-label">Término:</label>
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-3">
+        <label class="control-label">Estado:</label>
+        <select class="form-control" id="estado" name="estado">
+            
+                <option value="TODOS">Todos</option>
+                @if (ESTADO.Equals("NUEVA"))
+                {
+                    <option value="NUEVA" selected>Nueva</option>
+                }
+                else
+                {
+                    <option value="NUEVA">Nueva</option>
+                }
+                @if (ESTADO.Equals("ENTREGADA"))
+                {
+                    <option value="ENTREGADA" selected>Entregada</option>
+                }
+                else
+                {
+                    <option value="ENTREGADA">Entregada</option>
+                }
+                @if (ESTADO.Equals("CANCELADA"))
+                {
+                    <option value="CANCELADA" selected>Cancelada</option>
+                }
+                else
+                {
+                    <option value="CANCELADA">Cancelada</option>
+                }
+                @if (ESTADO.Equals("PENDIENTES"))
+                {
+                    <option value="PENDIENTES" selected>Con productos pendientes de entregar</option>
+                }
+                else
+                {
+                    <option value="PENDIENTES">Con productos pendientes de entregar</option>
+                }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <br />
+        <input class="btn btn-lg btn-default btn-block" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+<p>
+    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(3, int.Parse(Session["ID"].ToString())))
+    {
+        @Html.ActionLink("Crear nueva orden de compra", "Create")
+    }
+   
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                N° de Orden de Compra
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fechaEntrega)
+            </th>
+            <th>
+                Lugar
+            </th>
+            <th>
+                Proveedor
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.total)
+            </th>
+            <th>
+                Estado
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+    {
+            <tr>     
+            @{
+        string FECHAOC = item.Fecha.Day + "/" + item.Fecha.Month + "/" + item.Fecha.Year;
+        string FECHAENTREGA = item.fechaEntrega.Day + "/" + item.fechaEntrega.Month + "/" + item.fechaEntrega.Year;
+            }
+                <td>
+                    @FECHAOC
+                </td>
+                <td>
+                    @(item.numeroOC +"/" + item.añoOC)
+                </td>
+                <td>
+                    @FECHAENTREGA
+                </td>
+                <td>
+                    @item.tipo
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProveedorID.nombreProveedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.estado)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalles", "Details", new { id = item.OrdenDeCompraGeneralID }) |
+                    @if (item.estado == "NUEVA" && Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(3, int.Parse(Session["ID"].ToString()))) 
+                    {
+                        <text>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.OrdenDeCompraGeneralID }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.OrdenDeCompraGeneralID }) |<br />
+                            @Html.ActionLink("Generar PDF", "OrdenCompraGeneral", "Report", new { id = item.OrdenDeCompraGeneralID }, new { target = "_blank" }) |<br />
+                            @Html.ActionLink("Marcar como cancelada", "Cancelar", new { id = item.OrdenDeCompraGeneralID }) |<br />
+                            @Html.ActionLink("Registrar entrega de productos", "RegistrarEntrega", new { id = item.OrdenDeCompraGeneralID })
+                        </text>
+                }
+                    @if (item.estado == "ENTREGADA" && Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(3, int.Parse(Session["ID"].ToString())))
+                {
+                        <text>
+                            @Html.ActionLink("Generar PDF", "OrdenCompraGeneral", "Report", new { id = item.OrdenDeCompraGeneralID }, new { target = "_blank" }) |<br />
+                            @Html.ActionLink("Actualizar entrega de productos", "ActualizarEntrega", new { id = item.OrdenDeCompraGeneralID })
+                        </text>
+                }
+                </td>
+            </tr>
+    }
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+                    var estado = $("#estado").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/OrdenDeCompraGeneral/Index?inicio=" + fecha1 + "&termino=" + fecha2 + "&estado=" + estado;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+
+    <script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="~/amcharts/serial.js"></script>
+    <script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+    <script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+}

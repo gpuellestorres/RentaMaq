@@ -1,0 +1,156 @@
+﻿@model RentaMaq.Models.ordenDeCompraArriendoEquipo
+
+@{
+    ViewBag.Title = "Ingreso Orden De Compra Arriendo Equipo";
+    string fecha = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+    string fechaPlazoEntrega = Model.plazoEntrega.Day + "/" + Model.plazoEntrega.Month + "/" + Model.plazoEntrega.Year;  
+    string fechaLlegadaReal = Model.fechaLlegadaReal.Day + "/" + Model.fechaLlegadaReal.Month + "/" + Model.fechaLlegadaReal.Year;
+   
+    if (Model.plazoEntrega.Year == 2000)
+    {
+        fechaPlazoEntrega = "";
+    }
+    if (Model.fechaLlegadaReal.Year == 2000) {
+        fechaLlegadaReal = "";
+    }
+}
+
+<h2>Ingreso Equipo de  Orden de Compra @Model.numeroOrdenCompraArriendoEquipo</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ordenDeCompraArriendoEquipoID)
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="numeroOrdenCompraArriendoEquipo">Numero de Orden de Compra de Arriendo</label>
+            <div class="col-md-4">
+                <input name="numeroOrdenCompraArriendoEquipo" class="form-control" type="text" value="@(Model.numeroOrdenCompraArriendoEquipo+"/"+Model.anio)" readonly/>
+            </div>
+            @Html.LabelFor(model => model.fecha, "Fecha de Orden de Compra", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fechaOC" name="fechaOC" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@(Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year)" required readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProveedorID, "Proveedor:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input name="proveedor" class="form-control" type="text" value="@ViewBag.nombreProveedor" readonly />
+            </div>
+            
+            <label class="control-label col-md-2" for="fechaIngresoEquipo">Fecha Ingreso Equipos</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fechaIngresoEquipo" name="fechaIngresoEquipo" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@fechaLlegadaReal" required>
+            </div>
+
+        </div>
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Descripcion del Equipo</th>
+                        <th>Valor Hora</th>
+                        <th>Horas Minimas @Model.tipoHorasMinimas</th>
+                        <th>Duracion Del Arriendo</th>
+                        <th>Lugar de Faena</th>
+                        <th>Condiciones de Pago</th>
+                        <th>Ingreso</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                    @foreach (RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo detalleOrdenDeCompraArriendoEquipo in (List<RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo>)ViewData["detalleOrdenDeCompraArriendoEquipo"])
+                    {
+                    <tr>
+                        <td>
+                            
+                                <input value="@detalleOrdenDeCompraArriendoEquipo.numeroItem" name="numeroItem" class="hidden" hidden />
+                                
+                            @detalleOrdenDeCompraArriendoEquipo.descripcionEquipo
+                        </td>
+                        <td>
+                            @detalleOrdenDeCompraArriendoEquipo.valorHora
+                        </td>
+
+                        <td>
+                            @detalleOrdenDeCompraArriendoEquipo.horasMinimasMensuales
+                        </td>
+
+                        <td>
+                            @detalleOrdenDeCompraArriendoEquipo.duracionArriendo
+                        </td>
+                        <td>
+                            @detalleOrdenDeCompraArriendoEquipo.lugarDeFaena
+                        </td>
+                        <td>
+                            @detalleOrdenDeCompraArriendoEquipo.condicionesDePago
+                        </td>
+                        <td>
+                            <select name="ingresoEquipo" class="form-control" required>
+                                <option value="NO">No</option>
+                                @if (@RentaMaq.Models.ordenDeCompraArriendoEquipo.itemFueIngresado(@Model.ordenDeCompraArriendoEquipoID, @detalleOrdenDeCompraArriendoEquipo.numeroItem) == true)
+                                {
+                                    <option value="SI" selected>Si</option>
+                                }
+                                else
+                                {
+                                    <option value="SI">Si</option>
+                                }                          
+                            </select>
+
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-2">Nota:</label>
+            <div class="col-md-10">
+                <textarea class="form-control" name="nota" id="nota" rows="5" style="max-width: 100% !important; width:97%;">@Model.nota</textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Registrar Ingreso Equipo(s)" class="btn btn-primary btn-lg" />
+        </div>
+        
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ordenDeCompraArriendoEquipoID }) |
+    @Html.ActionLink("Volver Atras", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <script>
+
+        $(document).ready(function () {
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+        });
+
+    </script>
+
+
+}
+
+
+
+
+
+

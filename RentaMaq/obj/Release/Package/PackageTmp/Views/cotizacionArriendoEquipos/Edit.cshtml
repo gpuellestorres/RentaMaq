@@ -1,0 +1,282 @@
+﻿@model RentaMaq.Models.cotizacionArriendoEquipo
+
+@{
+    ViewBag.Title = "Edit";
+    string fecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+    string fechaEmpresa = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.datosClienteFecha);
+}
+
+<h2>Editar Cotizacion Arriendo Equipo</h2>
+
+@using (Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+
+<div class="form-inline">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.cotizacionArriendoEquipoID)
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@fecha" required">
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.tipoCotizacion, "Tipo: ", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.tipoCotizacion, new { htmlAttributes = new { @class = "form-control", @Value = "Izaje" } })
+                @Html.ValidationMessageFor(model => model.tipoCotizacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.numeroCotizacionArriendo, "Cotizacion de Arriendo N°: ", htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.numeroCotizacionArriendo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.numeroCotizacionArriendo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.referencia, "Referencia: ", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.referencia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.referencia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.datosClienteEmpresa, "Empresa:", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.datosClienteEmpresa, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.datosClienteEmpresa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.datosClienteRut, "Rut:", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.datosClienteRut, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.datosClienteRut, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.datosClienteDireccion, "Direccion:", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.datosClienteDireccion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.datosClienteDireccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.datosClienteFecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                <input class="form-control fecha" name="datosClienteFecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@fechaEmpresa" required">
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.datosClienteSolicitado, "Solicitado Por:", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.datosClienteSolicitado, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.datosClienteSolicitado, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.datosClienteEmail, "Email:", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.datosClienteEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.datosClienteEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+
+    <br /><br />
+    <div class="row">
+        <div class="form-group col-lg-12">
+            <div class="col-lg-12">
+                <textarea class="form-control" name="encabezado" id="encabezado" style="max-width: 100% !important; width:100%;">@Model.encabezado</textarea>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="table-responsive" id="contenedorProductos">
+        <table class="table" id="tableItems">
+            <thead>
+                <tr>
+                    <th style="vertical-align:top !important">DETALLE DE EQUIPO</th>
+                    <th>
+                        Horas Minimas
+                        <select class="form-control" name="tipoHorasMinimas">
+                            @if (@Model.tipoHorasMinimas.Equals("Diarias"))
+                            {
+                                <option value="Diarias" selected>Diarias</option>
+                                <option value="Semanales">Semanales</option>
+                                <option value="Mensuales">Mensuales</option>
+                            }
+                            else if (@Model.tipoHorasMinimas.Equals("Semanales"))
+                            {
+                                <option value="Diarias">Diarias</option>
+                                <option value="Semanales" selected>Semanales</option>
+                                <option value="Mensuales">Mensuales</option>
+                            }
+                            else
+                            {
+                                <option value="Diarias">Diarias</option>
+                                <option value="Semanales">Semanales</option>
+                                <option value="Mensuales" selected>Mensuales</option>
+                            }
+                        </select>
+                    </th>
+                    <th style="vertical-align:top !important">VALOR HORA MAQUINA</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbodyItems">
+            @foreach (RentaMaq.Models.detalleCotizacionArriendoEquipo detalle in (List<RentaMaq.Models.detalleCotizacionArriendoEquipo>)ViewData["detalleCotizacionArriendoEquipo"])
+            { 
+                <tr id="trItems">
+                    <td>
+                        <input class="form-control detalle" type="text" name="detalle" value="@detalle.detalle" required />
+                    </td>
+
+                    <td>
+                        <input class="form-control horasMinimas" type="number" name="horasMinimas" value="@detalle.horasMinimas" required />
+                    </td>
+
+                    <td>
+                        <input class="form-control valorHoraMaquina" type="text" name="valorHoraMaquina" value="@detalle.valorHoraMaquina" required />
+                    </td>
+                    <td>
+                        <a class="btn btn-danger botonEliminarItem" id="botonEliminarItem"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    </td>
+                </tr>
+            }    
+            </tbody>
+        </table>
+        <br />
+        <div class="col-sm-3">
+            <a id="botonAgregarItem" class="btn btn-block btn-primary botonAgregarItem"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Equipo</a>
+        </div>
+
+    </div>
+    <br />
+    <br /><br />
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label class="col-lg-12">Estas tarifas incluyen o consideran</label>
+            <div class="col-lg-12">
+                <textarea class="form-control" rows="3" name="incluye" id="incluye" style="max-width: 100% !important; width:100%;">@Model.incluye</textarea>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <label class="col-lg-12">Estas tarifas incluyen NO consideran</label>
+            <div class="col-lg-12">
+                <textarea class="form-control" rows="3" name="noIncluye" style="max-width: 100% !important; width:100%;">@Model.noIncluye</textarea>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.faena, "Faena.", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.faena, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.faena, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.tiempoArriendo, "Tiempo de Arriendo. ", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.tiempoArriendo, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.tiempoArriendo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="form-group col-md-12">
+            <div class="col-md-offset-9 col-lg-12">
+                <input type="submit" value="Guardar Cambios" class="btn btn-success btn-lg btn-default" />
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Volver a lista de Cotizacion de Equipos", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = 1;
+            $(".proveedor").select2();
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".botonAgregarItem").click(function () {
+
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find('.detalle').val('');
+                $temp.find('.horasMinimas').val('');
+                $temp.find('.valorHoraMaquina').val('');
+
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                numeroItem++;
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarItem", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este item , ya que la solicitud debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+        });
+
+    </script>
+
+
+}

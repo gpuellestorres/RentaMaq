@@ -1,0 +1,270 @@
+﻿@model RentaMaq.Models.CotizacionDeTraslado
+
+@{
+    ViewBag.Title = "Editar cotización de traslado";
+}
+
+<h2>Editar cotización de traslado</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CotizacionDeTrasladoID)
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="NumeroDeCotizacion">N&#250;mero de Cotizaci&#243;n</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Número de Cotización must be a number." data-val-required="The Número de Cotización field is required." id="NumeroDeCotizacion" name="NumeroDeCotizacion" type="number" value="@Model.NumeroDeCotizacion" readonly />
+                <span value="0" class="field-validation-valid text-danger" data-valmsg-for="NumeroDeCotizacion" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="a_o">A&#241;o</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Año must be a number." data-val-required="The Año field is required." id="a_o" name="año" type="number" value="@Model.año" readonly />
+                <span value="0" class="field-validation-valid text-danger" data-valmsg-for="año" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        @{
+            string FECHA = @Model.fecha.Day + "/" + @Model.fecha.Month + "/" + @Model.fecha.Year;
+        }
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="fecha">Fecha</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="Fecha" name="Fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@FECHA">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="cliente">Cliente</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="cliente" name="cliente" type="text" value="@Model.cliente" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="cliente" data-valmsg-replace="true"></span>
+            </div>
+
+            <label class="control-label col-md-2" for="rut">Rut</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Rut must be a number." data-val-required="The Rut field is required." id="rut" name="rut" type="number" value="@Model.rut" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="rut" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="direccion">Direcci&#243;n</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="direccion" name="direccion" type="text" value="@Model.direccion" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="direccion" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="telefono">Tel&#233;fono</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="telefono" name="telefono" type="text" value="@Model.telefono" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="telefono" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="atencionA">Atenci&#243;n a</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="atencionA" name="atencionA" type="text" value="@Model.atencionA" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="atencionA" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="referencia">Referencia</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="referencia" name="referencia" type="text" value="@Model.referencia" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="referencia" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="moneda">Moneda</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="moneda" name="moneda" type="text" value="@Model.moneda" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="moneda" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="tipoCambio">Tipo de Cambio</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="tipoCambio" name="tipoCambio" type="text" value="@Model.tipoCambio" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="tipoCambio" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Encabezado</label>
+            <div class="col-md-10">
+                <textarea name="encabezado" id="encabezado" rows="4" class="form-control" style="max-width:97%; width:97% !important">@Model.encabezado</textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12" id="DivDetalles">
+            <h4>Detalle:</h4>
+            <div class="table-responsive">
+                <table class="table table-condensed" id="tableItems">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th class="col-md-6">Descripción</th>
+                            <th class="col-md-1">Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Total</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (RentaMaq.Models.detalleCotizacionDeTraslado Detalle in new RentaMaq.DAL.Context().detalleCotizacionTraslado.Where(s => s.IDCotizacionTraslado == Model.CotizacionDeTrasladoID).ToList())
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control" name="codigoDetalle" id="codigoDetalle" value="@Detalle.codigo" required /></td>
+                                <td><textarea type="text" rows="1" class="form-control" name="descripcionDetalle" id="descripcionDetalle" required style="max-width:97%; width:97%; resize:none !important">@Detalle.descripcion</textarea></td>
+                                <td><input type="number" class="form-control" name="cantidadDetalle" id="cantidadDetalle" value="@Detalle.cantidad" required /></td>
+                                <td><input type="number" class="form-control" name="precioUnitarioDetalle" id="precioUnitarioDetalle" value="@Detalle.precioUnitario" required /></td>
+                                <td><input type="number" class="form-control" name="totalDetalle" id="totalDetalle" value="@Detalle.total" required readonly /></td>
+                                <td><a href="#DivDetalles" class="btn btn-danger eliminarDetalle" id="eliminarDetalle"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#DivDetalles" id="nuevoDetalle" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="nota">Nota</label>
+            <div class="col-md-10">
+                <textarea name="nota" id="nota" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.nota</textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="disponibilidad">Disponibilidad</label>
+            <div class="col-md-10">
+                <textarea name="disponibilidad" id="disponibilidad" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.disponibilidad</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="valorIncluye">Valor incluye</label>
+            <div class="col-md-10">
+                <textarea name="valorIncluye" id="valorIncluye" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.valorIncluye</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="valorNoIncluye">Valor no incluye</label>
+            <div class="col-md-10">
+                <textarea name="valorNoIncluye" id="valorNoIncluye" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.valorNoIncluye</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="condicionesGenerales">Condiciones Generales</label>
+            <div class="col-md-10">
+                <textarea name="condicionesGenerales" id="condicionesGenerales" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.condicionesGenerales</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="formasDePago">Formas de Pago</label>
+            <div class="col-md-10">
+                <textarea name="formasDePago" id="formasDePago" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.formasDePago</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="textoAdjuntarDocumentos">Texto sobre documentos adjuntos</label>
+            <div class="col-md-10">
+                <textarea name="textoAdjuntarDocumentos" id="textoAdjuntarDocumentos" class="form-control" rows="4" style="max-width:97%; width:97% !important">@Model.textoAdjuntarDocumentos</textarea>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            @Html.ActionLink("Volver", "Index")
+            <input type="submit" value="Guardar" class="btn btn-default btn-lg btn-success" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+        $(document).ready(function () {
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $("#nuevoDetalle").click(function () {
+                console.log("Nuevo ítem en detalle");
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find("#codigoDetalle").val("");
+                $temp.find("#cantidadDetalle").val("0");
+                $temp.find("#descripcionDetalle").val("");
+                $temp.find("#precioUnitarioDetalle").val("0");
+                $temp.find("#totalDetalle").val("0");
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                console.log($trNew);
+            });
+
+            $('body').on('click', '.eliminarDetalle', function (e) {
+                console.log("Eliminar ítem en detalle");
+                var $tableBody = $('#tableItems').find("tbody");
+
+                if ($tableBody.find("tr").length == 1) return;
+
+                item = $(this).closest("tr")
+
+                item.remove();
+            });
+
+            function calcularTotales() {
+                var $tableBody = $('#tableItems').find("tbody");
+
+                $tableBody.find("tr").each(function () {
+                    precio = $(this).find("#precioUnitarioDetalle").val();
+                    cantidad = $(this).find("#cantidadDetalle").val();
+
+                    total = parseInt(precio  * cantidad);
+
+                    $(this).find("#totalDetalle").val(total);
+                });
+            }
+
+            $('body').on('change', '#precioUnitarioDetalle', function (e) {
+                {
+                    calcularTotales();
+                }
+            });
+
+            $('body').on('change', '#cantidadDetalle', function (e) {
+                {
+                    calcularTotales();
+                }
+            });
+
+        });
+    </script>
+}

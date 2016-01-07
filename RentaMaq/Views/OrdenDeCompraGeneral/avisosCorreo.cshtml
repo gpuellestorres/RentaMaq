@@ -1,0 +1,53 @@
+﻿@model List<RentaMaq.Models.avisosCorreoOrdenCompraGeneral>
+@{
+    ViewBag.Title = "avisosCorreo";
+}
+
+<h2>Correos registrados para envío de alertas:</h2>
+
+<div class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+        &times;
+        </button>
+        Las siguientes direcciones de correo están registradas en el sistema para recibir alertas por correo electrónico cada vez que en una orden de compra queden productos por llegar
+</div>
+<div class="clearfix"></div>
+<br />
+<p>
+    @Html.ActionLink("Agregar nuevo", "AgregarCorreo")
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead >
+            <tr>
+                <th>
+                    Nombre de contacto
+                </th>
+                <th>
+                    Correo electrónico
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.nombreContacto
+                    </td>
+                    <td>
+                        @item.correo
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "AgregarCorreo", new { id = item.avisosCorreoOrdenCompraGeneralID }) |
+                        @Html.ActionLink("Eliminar", "EliminarCorreo", new { id = item.avisosCorreoOrdenCompraGeneralID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

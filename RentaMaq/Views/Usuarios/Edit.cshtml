@@ -1,0 +1,118 @@
+﻿@model RentaMaq.Models.Usuario
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Editar Usuario</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.usuarioID)
+        <input class="hidden" type="text" name="nombreActual" id="nombreActual" value="@Model.nombreUsuario" />
+        <div id="divNombreNombre" class="form-group">
+            @Html.LabelFor(model => model.nombreUsuario, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" name="nombreUsuario" id="nombreUsuario" class="form-control" value="@Model.nombreUsuario" required />
+                <div id="mensajeErrorNombre" class="alert alert-danger hidden">
+                    <strong>Error: </strong> ya existe un usuario con este nombre
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nombreCompleto, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nombreCompleto, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombreCompleto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.correoElectronico, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.correoElectronico, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.correoElectronico, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+
+                function verificarDatos()
+                {
+                    habilitarBoton = true;
+                    
+                    var nombreUsuario = $("#nombreUsuario").val();
+                    var nombreAnterior =$("#nombreActual").val();
+
+                    $.ajax({
+                        url: "/Usuarios/existeUsuario",
+                        data: { "nombreUsuario": nombreUsuario },
+
+                        success: function (retorno) {
+
+                            console.log("¿Existe usuario? " + retorno);
+                            console.log(nombreAnterior + " - " + nombreUsuario);
+
+                            if (retorno == "false" || nombreAnterior == nombreUsuario) {
+                                habilitarBoton = true;
+                                $("#divNombreNombre").removeClass(" has-error");
+                                $("#divNombreNombre").addClass(" has-feedback");
+                                $("#divNombreNombre").addClass(" has-success");
+                                $("#mensajeErrorNombre").addClass("hidden");
+                            }
+                            else {
+                                console.log("deshabilitar botón");
+                                habilitarBoton = false;
+
+                                $("#divNombreNombre").addClass(" has-error");
+                                $("#divNombreNombre").addClass(" has-feedback");
+                                $("#divNombreNombre").removeClass(" has-success");
+                                $("#mensajeErrorNombre").removeClass("hidden");
+                            }
+
+                            if (habilitarBoton) {
+                                $("#boton").removeAttr("disabled");
+                            }
+                            else {
+                                $("#boton").attr("disabled", "disabled");
+                            }
+                        }
+
+                    });
+                }
+
+                $("#nombreUsuario").change(function () {
+                    verificarDatos();
+                });
+            });
+    </script>
+}

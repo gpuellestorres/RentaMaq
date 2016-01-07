@@ -1,0 +1,65 @@
+﻿@model IEnumerable<RentaMaq.Models.Proveedor>
+
+@{
+    ViewBag.Title = "Proveedores";
+}
+
+<h2>Proveedores</h2>
+
+<p>
+    @Html.ActionLink("Registrar Nuevo Proveedor", "Create")
+</p>
+<div class="table-responsive">
+<table class="table">
+    <tr>
+        <th>
+            Nombre Proveedor
+        </th>
+        <th>
+            Requerimiento
+        </th>
+        <th>
+            Persona Contacto 1
+        </th>
+        <th>
+            Persona Contacto 2
+        </th>
+        <th>
+            Telefonos
+        </th>
+        <th>
+            Correo
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreProveedor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.requerimiento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.personaContacto1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.personaContacto2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.telefonos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.correo)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.ProveedorID }) |
+            @Html.ActionLink("Detalle", "Details", new { id=item.ProveedorID }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.ProveedorID })
+        </td>
+    </tr>
+}
+
+</table>
+</div>

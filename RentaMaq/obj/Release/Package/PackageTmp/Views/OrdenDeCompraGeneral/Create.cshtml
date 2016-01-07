@@ -1,0 +1,467 @@
+﻿@model RentaMaq.Models.OrdenDeCompraGeneral
+
+@{
+    ViewBag.Title = "Creación Orden de Compra";
+}
+
+<h2>Creación de Orden de Compra</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ProveedorID">Proveedor</label>
+            <div class="col-md-4">
+                <select id="ProveedorID" name="ProveedorID" class="form-control" required>
+                    @foreach (RentaMaq.Models.Proveedor Prov in (new RentaMaq.DAL.Context().Proveedores.ToList()))
+                    {
+                        <option value="@Prov.ProveedorID">@Prov.nombreProveedor</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Fecha">Fecha de Orden de Compra</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="Fecha" name="Fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+            @*
+            <label class="control-label col-md-2" for="atencionA">Atención a Sr/a:</label>
+            <div class="col-md-4">
+                <input type="text" id="atencionA" name="atencionA" class="form-control" />
+            </div>
+            *@
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="texto">Encabezado:</label>
+            <div class="col-md-10">
+                <textarea type="text" id="texto" name="texto" class="form-control" style="max-width:1000px; width:92% !important">Por medio de la presente, junto con saludarle, me permito enviar a usted, Orden de Compra de acuerdo a la Cotización Nº XX, de fecha DD/MM/AAAA, que detalla:</textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="fechaEntrega">Fecha de Entrega</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fechaEntrega" name="fechaEntrega"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text">
+                <span class="field-validation-valid text-danger" data-valmsg-for="fechaEntrega" data-valmsg-replace="true"></span>
+            </div>
+            @Html.LabelFor(model => model.formaRetiro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.formaRetiro, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.formaRetiro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.formaPago, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="formaPago" name="formaPago" value="Credito/Contado" />
+            </div>
+            @Html.LabelFor(model => model.tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <select class="form-control" id="tipo" name="tipo">
+                    <option value="andacollo">Andacollo</option>
+                    <option value="taltal">Taltal</option>
+                </select>
+            </div>            
+        </div>
+        <hr />
+        <div class="col-sm-12" id="DivDetalles">
+            <h4>Detalle:</h4>
+            <div class="table-responsive">
+                <table class="table table-condensed" id="tableItems">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th class="col-md-1">Cantidad</th>
+                            <th>Descripción</th>
+                            <th>Tipo de Compra</th>
+                            <th>Código Interno RENTA-MAQ</th>
+                            <th class="col-md-1">Plazo de Entrega (Días)</th>
+                            <th>Precio Unitario</th>
+                            <th class="col-md-1">Descuento (%)</th>
+                            <th>Valor Total</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    @{
+                    List<RentaMaq.Models.equipos> Equipos = RentaMaq.Models.equipos.todos();
+                    }
+                    <tbody>
+                        <tr id="filaDetalle">
+                            <td><input type="text" class="form-control" name="codigoDetalle" id="codigoDetalle" value="" required /></td>
+                            <td><input type="text" class="form-control double" name="cantidadDetalle" id="cantidadDetalle" value="0.0" required /></td>
+                            <td><input type="text" class="form-control" name="descripcionDetalle" id="descripcionDetalle" value="" required/></td>
+                            <td>
+                                <select name="tipoDeCompraDetalle" id="tipoDeCompraDetalle" class="form-control" required>
+                                    <option value="Compra Directa">Compra Directa</option>
+                                    <option value="Stock">Stock</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="codigoInternoDetalle" id="codigoInternoDetalle" 
+                                        class="form-control" required>
+                                    @foreach (RentaMaq.Models.equipos Equipo in (Equipos))
+                                    {
+                                        <option value="@Equipo.ID">@(Equipo.numeroAFI + " - " + Equipo.patenteEquipo + " - " + Equipo.ModeloID.nombreModelo)</option>
+                                    }
+                                </select>
+                                <input type="text" class="form-control hidden" name="codigoInternoDetalleStock"
+                                       id="codigoInternoDetalleStock" value="" />
+                            </td>
+                            <td><input type="number" class="form-control entero" name="plazoEntregaDetalle" id="plazoEntregaDetalle" value="0" required /></td>
+                            <td><input type="number" class="form-control entero" name="precioUnitarioDetalle" id="precioUnitarioDetalle" value="0" required /></td>
+                            <td><input type="number" class="form-control entero" name="descuentoDetalle" id="descuentoDetalle" value="0" required /></td>
+                            <td><input type="number" class="form-control" name="totalDetalle" id="totalDetalle" value="0" required readonly /></td>
+                            <td><a href="#DivDetalles" class="btn btn-danger eliminarDetalle" id="eliminarDetalle"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-2">
+            <a href="#DivDetalles" id="nuevoDetalle" class="btn btn-block btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+        </div>
+        <div class="col-sm-4 col-sm-offset-6" style="border-left: 1px solid #D8D8D8 !important">
+            <h4>Totales:</h4>
+            <div class="form-group">
+                <label class="control-label col-md-4" for="subtotal">Subtotal</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Subtotal must be a number."
+                           data-val-required="The Subtotal field is required."
+                           id="subtotal" name="subtotal" type="number" value="" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="subtotal" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="miscelaneos">Miscelaneos</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Miscelaneos must be a number."
+                           data-val-required="The Miscelaneos field is required."
+                           id="miscelaneos" name="miscelaneos" type="number" value="0" />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="miscelaneos" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="totalNeto">Total Neto</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Total Neto must be a number."
+                           data-val-required="The Total Neto field is required."
+                           id="totalNeto" name="totalNeto" type="number" value="" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="totalNeto" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="IVA">IVA (%)</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field IVA must be a number."
+                           data-val-required="The IVA field is required."
+                           id="IVA" name="IVA" type="number" value="19" />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="IVA" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="total">Total</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Total must be a number."
+                           data-val-required="The Total field is required."
+                           id="total" name="total" type="number" value="" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="total" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+        <div class="modal-footer">
+            <a href="@Url.Action("Index", "OrdenDeCompraGeneral")">Volver</a>&nbsp;
+            <input type="submit" value="Crear" class="btn btn-success btn-lg btn-default" />
+        </div>
+    </div>
+
+}
+
+<div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+                $('.double').bind('keypress', function (event) {
+                    var regex = new RegExp("^([0-9]*.[0-9]*)$");
+                    var textoActual = $(this).val();
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    else if (key == '.' && textoActual.indexOf(".") >= 0)
+                    {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+
+                $('.entero').bind('keypress', function (event) {
+                    var regex = new RegExp("^([0-9]*)$");
+                    var textoActual = $(this).val();
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+
+                $("#nuevoDetalle").click(function () {
+                    console.log("Nuevo ítem en detalle");
+                    var $tableBody = $('#tableItems').find("tbody");
+                    $trLast = $tableBody.find("tr:last");
+
+                    $temp = $trLast.clone();
+
+                    $temp.find("#codigoDetalle").val("");
+                    $temp.find("#cantidadDetalle").val("0");
+
+                    /*
+                    //Quitamos los elementos ya existentes:
+                    esteCampo = $temp.find("#codigoInternoDetalle");
+                    $('select').not(esteCampo).each(function () {
+                        if ($(this).attr("id") == "codigoInternoDetalle") {
+                            valorQuitar = $(this).val();
+                            esteCampo.find("option[value='" + valorQuitar + "']").remove();
+                        }
+                    });
+
+                    //Quitamos el elemento seleccionado acá de los demás select:
+                    $('select').not(esteCampo).each(function () {
+                        if ($(this).attr("id") == "codigoInternoDetalle") {
+                            valorQuitar = esteCampo.val();
+                            $(this).find("option[value='" + valorQuitar + "']").remove();
+                        }
+                    });
+                    //*/                   
+
+                    //codigoInterno = $temp.find("#codigoInternoDetalle").val();
+                    
+                    /*
+                    $.ajax({
+                        url: "/OrdenDeCompraGeneral/obtenerNombreProducto", data: { "numeroDeParte": $temp.find("#codigoInternoDetalle").find("option:first").val() },
+                        success: function (retorno) {
+                            console.log(retorno);
+                            $temp.find("#descripcionDetalle").val(retorno);
+                        }
+                    });
+                    //*/
+                    $temp.find("#codigoInternoDetalle").val($temp.find("#codigoInternoDetalle").find("option:first"));
+                    $temp.find("#codigoInternoDetalle").removeClass("hidden");
+                    $temp.find("#codigoInternoDetalleStock").val("");
+                    $temp.find("#codigoInternoDetalleStock").addClass("hidden");
+                    $temp.find("#descripcionDetalle").val("");
+                    $temp.find("#plazoEntregaDetalle").val("0");
+                    $temp.find("#precioUnitarioDetalle").val("0");
+                    $temp.find("#descuentoDetalle").val("0");
+                    $temp.find("#totalDetalle").val("0");
+
+                    $trNew = $temp;
+                    $trLast.after($trNew);
+                    console.log($trNew);
+                });
+
+                $('body').on('click', '.eliminarDetalle', function (e) {
+                    console.log("Eliminar ítem en detalle");
+                    var $tableBody = $('#tableItems').find("tbody");
+
+                    if ($tableBody.find("tr").length == 1) return;
+                    
+                    item = $(this).closest("tr")
+
+                    /*
+                    //Quitamos los elementos ya existentes:
+                    esteCampo = item.find("#codigoInternoDetalle");
+                    esteValor = esteCampo.find("option:selected");
+
+                    $('select').not(esteCampo).each(function () {
+                        if ($(this).attr("id") == "codigoInternoDetalle") {
+                            $(this).append("<option value='" + esteValor.val() + "'>" + esteValor.text() + "</option>");
+                        }
+                    });
+                    //*/
+
+                    item.remove();
+                });
+
+                function calcularTotales()
+                {
+                    console.log("hola");
+                    var $tableBody = $('#tableItems').find("tbody");
+
+                    subtotal = 0;
+
+                    $tableBody.find("tr").each(function () {
+                        precio = $(this).find("#precioUnitarioDetalle").val();
+                        cantidad = $(this).find("#cantidadDetalle").val();
+                        descuento = $(this).find("#descuentoDetalle").val();
+
+                        console.log(precio + " - " + cantidad + " - " + descuento);
+
+                        total = parseInt((precio - (descuento * precio / 100)) * cantidad);
+
+                        $(this).find("#totalDetalle").val(total);
+                        subtotal += total;
+
+                        console.log("subtotal: " + subtotal);
+                    });
+
+                    $("#subtotal").val(subtotal);
+                    miscelaneos = $("#miscelaneos").val();
+                    totalNeto = subtotal + parseInt(miscelaneos);
+                    $("#totalNeto").val(totalNeto);
+
+                    IVA = $("#IVA").val();
+                    Total = parseInt(totalNeto + ((IVA / 100) * totalNeto));
+                    $("#total").val(Total);
+                    
+                }
+
+                $('body').on('change', '#precioUnitarioDetalle', function (e) {
+                    {
+                        calcularTotales();
+                    }
+                });
+
+                $('body').on('change', '#cantidadDetalle', function (e) {
+                    {
+                        calcularTotales();
+                    }
+                });
+
+                $('body').on('change', '#miscelaneos', function (e) {
+                    {
+                        calcularTotales();
+                    }
+                });
+
+                $('body').on('change', '#IVA', function (e) {
+                    {
+                        calcularTotales();
+                    }
+                });
+
+                $('body').on('change', '#descuentoDetalle', function (e) {
+                    {
+                        calcularTotales();
+                    }
+                });
+
+                $('body').on('click', '#eliminarDetalle', function (e) {
+                    {
+                        calcularTotales();
+                    }
+                });
+
+                /*
+                $('body').on('change', '#codigoInternoDetalle', function (e) {
+                    {
+                        console.log("aplicar descripción");
+                        esteCampo = $(this);
+                        $.ajax({
+                            url: "/OrdenDeCompraGeneral/obtenerNombreProducto", data: { "numeroDeParte": $(this).val() },
+                            success: function (retorno) {
+                                console.log(retorno);
+                                esteCampo.closest("tr").find("#descripcionDetalle").val(retorno);
+                            }
+                        });
+                    }
+                });
+
+                //*/
+/*
+                $('body').on('change', '#codigoInternoDetalle', function (e) {
+                    esteValor = $(this).val();
+                    esteCampo = $(this);
+
+                    //listaActuales = new Array();
+                    $('select').not(esteCampo).each(function () {
+                        if ($(this).attr("id") == "codigoInternoDetalle") {
+                            $(this).find("option[value='" + esteValor + "']").remove();
+                        }
+                    });
+                    
+                    esteCampo.find("option").each(function () {
+                        valorAgregar = $(this).val();
+                        if (esteValor != valorAgregar) {
+                            $('select').not(esteCampo).each(function () {
+                                if ($(this).attr("id") == "codigoInternoDetalle") {
+                                    if ($(this).val() != valorAgregar) {
+                                        $(this).find("option[value='" + valorAgregar + "']").remove();
+                                        $(this).append("<option value='" + valorAgregar + "'>" + valorAgregar + "</option>");
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                });
+//*/
+                $('body').on('change', '#tipoDeCompraDetalle', function (e) {
+                    esteValor = $(this).val();
+                    esteCampo = $(this);
+
+                    console.log(esteValor);
+
+                    if (esteValor == "Compra Directa")
+                    {
+                        console.log("compra directa");
+                        esteCampo.closest("tr").find("#codigoInternoDetalleStock").addClass("hidden");
+                        esteCampo.closest("tr").find("#codigoInternoDetalle").removeClass("hidden");
+
+                        esteCampo.closest("tr").find("#codigoInternoDetalleStock").removeAttr("required", "required");                        
+                    }
+                    else if (esteValor == "Stock") {
+                        console.log("stock");
+                        esteCampo.closest("tr").find("#codigoInternoDetalle").addClass("hidden");
+                        esteCampo.closest("tr").find("#codigoInternoDetalleStock").removeClass("hidden");
+
+                        esteCampo.closest("tr").find("#codigoInternoDetalleStock").attr("required", "required");                        
+                    }
+
+                });
+
+            });
+    </script>
+}

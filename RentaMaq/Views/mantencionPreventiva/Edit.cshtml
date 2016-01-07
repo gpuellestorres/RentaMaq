@@ -1,0 +1,161 @@
+﻿@model RentaMaq.Models.mantencionPreventiva
+
+@{
+    ViewBag.Title = "Editar mantención preventiva";
+}
+
+<h2>Editar Mantención Preventiva</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.mantencionPreventivaID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.equipoID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @{
+    List<RentaMaq.Models.equipos> equipos = RentaMaq.Models.equipos.todos();
+            }
+            <div class="col-md-10">
+                <select class="form-control select2" id="equipoID" name="equipoID" required>
+                    @foreach (RentaMaq.Models.equipos equipo in equipos)
+                    {
+                        if (Model.equipoID.Equals(equipo.ID))
+                        {
+                            <option value="@equipo.ID" selected>@equipo.numeroAFI / @equipo.ModeloID.nombreModelo - @equipo.ModeloID.MarcaID.NombreMarca</option>
+                        }
+                        else
+                        {
+                            <option value="@equipo.ID">@equipo.numeroAFI / @equipo.ModeloID.nombreModelo - @equipo.ModeloID.MarcaID.NombreMarca</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        @{
+            string FECHA = "" + Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control fecha" id="fecha" name="fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]" value="@FECHA"
+                       type="text" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.horometroActual, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="number" name="horometroActual" id="horometroActual"
+                       value="@Model.horometroActual" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.kilometrajeActual, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                
+                <input class="form-control" type="number" name="kilometrajeActual" id="kilometrajeActual"
+                        value="@Model.kilometrajeActual" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.horometroProximaMantencion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="number" name="horometroProximaMantencion"
+                       id="horometroProximaMantencion" value="@Model.horometroProximaMantencion" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.kilometrajeProximaMantencion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="number" name="kilometrajeProximaMantencion"
+                       id="kilometrajeProximaMantencion" value="@Model.kilometrajeProximaMantencion" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nota, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea class="form-control" name="nota" id="nota" rows="4" style="max-width:93%; width:93% !important" placeholder="Introduzca una nota sobre la mantención...">@Model.nota</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+
+
+    <script>
+        $(document).ready(function () {
+            try {
+
+                $(".select2").select2({
+                    placeholder: "Seleccione un equipo"
+                });
+                console.log("aquí");
+            } catch (error) {
+                console.log(error);
+            }
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $('body').on('change', '#equipoID', function (e) {
+                {
+                    console.log("Obtener Datos");
+                    esteCampo = $(this);
+                    $.ajax({
+                        url: "/reportCombustible/obtenerUltimosDatos", data: { "idEquipo": esteCampo.val() },
+                        success: function (retorno) {
+                            console.log(retorno);
+                            horometro = retorno.split(";")[0];
+                            kilometraje = retorno.split(";")[1];
+                            $("#horometroActual").val(horometro);
+                            $("#kilometrajeActual").val(kilometraje);
+                            if (horometro != "0") {
+                                $("#horometroProximaMantencion").val((parseInt(horometro) + 400));
+                            }
+                            else {
+                                $("#horometroProximaMantencion").val(horometro);
+                            }
+                            if (kilometraje != "0") {
+                                $("#kilometrajeProximaMantencion").val((parseInt(kilometraje) + 10000));
+                            }
+                            else {
+                                $("#kilometrajeProximaMantencion").val(kilometraje);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

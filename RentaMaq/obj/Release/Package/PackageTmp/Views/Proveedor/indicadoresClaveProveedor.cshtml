@@ -1,0 +1,429 @@
+﻿@model RentaMaq.Models.IndicadoresClaveProveedor
+@{
+    ViewBag.Title = "indicadoresClaveProveedor";
+    RentaMaq.DAL.Context db = new RentaMaq.DAL.Context();
+}
+<div class="col-md-12">
+    <h2>Detalle de Indicadores Clave de Proveedor <small>@db.Proveedores.Find(Model.ProveedorID).nombreProveedor</small></h2>
+</div>
+<div class="clearfix"></div>
+<hr />
+<div class="col-md-12">
+    <h3>Tiempos de Respuesta por Producto:</h3>
+</div>
+<br />
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Producto
+            </th>
+            <th>
+                Tiempo Promedio de Respuesta (días)
+            </th>
+            <th></th>
+        </tr>
+        @{
+            List<RentaMaq.Models.tiempoRespuestaProducto> tiemposPromedio =
+                Model.tiemposRespuestaProducto.OrderBy(s => s.tiempoPromedioRespuesta).ToList();
+        }
+        @foreach (RentaMaq.Models.tiempoRespuestaProducto item in tiemposPromedio)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => db.Productos.Find(item.ProductoID).descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tiempoPromedioRespuesta)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="clearfix"></div>
+<hr />
+@if (Model.tiemposRespuestaProducto.Count > 0)
+{
+    <div class="col-md-6" style="border-right: 1px solid #D8D8D8 !important">
+        <h4><strong>Producto con mejor tiempo de respuesta: </strong>@db.Productos.Find(tiemposPromedio[0].ProductoID).descripcion</h4>
+        <h4><strong>Tiempo: </strong>@tiemposPromedio[0].tiempoPromedioRespuesta día(s)</h4>
+    </div>
+}
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+    <a href="@Url.Action("IndicadoresTiempoProvedorIndividual", "Report", new { id = Model.ProveedorID })"
+       target="_blank" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>Descargar Reporte</a>
+</div>
+<hr /><hr />
+<div class="col-md-12">
+    <h3>Montos de Órdenes de Compra Realizadas:</h3>
+</div>
+<br />
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Orden de Compra
+            </th>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Monto
+            </th>
+
+            <th>
+                Ver Detalle
+            </th>
+            <th></th>
+        </tr>
+        @{
+            List<RentaMaq.Models.MontoCompraOrdenCompra> montosCompra =
+                Model.montosCompra.OrderBy(s => s.montoCompra).ToList();
+        }
+        @foreach (RentaMaq.Models.MontoCompraOrdenCompra item in montosCompra)
+        {
+            RentaMaq.Models.OrdenDeCompraGeneral OC = db.ordenesDeCompra.Find(item.IDOrdenCompra);
+            <tr>
+                <td>
+                    @(OC.numeroOC + "/" + OC.añoOC)
+                </td>
+                <td>
+                    @RentaMaq.Models.formatearString.fechaSinHoraDiaPrimero(OC.Fecha)
+                </td>
+                <td>
+                    $@RentaMaq.Models.formatearString.valores_Pesos(item.montoCompra)
+                </td>
+
+                <td>
+                    <a target="_blank" href="@Url.Action("Details", "OrdenDeCompraGeneral", new { id = item.IDOrdenCompra })">Detalle de Orden de Compra</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv2" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+    <a href="@Url.Action("IndicadoresMontosProvedorIndividual", "Report", new { id = Model.ProveedorID })"
+       target="_blank" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>Descargar Reporte</a>
+</div>
+
+@{
+    List<RentaMaq.Models.tiempoRespuestaEquipo> tiemposRespuestaPorEquipo =
+        Model.tiemposRespuestaEquipo.OrderBy(s => s.tiempoRespuesta).ToList();
+    if (tiemposRespuestaPorEquipo.Count > 0) { 
+        <text>
+        <hr /><hr />
+        <div class="col-md-12">
+            <h3> Tiempo Promedio de Respuesta Arriendo de Equipos (días)</h3>
+        </div>
+        <br />
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>
+                        Orden de Compra Arriendo Equipo
+                    </th>
+                    <th>
+                        Fecha
+                    </th>
+                    <th>
+                        Tiempo
+                    </th>
+
+                    <th>
+                        Ver Detalle
+                    </th>
+                    <th></th>
+                </tr>
+        
+                @foreach (RentaMaq.Models.tiempoRespuestaEquipo item in tiemposRespuestaPorEquipo)
+                {
+                    RentaMaq.Models.ordenDeCompraArriendoEquipo OC = db.ordenDeCompraArriendoEquipoes.Find(item.ordenDeCompraArriendoEquipoID);
+                    <tr>
+                        <td>
+                            @(OC.numeroOrdenCompraArriendoEquipo + "/" + OC.anio)
+                        </td>
+                        <td>
+                            @RentaMaq.Models.formatearString.fechaSinHoraDiaPrimero(OC.fecha)
+                        </td>
+                        <td>
+                            @item.tiempoRespuesta
+                        </td>
+
+                        <td>
+                            <a target="_blank" href="@Url.Action("Details", "ordenDeCompraArriendoEquipo", new { id = item.ordenDeCompraArriendoEquipoID })">Detalle de Orden de Compra Arriendo Equipo</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="clearfix"></div>
+        <hr />
+        <div id="chartdiv3" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+        <div class="clearfix"></div>
+
+        <div class="modal-footer">
+            <a href="@Url.Action("IndicadoresTiempoOrdenArriendoProveedorIndividual", "Report", new {id=Model.ProveedorID})"
+               target="_blank" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>Descargar Reporte</a>
+        </div>
+
+        </text>
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+            });
+    </script>
+
+    <script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="~/amcharts/serial.js"></script>
+    <script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+    <script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+
+    <!-- amCharts javascript code -->
+    <script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "theme": "light",
+            "categoryAxis": {
+                "gridPosition": "start"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "Tiempo Promedio de Respuesta para [[category]]: [[value]] día(s)",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "Días promedio de respuesta",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "titles": [
+		        {
+		            "id": "Title-1",
+		            "size": 15,
+		            "text": "Tiempos promedio de respuesta por producto"
+		        }
+            ],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "title": "Días"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "useGraphSettings": true
+            },
+            "dataProvider": [
+                {
+                    @for(int i=0;i<tiemposPromedio.Count;i++)
+                {
+                    <text>
+                    "category": "@(db.Productos.Find(tiemposPromedio[i].ProductoID).descripcion)",
+                    "column-1": @tiemposPromedio[i].tiempoPromedioRespuesta.ToString().Replace(",",".")
+                 @if (i == tiemposPromedio.Count - 1)
+                 {
+                    <text>
+                    }
+                    </text>
+                 }
+                 else {
+                    <text>
+                    },
+                    {
+                    </text>
+                 }
+                        </text>
+                }
+            ],
+            "export": {
+                "enabled": true,
+                "libs": {
+                    "path": "/amcharts/plugins/export/libs/"
+                }
+            }
+        }
+    );
+    </script>
+
+    <!-- amCharts javascript code -->
+<script type="text/javascript">
+    AmCharts.makeChart("chartdiv2",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "theme": "light",
+            "categoryAxis": {
+                "gridPosition": "start"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "Monto de orden de compra [[category]]: $[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "Monto de orden de compra",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "titles": [
+		        {
+		            "id": "Title-1",
+		            "size": 15,
+		            "text": "Montos de órdenes de compra realizadas por proveedor @db.Proveedores.Find(Model.ProveedorID).nombreProveedor"
+		        }
+            ],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "title": "Pesos"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "useGraphSettings": true
+            },
+            "dataProvider": [
+                {
+                    @for(int i=0;i<montosCompra.Count;i++)
+                {
+                    <text>
+                    "category": "@(db.ordenesDeCompra.Find(montosCompra[i].IDOrdenCompra).Fecha)",
+                    "column-1": @montosCompra[i].montoCompra
+                 @if (i == tiemposPromedio.Count - 1)
+                 {
+                    <text>
+                    }
+                    </text>
+                 }
+                 else {
+                    <text>
+            },
+                    {
+                        </text>
+                 }
+                        </text>
+                }
+                    ],
+                    "export": {
+                        "enabled": true,
+                        "libs": {
+                            "path": "/amcharts/plugins/export/libs/"
+                        }
+                    }
+    }
+    );
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    AmCharts.makeChart("chartdiv3",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "theme": "light",
+            "categoryAxis": {
+                "gridPosition": "start"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "Tiempo Promedio de Respuesta de Arriendo de Equipos [[category]]: [[value]] día(s)",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "Días promedio de respuesta",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "titles": [
+		        {
+		            "id": "Title-1",
+		            "size": 15,
+		            "text": "Tiempos promedio de respuesta por ordenes de compra de arriendo de equipo"
+		        }
+            ],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "title": "Días"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "useGraphSettings": true
+            },
+            "dataProvider": [
+                {
+                    @for(int i=0;i<Model.tiemposRespuestaEquipo.Count;i++)
+                {
+                    <text>
+                    "category": "@Model.tiemposRespuestaEquipo[i].fecha",
+                    "column-1": @Model.tiemposRespuestaEquipo[i].tiempoRespuesta.ToString().Replace(",", ".")
+                 @if (i == Model.tiemposRespuestaEquipo.Count - 1)
+                 {
+                    <text>
+                    }
+                    </text>
+                 }
+                 else {
+                    <text>
+            },
+                    {
+                        </text>
+                 }
+                        </text>
+                }
+                    ],
+                    "export": {
+                        "enabled": true,
+                        "libs": {
+                            "path": "/amcharts/plugins/export/libs/"
+                        }
+                    }
+    }
+    );
+</script>
+
+
+
+}

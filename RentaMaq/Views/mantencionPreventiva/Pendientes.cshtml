@@ -1,0 +1,123 @@
+﻿@model IEnumerable<RentaMaq.Models.mantencionPreventiva>
+
+@{
+    ViewBag.Title = "Mantenciones Preventivas Vencidas";
+    bool tienePermiso = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(12, int.Parse(Session["ID"].ToString())))
+    {
+        tienePermiso = true;
+    }
+}
+
+<div class="col-sm-12">
+    <h3>Mantenciones Preventivas Vencidas</h3>
+</div>
+<div class="clearfix"></div>
+@if (tienePermiso)
+{
+    <p>
+        @Html.ActionLink("Ingresar Nueva Mantención Preventiva", "Create")
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.equipoID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horometroActual)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horometroProximaMantencion)
+        </th>
+        <th>
+            Último HM registrado
+        </th>
+        <th>
+            Diferencia HM
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.kilometrajeActual)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.kilometrajeProximaMantencion)
+        </th>
+        <th>
+            Último KM registrado
+        </th>
+        <th>
+            Diferencia KM
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+        RentaMaq.Models.equipos Equipo = RentaMaq.Models.equipos.Obtener(item.equipoID);
+                }
+                @Equipo.numeroAFI / @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca;
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horometroActual)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horometroProximaMantencion)
+            </td>
+            @{
+        int ultimoHM = RentaMaq.Models.equipos.obtenerUltimoHorometro(item.equipoID);
+        int ultimoKM = RentaMaq.Models.equipos.obtenerUltimoKilometraje(item.equipoID);
+            }
+            @if (ultimoHM > item.horometroProximaMantencion)
+            {
+                <td class="text-danger">@ultimoHM</td>
+                <td class="text-danger">@(item.horometroProximaMantencion - ultimoHM)</td>
+            }
+            else
+            {
+                <td class="text-success">@ultimoHM</td>
+                <td class="text-success">@(item.horometroProximaMantencion - ultimoHM)</td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.kilometrajeActual)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.kilometrajeProximaMantencion)
+            </td>
+            @if (ultimoKM > item.kilometrajeProximaMantencion)
+            {
+                <td class="text-danger">@ultimoKM</td>
+                <td class="text-danger">@(item.kilometrajeProximaMantencion - ultimoKM)</td>
+            }
+            else
+            {
+                <td class="text-success">@ultimoKM</td>
+                <td class="text-success">@(item.kilometrajeProximaMantencion - ultimoKM)</td>
+            }
+            <td>
+                @if (tienePermiso)
+                {
+                    <text>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.mantencionPreventivaID }) |
+                        @Html.ActionLink("Detalles", "Details", new { id = item.mantencionPreventivaID }) 
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.mantencionPreventivaID })
+                    </text>
+                }
+            </td>
+        </tr>
+    }
+
+</table>

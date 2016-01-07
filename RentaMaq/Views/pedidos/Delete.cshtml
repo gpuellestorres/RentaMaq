@@ -1,0 +1,48 @@
+﻿@model RentaMaq.Models.pedidos
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar Pedido</h2>
+
+<h3>¿Esta seguro que desea eliminar este pedido?</h3>
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha
+        </dt>
+
+        <dd>
+            @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nota)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nota)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.estado)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver Atras", "Index")
+        </div>
+    }
+</div>

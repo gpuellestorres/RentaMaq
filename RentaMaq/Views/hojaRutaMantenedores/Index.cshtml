@@ -1,0 +1,144 @@
+﻿@model IEnumerable<RentaMaq.Models.hojaRutaMantenedores>
+
+@{
+    ViewBag.Title = "Hoja de ruta de mantenedores";
+    bool tienePermiso = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(14, int.Parse(Session["ID"].ToString())))
+    {
+        tienePermiso = true;
+    }
+}
+    <div class="col-sm-4">
+        <h3>Hoja de Ruta de Mantenedores</h3>
+    </div>
+
+    @{
+        string FECHA1 = "", FECHA2 = "";
+
+        DateTime Inicio = (DateTime)ViewBag.Inicio;
+        DateTime Termino = (DateTime)ViewBag.Termino;
+
+        FECHA1 = Inicio.Day + "/" + Inicio.Month + "/" + Inicio.Year;
+        FECHA2 = Termino.Day + "/" + Termino.Month + "/" + Termino.Year;
+    }
+
+    <div class="col-md-8">
+        <br />
+        <div class="col-md-4">
+            <h4><small>Filtro de fechas:</small></h4>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                   type="text" value="@FECHA1">
+
+        </div>
+        <div class="col-md-3">
+            <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                   type="text" value="@FECHA2">
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" id="Boton" value="Buscar" type="button" />
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+
+@if (tienePermiso)
+{
+    <p>
+        @Html.ActionLink("Crear nueva", "Create")
+        @{
+            int cantidadLubricacionesPendientes = RentaMaq.Models.equipos.obtenerCantidadLubricacionesPendientes();
+            if (cantidadLubricacionesPendientes>0)
+            {
+                <br />
+                <a target="_blank" href="@Url.Action("HojaRutaMantenedoresPrevia", "Report")">Descargar PDF para Lubricaciones Pendientes (@cantidadLubricacionesPendientes lubricacion/es pendiente/s)</a>
+            }
+        }
+        
+    </p>
+}
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.fecha)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombreMantenedor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.numero)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fecha)                        
+                    </td>
+                    <td>
+                        @item.nombreMantenedor.Replace(System.Environment.NewLine, ", ")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numero)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.numero })
+                        @if (tienePermiso)
+                        {
+                            <text>
+                                | @Html.ActionLink("Editar", "Edit", new { id = item.numero }) |
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.numero }) |
+                            </text>
+                        }
+                        <br />
+                        <a target="_blank" href="@Url.Action("HojaRutaMantenedores", "Report", new { id = item.numero })">Descargar Reporte</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+
+    @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+
+                    fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                    fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    }
+                    else {
+                        console.log(fecha1 + "-" + fecha2);
+                        ruta = "/hojaRutaMantenedores/Index?inicio=" + fecha1 + "&termino=" + fecha2;
+                        console.log(ruta);
+                        window.location.href = ruta
+                    }
+                });
+            });
+    </script>
+    }

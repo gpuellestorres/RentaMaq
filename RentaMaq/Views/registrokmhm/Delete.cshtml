@@ -1,0 +1,72 @@
+﻿@model RentaMaq.Models.registrokmhm
+
+@{
+    ViewBag.Title = "Eliminar registro km/hm";
+}
+
+<h2>Eliminar Registro de Horómetro y/o Kilometraje</h2>
+
+<h3>¿Está seguro/a de eliminar el registro?</h3>
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.equipoID)
+        </dt>
+
+        <dd>
+            @{
+                RentaMaq.Models.equipos Equipo = RentaMaq.Models.equipos.Obtener(Model.equipoID);
+            }
+            @Equipo.numeroAFI / @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca;
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kilometraje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kilometraje)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horometro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horometro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @{
+                string dia = Model.fecha.Day.ToString();
+                if (dia.Length == 1)
+                {
+                    dia = "0" + dia;
+                }
+                string mes = Model.fecha.Month.ToString();
+                if (mes.Length == 1)
+                {
+                    mes = "0" + mes;
+                }
+                string FECHA = dia + "/" + mes + "/" + Model.fecha.Year;
+            }
+            @FECHA
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="costosOrdenTrabajoGeneral" targetNamespace="http://tempuri.org/costosOrdenTrabajoGeneral.xsd" xmlns:mstns="http://tempuri.org/costosOrdenTrabajoGeneral.xsd" xmlns="http://tempuri.org/costosOrdenTrabajoGeneral.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="costosOrdenTrabajoGeneral" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="costosOrdenTrabajoGeneral" msprop:Generator_UserDSName="costosOrdenTrabajoGeneral">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="costosOT" msprop:Generator_TableClassName="costosOTDataTable" msprop:Generator_TableVarName="tablecostosOT" msprop:Generator_TablePropName="costosOT" msprop:Generator_RowDeletingName="costosOTRowDeleting" msprop:Generator_RowChangingName="costosOTRowChanging" msprop:Generator_RowEvHandlerName="costosOTRowChangeEventHandler" msprop:Generator_RowDeletedName="costosOTRowDeleted" msprop:Generator_UserTableName="costosOT" msprop:Generator_RowChangedName="costosOTRowChanged" msprop:Generator_RowEvArgName="costosOTRowChangeEvent" msprop:Generator_RowClassName="costosOTRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="materialUtilizado" msprop:Generator_ColumnVarNameInTable="columnmaterialUtilizado" msprop:Generator_ColumnPropNameInRow="materialUtilizado" msprop:Generator_ColumnPropNameInTable="materialUtilizadoColumn" msprop:Generator_UserColumnName="materialUtilizado" type="xs:string" minOccurs="0" />
+              <xs:element name="cantidad" msprop:Generator_ColumnVarNameInTable="columncantidad" msprop:Generator_ColumnPropNameInRow="cantidad" msprop:Generator_ColumnPropNameInTable="cantidadColumn" msprop:Generator_UserColumnName="cantidad" type="xs:string" minOccurs="0" />
+              <xs:element name="precio" msprop:Generator_ColumnVarNameInTable="columnprecio" msprop:Generator_ColumnPropNameInRow="precio" msprop:Generator_ColumnPropNameInTable="precioColumn" msprop:Generator_UserColumnName="precio" type="xs:string" minOccurs="0" />
+              <xs:element name="total" msprop:Generator_ColumnVarNameInTable="columntotal" msprop:Generator_ColumnPropNameInRow="total" msprop:Generator_ColumnPropNameInTable="totalColumn" msprop:Generator_UserColumnName="total" type="xs:string" minOccurs="0" />
+              <xs:element name="numeroOT" msprop:Generator_ColumnVarNameInTable="columnnumeroOT" msprop:Generator_ColumnPropNameInRow="numeroOT" msprop:Generator_ColumnPropNameInTable="numeroOTColumn" msprop:Generator_UserColumnName="numeroOT" type="xs:string" minOccurs="0" />
+              <xs:element name="fechaOT" msprop:Generator_ColumnVarNameInTable="columnfechaOT" msprop:Generator_ColumnPropNameInRow="fechaOT" msprop:Generator_ColumnPropNameInTable="fechaOTColumn" msprop:Generator_UserColumnName="fechaOT" type="xs:string" minOccurs="0" />
+              <xs:element name="equipo" msprop:Generator_ColumnVarNameInTable="columnequipo" msprop:Generator_ColumnPropNameInRow="equipo" msprop:Generator_ColumnPropNameInTable="equipoColumn" msprop:Generator_UserColumnName="equipo" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

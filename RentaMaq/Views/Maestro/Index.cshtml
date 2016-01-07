@@ -1,0 +1,259 @@
+﻿@model IEnumerable<RentaMaq.Models.Maestro>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    bool tienePermiso1 = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(1, int.Parse(Session["ID"].ToString()))) 
+    {
+        tienePermiso1 = true;
+    }
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <h3>Control de Bodega</h3>
+        @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(1, int.Parse(Session["ID"].ToString())))
+        {
+            <p>
+                @Html.ActionLink("Ingreso de Productos", "Create", new { verificador = "entrada" })
+            </p>
+            <p>
+                @Html.ActionLink("Salida de Productos", "Create", new { verificador = "salida" })
+            </p>
+        }
+    </div>
+    <div class="col-md-8 col-md-offset-1">
+        <br />
+        <div class="col-md-6">
+            Filtro:
+        </div>
+        <div class="col-md-6">
+            Buscar por:
+        </div>
+        <div class="col-md-3">
+            <label class="control-label">Inicio:</label>
+            <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="The field fecha must be a date." data-val-required="El campo fecha es obligatorio."
+                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]" value="@ViewBag.fechaAnterior"
+                   type="text"> 
+
+        </div>
+        <div class="col-md-3">
+            <label class="control-label">Término:</label>
+            <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="The field fecha must be a date." data-val-required="El campo fecha es obligatorio."
+                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]" value="@ViewBag.fechaActual"
+                   type="text"> 
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Producto:</label>
+            <select class="form-control Select" name="producto" id="producto">
+                <option>Todos</option>
+                @foreach (RentaMaq.Models.Producto producto in new RentaMaq.DAL.Context().Productos.ToList())
+                {
+                    <option value="@producto.ProductoID">@producto.descripcion</option>
+                }
+            </select>            
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Bodega:</label>
+            <select class="form-control Select" name="bodega" id="bodega">
+                <option>Todas</option>
+                @foreach (RentaMaq.Models.Bodegas bodega in new RentaMaq.DAL.Context().bodegas.ToList())
+                {
+                    <option value="@bodega.BodegasID">@bodega.nombre / @bodega.ubicacion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <br />
+            <input class="form-control" id="Boton" value="Buscar" type="button" />
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<br />
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Codigo Producto
+            </th>
+            <th>
+                Descripcion
+            </th>
+            <th>
+                Cantidad Entrante
+            </th>
+            <th>
+                Cantidad Saliente
+            </th>
+            <th>
+                Proveedor
+            </th>
+            <th>
+                Valor Unitario
+            </th>
+            <th>
+                Valor Total
+            </th>
+            <th></th>
+        </tr>
+
+        <tbody id="contenedor">
+            @foreach (var item in Model)
+        {
+                <tr>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fecha)
+                    </td>
+                    <td>
+                        @if (!item.ProductoID.Equals("-1"))
+                        {
+                            <text>
+                                @(new RentaMaq.DAL.Context().Productos.Find(int.Parse(item.ProductoID)).numeroDeParte)
+                            </text>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descripcionProducto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cantidadEntrante)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cantidadSaliente)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.proveedor)
+                    </td>
+                    <td class="text-right">
+                        @RentaMaq.Models.Formateador.valoresPesos(item.valorUnitario)
+                    </td>
+                    <td class="text-right">
+                        @RentaMaq.Models.Formateador.valoresPesos(item.valorTotal)
+
+                    </td>
+                    <td>
+                        @if (tienePermiso1)
+                        {
+                            <text>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.MaestroID }) |
+                        @Html.ActionLink("Detalle", "Details", new { id = item.MaestroID }) |
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.MaestroID })
+                            </text>
+                        }
+                        else 
+                        {
+                            <text>
+                        @Html.ActionLink("Detalle", "Details", new { id = item.MaestroID })
+                            </text>
+                        }                        
+                    </td>
+                </tr>
+        }
+
+        </tbody>
+
+    </table>
+</div>
+
+@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+        @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+        @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script> 
+        <script>
+            $(document).ready(function () {
+                try {
+                    $(".Select").select2({
+                        placeholder: "Seleccione un producto"
+                    });
+                } catch (error) {
+
+                }
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fecha1").val();
+                    var fecha2 = $("#fecha2").val();
+                    var bodega = $("#bodega").val();
+                    var producto = $("#producto").val();
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    } else {
+                        var div = $("#contenedor");
+                        $.getJSON('/Maestro/Filtrar', { "fecha1": fecha1, "fecha2": fecha2, "bodega": bodega, "producto": producto },
+                            function (data) {
+                                div.empty();
+                                $.each(data, function (i, item) {
+                                    div.append("<tr><td>" + formatoFechaJson(item.fecha) + "</td><td>" + item.ProductoID + "</td><td>" + item.descripcionProducto + "</td><td>" + item.cantidadEntrante + "</td><td>" + item.cantidadSaliente + "</td><td>" + verificadorNull(item.proveedor) + "</td><td class='text-right'>" + formatoPrecio(item.valorUnitario) + "</td><td class='text-right'>" + formatoPrecio(item.valorTotal) + "</td>" +
+                                   "<td><a href='/Maestro/Edit/" + item.MaestroID + "'>Editar</a>|<a href='/Maestro/Details/" + item.MaestroID + "'>Detalle</a>|<a href='/Maestro/Delete/" + item.MaestroID + "'>Eliminar</a></td></tr>");
+                                    // console.log(formatoFechaJson(item.fecha));
+                                });
+                            });
+                    }
+                });
+
+            });
+
+            function formatoFechaJson(entrada) {
+                console.log(entrada);
+                var dateString = entrada.substr(6);
+                var currentTime = new Date(parseInt(dateString));
+
+                var newDate = new Date(currentTime);
+                newDate.setDate(newDate.getDate() + 1);
+                var month = newDate.getMonth() + 1;
+                var day = newDate.getDate();
+                var year = newDate.getFullYear();
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            function verificadorNull(variable) {
+                if (variable == null) {
+                    return "";
+                } else {
+                    return variable;
+                }
+                return variable;
+            }
+            function formatoPrecio(n) {
+                
+                if (n == null) {
+                    return "";
+                }
+                var number = new String(n);
+                var result = "";
+                isNegative = false;
+                if (number.indexOf("-") > -1) {
+                    number = number.substr(1);
+                    isNegative = true;
+                }
+
+                while (number.length > 3) {
+                    result = '.' + number.substr(number.length - 3) + result;
+
+                    number = number.substring(0, number.length - 3);
+
+                }
+                result = number + result;
+                if (isNegative) result = '-' + result;
+
+                return '$' + result;
+            }
+
+        </script>    
+}

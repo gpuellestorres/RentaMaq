@@ -1,0 +1,161 @@
+﻿@model List<RentaMaq.Models.IndicadoresCostosOTEquipo>
+@{
+    ViewBag.Title = "Costos de OT por Equipos";
+
+    System.Collections.Hashtable tablaEquipos = new System.Collections.Hashtable();
+    List<RentaMaq.Models.equipos> Equipos = RentaMaq.Models.equipos.todos();
+
+    foreach (RentaMaq.Models.equipos Equipo in Equipos)
+    {
+        tablaEquipos.Add(Equipo.ID, Equipo);
+    }
+}
+
+<br />
+
+<div class="col-sm-12">
+    <h3>Costos de Activos de Órdenes de Trabajo, agrupados por Equipo</h3>
+</div>
+<div class="clearfix"></div>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Equipo
+            </th>
+            <th>
+                Costos Totales
+            </th>
+            <th></th>
+        </tr>
+        @{
+            RentaMaq.DAL.Context db = new RentaMaq.DAL.Context();
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                @{
+                    RentaMaq.Models.equipos Equipo = ((RentaMaq.Models.equipos)tablaEquipos[item.equipoID]);
+                }
+                <td>
+                    <a href="@Url.Action("Details", "equipos", new { id = item.equipoID})">@Equipo.numeroAFI / @Equipo.patenteEquipo / @Equipo.ModeloID.nombreModelo - @Equipo.ModeloID.MarcaID.NombreMarca</a>
+                </td>
+                <td>
+                    @item.totalCostos
+                </td>
+                <td>
+                    @if(item.totalCostos>0)
+                    {
+                        @Html.ActionLink("Ver en Detalle", "DetalleCostosPorEquipo", new { id = item.equipoID })
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="clearfix"></div>
+<hr />
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+    <a href="@Url.Action("costosOrdenesTrabajoGeneralesEquipo", "Report")"
+       target="_blank" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>Descargar Reporte</a>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+            $(document).ready(function () {
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+            });
+    </script>
+
+    <script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="~/amcharts/serial.js"></script>
+    <script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+    <script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>
+
+    <!-- amCharts javascript code -->
+    <script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "theme": "light",
+            "categoryAxis": {
+                "gridPosition": "start"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "Costos de materiales utilizados para equipo [[category]]: $[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "Costo total",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "titles": [
+		        {
+		            "id": "Title-1",
+		            "size": 15,
+		            "text": "Costos de materiales de OT por equipos"
+		        }
+            ],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "title": "Costos"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "useGraphSettings": true
+            },
+            "dataProvider": [
+                {
+                    @for(int i=0;i<Model.Count;i++)
+                {
+                    RentaMaq.Models.equipos Equipo = ((RentaMaq.Models.equipos)tablaEquipos[Model[i].equipoID]);
+                    <text>
+                    "category": "@Equipo.numeroAFI",
+                    "column-1": @Model[i].totalCostos
+                 @if(i==Model.Count-1){
+                    <text>
+                    }
+                    </text>
+                 }
+                 else {
+                    <text>
+            },
+                    {
+                        </text>
+                 }
+                        </text>
+                }
+                    ],
+                    "export": {
+                        "enabled": true,
+                        "libs": {
+                            "path": "/amcharts/plugins/export/libs/"
+                        }
+                    }
+    }
+    );
+    </script>
+}

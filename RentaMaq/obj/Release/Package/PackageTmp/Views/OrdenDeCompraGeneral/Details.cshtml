@@ -1,0 +1,268 @@
+﻿@model RentaMaq.Models.OrdenDeCompraGeneral
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles de Orden de Compra</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.OrdenDeCompraGeneralID)
+
+        @{
+    string FechaEntrega = Model.fechaEntrega.Day + "/" + Model.fechaEntrega.Month + "/" + Model.fechaEntrega.Year;
+    string Fecha = Model.Fecha.Day + "/" + Model.Fecha.Month + "/" + Model.Fecha.Year;
+        }
+
+
+
+
+        <div class="form-group">
+
+            <label class="control-label col-md-2" for="ProveedorID">Proveedor</label>
+            <div class="col-md-4">
+                <select id="ProveedorID" name="ProveedorID" class="form-control" required readonly>
+                    @foreach (RentaMaq.Models.Proveedor Prov in (new RentaMaq.DAL.Context().Proveedores.ToList()))
+                    {
+                        if (Model.ProveedorID.ProveedorID.Equals(Prov.ProveedorID))
+                        {
+                            <option value="@Prov.ProveedorID" selected>@Prov.nombreProveedor</option>
+                        }
+                        else
+                        {
+                            <option value="@Prov.ProveedorID">@Prov.nombreProveedor</option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Fecha">Fecha de Orden de Compra</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="Fecha" name="Fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@Fecha" readonly>
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="atencionA">Atención a Sr/a:</label>
+            <div class="col-md-4">
+                <input type="text" id="atencionA" name="atencionA" class="form-control" value="@Model.atencionA" readonly />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="texto">Encabezado:</label>
+            <div class="col-md-10">
+                <textarea type="text" id="texto" name="texto" class="form-control" style="max-width:1000px; width:92% !important" readonly>@Model.texto</textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="fechaEntrega">Fecha de Entrega</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fechaEntrega" name="fechaEntrega"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@FechaEntrega" readonly>
+                <span class="field-validation-valid text-danger" data-valmsg-for="fechaEntrega" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="formaRetiro">Forma de Retiro</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="formaRetiro" name="formaRetiro" type="text" value="@Model.formaRetiro" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="formaRetiro" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.formaPago, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="formaPago" name="formaPago" type="text" value="Efectivo" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="formaPago" data-valmsg-replace="true"></span>
+            </div>
+            @Html.LabelFor(model => model.tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input type="text" name="tipo" id="tipo" value="@Model.tipo" class="hidden" readonly />
+                @if (Model.tipo.Equals("andacollo"))
+                {
+                    <input type="text" name="tipoMuestra" id="tipoMuestra" value="Andacollo" class="form-control" readonly />
+                }
+                else if (Model.tipo.Equals("taltal"))
+                {
+                    <input type="text" name="tipoMuestra" id="tipoMuestra" value="Taltal" class="form-control" readonly />
+                }
+            </div>
+        </div>
+
+        <hr />
+        <div id="DivDetalles" class="col-sm-12">
+            <h4>Detalle:</h4>
+            <div class="table-responsive">
+                <table class="table table-condensed" id="tableItems">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th class="col-md-1">Cantidad</th>
+                            <th>Descripción</th>
+                            <th>Tipo de Compra</th>
+                            <th>Código Interno RENTA-MAQ</th>
+                            <th class="col-md-1">Plazo de Entrega (Días)</th>
+                            <th>Precio Unitario</th>
+                            <th class="col-md-1">Descuento (%)</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    @{
+                    List<RentaMaq.Models.DetalleOrdenCompra> Detalles = new RentaMaq.DAL.Context().detalleOrdenCompra.Where(s => s.IDOrdenCompra == Model.OrdenDeCompraGeneralID).ToList();
+
+                    List<RentaMaq.Models.equipos> Equipos = RentaMaq.Models.equipos.todos();
+                    }
+                    <tbody>
+                        @foreach (RentaMaq.Models.DetalleOrdenCompra Detalle in Detalles)
+                        {
+                            <tr id="filaDetalle">
+                                <td><input type="text" class="form-control" name="codigoDetalle" id="codigoDetalle" value="@Detalle.codigo" required readonly /></td>
+                                <td><input type="number" class="form-control" name="cantidadDetalle" id="cantidadDetalle" value="@Detalle.cantidad" required readonly /></td>
+                                <td><input type="text" class="form-control" name="descripcionDetalle" id="descripcionDetalle" value="@Detalle.descripcion" required readonly /></td>
+                                <td>
+                                    <select name="tipoDeCompraDetalle" id="tipoDeCompraDetalle" class="form-control" required readonly>
+                                        <option value="Compra Directa">Compra Directa</option>
+                                        @if (Detalle.tipoDeCompra.Equals("Stock"))
+                                        {
+                                            <option value="Stock" selected>Stock</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Stock">Stock</option>
+                                        }
+
+                                    </select>
+                                </td>
+                                <td>
+                                    @if (Detalle.tipoDeCompra.Equals("Compra Directa"))
+                                    {
+                                        <text>
+                                    <select name="codigoInternoDetalle" id="codigoInternoDetalle"
+                                            class="form-control" required readonly>
+                                        @foreach (RentaMaq.Models.equipos Equipo in (Equipos))
+                                        {
+                                            if (Detalle.codigoInternoRentamaq.Equals(Equipo.ID))
+                                            {
+                                                <option value="@Equipo.ID" selected>@(Equipo.numeroAFI + " - " + Equipo.patenteEquipo + " - " + Equipo.ModeloID.nombreModelo)</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@Equipo.ID">@(Equipo.numeroAFI + " - " + Equipo.patenteEquipo + " - " + Equipo.ModeloID.nombreModelo)</option>
+                                            }
+                                        }
+                                    </select>
+
+                                    <input type="text" class="form-control hidden" name="codigoInternoDetalleStock"
+                                           id="codigoInternoDetalleStock" value="" readonly />
+                                        </text>
+                                    }
+                                    else if (Detalle.tipoDeCompra.Equals("Stock"))
+                                    {
+                                        <select name="codigoInternoDetalle" id="codigoInternoDetalle"
+                                                class="form-control hidden" required readonly>
+                                            @foreach (RentaMaq.Models.equipos Equipo in (Equipos))
+                                            {
+                                                <option value="@Equipo.ID">@(Equipo.numeroAFI + " - " + Equipo.patenteEquipo + " - " + Equipo.ModeloID.nombreModelo)</option>
+                                            }
+                                        </select>
+                                    <input type="text" class="form-control" name="codigoInternoDetalleStock"
+                                           id="codigoInternoDetalleStock" value="@Detalle.codigoInternoRentamaq" readonly />
+                                    }
+                                </td>
+                                <td><input type="number" class="form-control" name="plazoEntregaDetalle" id="plazoEntregaDetalle" value="@Detalle.plazoEntrega" required readonly /></td>
+                                <td><input type="number" class="form-control" name="precioUnitarioDetalle" id="precioUnitarioDetalle" value="@Detalle.precioUnitario" required readonly /></td>
+                                <td><input type="text" class="form-control" name="descuentoDetalle" id="descuentoDetalle" value="@Detalle.descuento" required readonly /></td>
+                                <td><input type="number" class="form-control" name="totalDetalle" id="totalDetalle" value="@Detalle.valorTotal" required readonly /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <hr />
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-4 col-sm-offset-6" style="border-left: 1px solid #D8D8D8 !important">
+            <h4>Totales:</h4>
+            <div class="form-group">
+                <label class="control-label col-md-4" for="subtotal">Subtotal</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Subtotal must be a number."
+                           data-val-required="The Subtotal field is required."
+                           id="subtotal" name="subtotal" type="number" value="@Model.subtotal" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="subtotal" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="miscelaneos">Miscelaneos</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Miscelaneos must be a number."
+                           data-val-required="The Miscelaneos field is required."
+                           id="miscelaneos" name="miscelaneos" type="number" value="@Model.miscelaneos" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="miscelaneos" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="totalNeto">Total Neto</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Total Neto must be a number."
+                           data-val-required="The Total Neto field is required."
+                           id="totalNeto" name="totalNeto" type="number" value="@Model.totalNeto" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="totalNeto" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="IVA">IVA (%)</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field IVA must be a number."
+                           data-val-required="The IVA field is required."
+                           id="IVA" name="IVA" type="number" value="@Model.IVA" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="IVA" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="total">Total</label>
+                <div class="col-md-8">
+                    <input class="form-control text-box single-line" data-val="true"
+                           data-val-number="The field Total must be a number."
+                           data-val-required="The Total field is required."
+                           id="total" name="total" type="number" value="@Model.total" readonly />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="total" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <input type="number" name="añoOC" value="@Model.añoOC" hidden />
+            <input type="number" name="numeroOC" value="@Model.numeroOC" hidden />
+
+        </div>
+
+
+        <div class="clearfix"></div>
+        <div class="modal-footer">
+            <a href="/OrdenDeCompraGeneral">Volver</a>&nbsp;
+        </div>
+    </div>
+
+}

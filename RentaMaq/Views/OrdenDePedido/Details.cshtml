@@ -1,0 +1,122 @@
+﻿@model RentaMaq.Models.OrdenDePedido
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalle de Orden de Pedido</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.OrdenDePedidoID)
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="numeroOrden">Número de Orden</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Numero de Orden must be a number." data-val-required="The Numero de Orden field is required." id="numeroOrden" name="numeroOrden" type="number" value="@Model.numeroOrden" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="numeroOrden" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="a_o">A&#241;o</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Año must be a number." data-val-required="The Año field is required." id="a_o" name="año" type="number" value="@Model.año" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="año" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="se_ores">Cliente</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="se_ores" name="señores" type="text" value="@Model.señores" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="señores" data-valmsg-replace="true"></span>
+            </div>
+            @{
+    string FECHA = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+            }
+            <label class="control-label col-md-2" for="fecha">Fecha</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fecha" name="fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@FECHA" readonly>
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Encabezado</label>
+            <div class="col-md-10">
+                <textarea rows="5" name="encabezado" id="encabezado" class="form-control" style="max-width:92%; width:92% !important" readonly>@Model.encabezado</textarea>
+                <span class="field-validation-valid text-danger" data-valmsg-for="encabezado" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="trabajoARealizar">Trabajo a realizar</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="trabajoARealizar" name="trabajoARealizar" type="text" value="@Model.trabajoARealizar" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="trabajoARealizar" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="personaResponsable">Persona Responsable</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="personaResponsable" name="personaResponsable" type="text" value="@Model.personaResponsable" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="personaResponsable" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12" id="DivDetalles">
+            <h4>Detalle:</h4>
+            <div class="table-responsive">
+                <table class="table table-condensed" id="tableItems">
+                    <thead>
+                        <tr>
+                            <th>Detalle</th>
+                            <th class="col-md-3">Cantidad</th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (RentaMaq.Models.detalleOrdenPedido Detalle in new RentaMaq.DAL.Context().DetalleOrdenesPedido.Where(s => s.OrdenDePedidoID == Model.OrdenDePedidoID).ToList())
+                        {
+                            <tr>
+                                <td><textarea class="form-control" name="detalleDetalle" id="detalleDetalle" rows="1" style="width:97%; max-width:97%; resize:none !important" required readonly>@Detalle.detalle</textarea></td>
+                                <td><input type="number" class="form-control" name="cantidadDetalle" id="cantidadDetalle" value="@Detalle.cantidad" required readonly /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="nombreSolicitante">Nombre de Solicitante</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="nombreSolicitante" name="nombreSolicitante" type="text" value="@Model.nombreSolicitante" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="nombreSolicitante" data-valmsg-replace="true"></span>
+            </div>
+            @{
+    string FECHASOLICITUD = @Model.fechaSolicitud.Day + "/" + Model.fechaSolicitud.Month + "/" + Model.fechaSolicitud.Year;
+            }
+            <label class="control-label col-md-2" for="fechaSolicitud">Fecha de Solicitud</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fechaSolicitud" name="fechaSolicitud"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@FECHASOLICITUD" readonly>
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    </div>
+}

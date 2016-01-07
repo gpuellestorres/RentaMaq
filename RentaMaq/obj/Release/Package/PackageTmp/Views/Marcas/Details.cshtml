@@ -1,0 +1,26 @@
+﻿@model RentaMaq.Models.Marca
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Marca</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreMarca)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreMarca)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.MarcaID }) |
+    @Html.ActionLink("Volver", "Index")
+</p>

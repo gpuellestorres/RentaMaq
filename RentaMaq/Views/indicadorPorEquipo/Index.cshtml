@@ -1,0 +1,210 @@
+﻿@model IEnumerable<RentaMaq.Models.indicadoresPorEquipo>
+
+@{
+    ViewBag.Title = "Indicadores";
+}
+
+<h2>Consumo de Productos por Equipo</h2>
+<div class="row">    
+    <div class="col-md-12">
+        <div class="col-md-12">
+            Filtro:
+        </div>        
+        <div class="col-md-3">
+            <input class="form-control fecha" id="fechaInicial" name="fechaInicial" data-val-date="The field fecha must be a date." data-val-required="El campo fecha es obligatorio."
+                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                   type="text">
+
+        </div>
+        <div class="col-md-3">
+            <input class="form-control fecha" id="fechaFinal" name="fechaFinal" data-val-date="The field fecha must be a date." data-val-required="El campo fecha es obligatorio."
+                   data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                   type="text">
+        </div>        
+        <div class="col-md-2">
+            <select class="form-control nombreEquipo" name="nombreEquipo" id="nombreEquipo">
+                <option value="todos">Todos</option>
+                @foreach (RentaMaq.Models.equipos Equipos in (List<RentaMaq.Models.equipos>)ViewData["equipos"])
+                {
+                    <option value="@Equipos.numeroAFI">@Equipos.numeroAFI</option>
+                }
+            </select>            
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" id="Boton" value="Buscar" type="button" />
+        </div>
+    </div>
+</div>
+
+<br /><br />
+<div class="table-responsive">
+<table class="table">
+    <tr>
+        <th>
+            Nombre Equipo
+        </th>
+        <th>
+            Nombre Producto
+        </th>
+        <th>
+            Cantidad
+        </th>
+        <th>
+            Cantidad Producto
+        </th>                
+        <th></th>
+    </tr>
+
+    <tbody id="contenedor">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreEquipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cantidadProducto)
+                </td>
+                                
+                <td>                    
+                    @Html.ActionLink("Detalle", "Detalle", new { nombreEquipo = item.nombreEquipo})                   
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+</div>
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;" hidden></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+
+    <script type="text/javascript" src="~/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="~/amcharts/serial.js"></script>
+    <script type="text/javascript" src="~/amcharts/themes/light.js"></script>
+    <script type="text/javascript" src="~/amcharts/plugins/export/export.min.js"></script>    
+    <link type="text/css" href="~/amcharts/plugins/export/export.css" rel="stylesheet">
+    <script>
+        
+        var chartData = [];
+        var chart =AmCharts.makeChart("chartdiv",
+				{
+				    "type": "serial",
+				    "categoryField": "category",
+				    "startDuration": 1,
+				    "categoryAxis": {
+				        "gridPosition": "start"
+				    },
+				    "trendLines": [],
+				    "graphs": [
+						{
+						    "balloonText": "[[title]] of [[category]]:[[value]]",
+						    "fillAlphas": 1,
+						    "id": "AmGraph-1",
+						    "title": "Grafico",
+						    "type": "column",
+						    "valueField": "column-1"
+						}
+				    ],
+				    "guides": [],
+				    "dataProvider": chartData,
+				    "valueAxes": [
+						{
+						    "id": "ValueAxis-1",
+						    "title": "Cantidad"
+						}
+				    ],
+				    "allLabels": [],
+				    "balloon": {},
+				    "legend": {
+				        "useGraphSettings": true
+				    },
+				    "titles": [
+						{
+						    "id": "Title-1",
+						    "size": 15,
+						    "text": "Indicadores claves de Equipo"
+						}
+				    ],
+				    "export": {
+				        "enabled": true
+				    }
+				}
+			);
+
+        function generateChartData(data) {            
+            var chartData = [];
+
+            $.each(data, function (i, item) {
+                var nombreProducto = item.nombreProducto;
+                chartData.push({
+                    "category": item.nombreProducto,
+                    "column-1" : parseInt(item.cantidadProducto),
+                });               
+            });           
+            return chartData;
+        }
+            
+
+       $(document).ready(function () {
+                try {
+                    $(".nombreEquipo").select2({
+                        placeholder: "Seleccione un producto"
+                    });
+                } catch (error) {
+
+                }
+                $(".fecha").datetimepicker({
+                    viewMode: 'days',
+                    format: 'DD/MM/YYYY'
+                });
+
+
+                $("#Boton").click(function () {
+                    var fecha1 = $("#fechaInicial").val();
+                    var fecha2 = $("#fechaFinal").val();
+                    var nombreEquipo = $("#nombreEquipo").val();
+                    var chartDiv= $("#chartdiv");
+                    if (fecha1=="" || fecha2=="") {
+                        alert("Debe ingresar ambas fechas");
+                    } else {
+                        var div = $("#contenedor");
+                        $.getJSON('/indicadorPorEquipo/Filtrar', { "fechaInicial": fecha1, "fechaFinal": fecha2, "nombreEquipo": nombreEquipo },
+                            function (data) {                               
+
+                                div.empty();
+
+                                if (nombreEquipo == "todos") {
+                                    chartDiv.attr("hidden", "hidden");
+                                } else {
+                                    chart.titles = [];
+                                    chart.addTitle("Indicadores claves de Productos por Equipo"+nombreEquipo, 15, "", "", true)
+                                    chart.validateNow();                                    
+                                    chartDiv.removeAttr("hidden");
+                                    chart.dataProvider = generateChartData(data);
+                                    chart.validateData();
+                                }
+
+                                
+
+                                $.each(data, function (i, item) {
+                                    console.log(item);
+                                    div.append("<tr><td>" + item.nombreEquipo + "</td><td>" + item.nombreProducto + "</td><td>" + item.cantidadProducto + "</td>" +
+                                   "<td><a href='/indicadorPorEquipo/DetalleFecha?nombreEquipo=" + item.nombreEquipo + "&fechaInicial="+fecha1 +"&fechaFinal="+fecha2+"'>Detalle</a></td></tr>");                                  
+                                });
+                            });
+                    }
+                });
+
+            });           
+
+    </script>
+}

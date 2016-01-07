@@ -1,0 +1,71 @@
+﻿@model IEnumerable<RentaMaq.Models.Producto>
+
+@{
+    ViewBag.Title = "Productos";
+}
+
+<h2>Productos Stock Critico</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            N° de Parte
+        </th>
+        <th>
+            Descripcion
+        </th>
+        <th>
+            Codigo
+        </th>
+        <th>
+            Precio Unitario
+        </th>
+        <th>
+            Stock Actual
+        </th>
+        <th>
+            Stock Minimo
+        </th>        
+        <th></th>
+    </tr>
+    <tbody id="contenedor">
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.numeroDeParte)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.precioUnitario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stockActual)
+                </td> 
+                <td>
+                    @Html.DisplayFor(modelItem => item.stockMinimo)
+                </td>                
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ProductoID }) |
+                    @Html.ActionLink("Detalle", "Details", new { id = item.ProductoID }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.ProductoID })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    
+}

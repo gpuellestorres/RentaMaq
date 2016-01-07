@@ -1,0 +1,200 @@
+﻿@model IEnumerable<RentaMaq.Models.pedidos>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Lista Pedidos</h2>
+
+<p>
+    @if (Session["ID"]!=(null) && @RentaMaq.Models.roles.tienePermiso(7, int.Parse(Session["ID"].ToString())))
+    {   
+        <text>
+            @Html.ActionLink("Crear Nuevo Pedido", "Create")
+        </text>
+    }
+                                                    
+</p>
+<br />
+<div class="col-md-12"> 
+    <div class="col-md-2">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>        
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@ViewBag.fechaAnterior">
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@ViewBag.fechaActual">
+    </div>
+    <div class="col-md-2">
+        <select class="form-control" name="estadoPedido" id="estadoPedido">
+            <option value="TODAS">Todas</option>
+            <option value="NUEVA">Nuevas</option>
+            <option value="AUTORIZADA">Autorizada</option>
+            <option value="EN COTIZACION">En Cotizacion</option>
+            <option value="EN ORDEN DE COMPRA">En Orden de Compra</option>
+            <option value="COMPLETADA">Completada</option>
+        </select>
+
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<br /><br /><br /><br />
+<div class="clearfix"></div>
+<div class="row">
+    @if (ViewBag.verificador != null && ViewBag.verificador.Equals("true"))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;
+            </button>
+            Pedido Autorizado con Exito
+        </div>
+    }
+    @if (ViewBag.verificador != null && ViewBag.verificador.Equals("false"))
+    {
+        <div class="alert alert-error alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;
+            </button>
+            Error al Autorizar Pedido
+        </div>
+    }
+
+</div>
+<div class="table-responsive">
+<table class="table">
+    <tr>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Nota
+        </th>
+        <th>
+            Estado
+        </th>
+        <th></th>
+    </tr>
+    <tbody id="contenedor">
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @RentaMaq.Models.Formateador.fechaCompletaToString(item.fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nota)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.estado)
+        </td>
+        <td>
+            @if(item.estado.Equals("NUEVA")){
+                <text>
+                    @Html.ActionLink("Editar", "Edit", new { id=item.pedidosID }) |                                                              
+                </text>                                                               
+               @*if (Session["ID"] != null && @RentaMaq.Models.roles.tienePermiso(10, int.Parse(Session["ID"].ToString())) )
+                { 
+                    <text>
+                        @Html.ActionLink("Autorizar", "Autorizar", new { id = item.pedidosID }) |
+                    </text>
+                }*@
+            }
+            @if (item.estado.Equals("NUEVA") && Session["ID"] != null && @RentaMaq.Models.roles.tienePermiso(3, int.Parse(Session["ID"].ToString())))
+            {
+                <text>
+                    @Html.ActionLink("Pasar a Cotizacion", "Cotizacion", new { id = item.pedidosID }) |
+                </text>
+            }
+            @if ((item.estado.Equals("EN COTIZACION")) && Session["ID"] != null && @RentaMaq.Models.roles.tienePermiso(3, int.Parse(Session["ID"].ToString())))
+            {
+                <text>
+                    @Html.ActionLink("Pasar a Orden de Compra", "OrdenDeCompra", new { id = item.pedidosID }) |
+                </text>
+            }
+            @if ((item.estado.Equals("EN ORDEN DE COMPRA")) && Session["ID"] != null && @RentaMaq.Models.roles.tienePermiso(3, int.Parse(Session["ID"].ToString())))
+            {
+                <text>
+                    @Html.ActionLink("Completada", "Completada", new { id = item.pedidosID }) |
+                </text>
+            }            
+            @Html.ActionLink("Detalle", "Details", new { id=item.pedidosID }) |
+            @Html.ActionLink("Borrar", "Delete", new { id=item.pedidosID })|
+            <br />
+            <a href="@Url.Action("pasarAPedido", "pedidos", new { id = item.pedidosID })">Crear Solicitud con estos datos</a>
+
+        </td>
+    </tr>
+}
+</tbody>
+</table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+
+    <script>
+        $(document).ready(function () {
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+
+            $("#Boton").click(function () {
+                var fecha1 = $("#fecha1").val();
+                var fecha2 = $("#fecha2").val();
+                var estadoPedido =$("#estadoPedido").val();
+                if (fecha1 == "" || fecha2 == "") {
+                    alert("Debe ingresar ambas fechas");
+                } else {
+                    var div = $("#contenedor");
+                    $.getJSON('/pedidos/Filtrar', { "fecha1": fecha1, "fecha2": fecha2 , "estadoPedido": estadoPedido},
+                        function (data) {
+                            div.empty();
+                            $.each(data, function (i, item) {
+                                console.log(data);
+                                var cadena = "";
+                                if (item.estado == "NUEVA") {
+                                    cadena = "<td><a href='/pedidos/Edit/" + item.pedidosID + "'>Editar</a>|";
+                                } else {
+                                    cadena = "<td>";
+                                }
+                                div.append("<tr><td>" + formatoFechaJson(item.fecha) + "</td><td>" + item.nota + "</td><td>" + item.estado + "</td>" +
+                                         cadena+"<a href='/pedidos/Details/" + item.pedidosID + "'>Detalle</a>|<a href='/pedidos/Delete/" + item.pedidosID + "'>Eliminar</a></td></tr>");
+
+                            });
+                        });
+                }
+            });
+
+        });
+
+        function formatoFechaJson(entrada) {
+            var dateString = entrada.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }        
+        
+
+    </script>
+}
+
+
+

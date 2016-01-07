@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+<img src='/Images/LOGO RENTAMAQ..jpg' alt="Renta-Maq" width="100%" />
+<div class="row">
+    <br />
+    @if (Session["ID"] == null)
+    {
+        <div class="modal-footer">
+            <a href="@Url.Action("Login","Usuarios")" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Ingresar al sistema</a>
+        </div>
+    }
+    
+</div>

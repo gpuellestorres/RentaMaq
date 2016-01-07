@@ -1,0 +1,170 @@
+﻿@model RentaMaq.Models.equipos
+
+@{
+    ViewBag.Title = "Detalle";
+    string FECHA1 = "", FECHA2 = "";
+
+    DateTime Inicio = (DateTime)ViewBag.Inicio;
+    DateTime Termino = (DateTime)ViewBag.Termino;
+    string TipoAgrupacion = ViewBag.TipoAgrupacion;
+
+    FECHA1 = Inicio.Day + "/" + Inicio.Month + "/" + Inicio.Year;
+    FECHA2 = Termino.Day + "/" + Termino.Month + "/" + Termino.Year;
+    
+    
+    List<double> ListaDisponibilidad = (List<double>)ViewBag.Disponibilidad;
+    List<double> ListaConfiabilidad = (List<double>)ViewBag.Confiabilidad;
+    List<double> ListaTiempoMedioEntreFallas = (List<double>)ViewBag.TiempoMedioEntreFallas;
+    List<double> ListaTiempoMedioParaReparar = (List<double>)ViewBag.TiempoMedioParaReparar;
+    List<double> ListaTiempoMedioOperacionAntesFalla = (List<double>)ViewBag.TiempoMedioOperacionAntesDeFalla;
+    List<double> ListaUtilizacion = (List<double>)ViewBag.Utilizacion;
+
+    List<DateTime> ListaInicio = (List<DateTime>)ViewBag.ListaInicio;
+    List<DateTime> ListaTermino = (List<DateTime>)ViewBag.ListaTermino;
+    
+}
+
+<div class="col-md-3">
+    <h3>Detalle de Indicadores de Equipo</h3>
+</div>
+<div class="col-md-9">
+    <div class="col-md-12">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-3">
+        <select class="form-control agrupacion" id="agrupacion" name="agrupacion">
+            <option value="semanal">Semanal</option>
+            <option value="dosSemanas" @if (TipoAgrupacion.Equals("dosSemanas")) { <text> selected</text>}>Cada dos Semanas</option>
+            <option value="mensual" @if (TipoAgrupacion.Equals("mensual")) { <text> selected</text>}>Mensual</option>
+            <option value="bimensual" @if (TipoAgrupacion.Equals("bimensual")) { <text> selected</text>}>Bimensual</option>
+            <option value="trimestral" @if (TipoAgrupacion.Equals("trimestral")) { <text> selected</text>}>Trimestral</option>
+            <option value="semestral" @if (TipoAgrupacion.Equals("semestral")) { <text> selected</text>}>Semestral</option>
+            <option value="anual" @if (TipoAgrupacion.Equals("anual")) { <text> selected</text>}>Anual</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-3">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+    <input value="@Model.ID" id="idEquipo" hidden/>
+</div>
+<div class="clearfix"></div>
+<hr />
+<div class="col-md-6">
+    <h5><strong>AFI Equipo: </strong>@Model.numeroAFI</h5>
+    <h5><strong>Tipo Equipo: </strong>@Model.tipoEquipo</h5>
+</div>
+<div class="clearfix"></div>
+<br />
+<div class="table-responsive">
+    <table class="table table-condensed">
+        <tr>
+            <th>Inicio</th>
+            <th>Término</th>
+            
+            <th>Disponibilidad</th>
+            <th>Confiabilidad</th>
+            <th>Tiempo Medio Entre Fallas</th>
+            <th>Tiempo Medio Para Reparar</th>
+            <th>Tiempo Medio de Operacion Antes de Falla</th>
+            <th>Utilizacion</th>
+        </tr>
+
+        @for (int i = 0; i < ListaDisponibilidad.Count; i++)
+        {
+            <tr>
+                <td>@RentaMaq.Models.Formateador.fechaCompletaToString(ListaInicio[i])</td>
+                <td>@RentaMaq.Models.Formateador.fechaCompletaToString(ListaTermino[i])</td>
+                <td>
+                    @(ListaDisponibilidad[i] * 100)%
+                </td>
+                <td>@ListaConfiabilidad[i]</td>
+                <td>@ListaTiempoMedioEntreFallas[i] Horas</td>
+                <td>@ListaTiempoMedioParaReparar[i] Horas</td>
+                <td>@ListaTiempoMedioOperacionAntesFalla[i] Horas</td>
+                <td>@(ListaUtilizacion[i] * 100) %</td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Detalle", "DetalleDisponibilidad", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })
+            </td>
+            <td>
+                @Html.ActionLink("Detalle", "DetalleConfiabilidad", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })
+            </td>
+            <td>
+                @Html.ActionLink("Detalle", "DetalleTiempoEntreFallas", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })
+            </td>
+            <td>
+                @Html.ActionLink("Detalle", "DetalleTiempoMedioParaReparar", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })
+            </td>
+            <td>
+                @Html.ActionLink("Detalle", "DetalleTiempoMedioOperacionAntesFalla", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })
+            </td>
+            <td>
+                @Html.ActionLink("Detalle", "DetalleUtilizacion", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })
+            </td>
+
+        </tr>
+    </table>
+</div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+    <a target="_blank" class="btn btn-lg btn-primary" href="@Url.Action("indicadoresEquiposIndividual", "Report", new { id = Model.ID, fechaInicio = FECHA1.Replace("/", "-"), fechaFinal = FECHA2.Replace("/", "-"), TipoAgrupacion = TipoAgrupacion })"><span class="glyphicon glyphicon-text-background" aria-hidden="true"></span> Descargar Reporte</a>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".agrupacion").select2();
+
+            $("#Boton").click(function () {
+                var fecha1 = $("#fecha1").val();
+                var fecha2 = $("#fecha2").val();
+                var idEquipo = $("#idEquipo").val();
+
+                fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                var agrupacion = $("#agrupacion").val();
+
+                if (fecha1 == "" || fecha2 == "") {
+                    alert("Debe ingresar ambas fechas");
+                }
+                else {                  
+                    ruta = "/indicadoresDeMantencion/Detalle?id="+idEquipo+"&fechaInicio=" + fecha1 + "&fechaFinal=" + fecha2 + "&tipoAgrupacion=" + agrupacion;
+                    console.log(ruta);
+                    window.location.href = ruta
+                }
+            });
+        });
+    </script>
+}
+
+

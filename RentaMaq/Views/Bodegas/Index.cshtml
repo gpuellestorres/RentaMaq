@@ -1,0 +1,53 @@
+﻿@model IEnumerable<RentaMaq.Models.Bodegas>
+
+@{
+    ViewBag.Title = "Bodegas";
+}
+
+<h2>Bodegas del sistema</h2>
+@if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(1, int.Parse(Session["ID"].ToString())))
+{
+    <p>
+        @Html.ActionLink("Crear nueva", "Create")
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ubicacion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ubicacion)
+        </td>
+        <td>
+            @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(1, int.Parse(Session["ID"].ToString())))
+            {
+                <text>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.BodegasID }) |
+                    @Html.ActionLink("Detalles", "Details", new { id = item.BodegasID }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.BodegasID })
+                </text>
+            }
+            else             
+            {
+                <text>
+                    @Html.ActionLink("Detalles", "Details", new { id = item.BodegasID })
+                </text>
+            }
+        </td>
+    </tr>
+}
+
+</table>

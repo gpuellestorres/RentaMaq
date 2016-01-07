@@ -1,0 +1,89 @@
+﻿@model RentaMaq.Models.Proveedor
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Esta seguro de querer eliminar al sgte Proveedor?</h3>
+<div>
+    <h4>Proveedor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nombre del Proveedor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombreProveedor)
+        </dd>
+
+        <dt>
+            Requerimiento
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requerimiento)
+        </dd>
+
+        <dt>
+            Persona Contacto 1
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personaContacto1)
+        </dd>
+
+        <dt>
+            Persona Contacto 2
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personaContacto2)
+        </dd>
+
+        <dt>
+            Telefonos
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.telefonos)
+        </dd>
+
+        <dt>
+            Correo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.correo)
+        </dd>
+
+
+        <dt>
+            Rut
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rut)
+        </dd>
+
+        <dt>
+            Domicilio
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.domicilio)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver a la lista", "Index")
+        </div>
+    }
+</div>

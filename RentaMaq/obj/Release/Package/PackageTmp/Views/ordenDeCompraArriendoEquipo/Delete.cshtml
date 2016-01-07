@@ -1,0 +1,83 @@
+﻿@model RentaMaq.Models.ordenDeCompraArriendoEquipo
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar Orden de Compra Arriendo Equipo</h2>
+
+<h3>¿Esta seguro que desea eliminar la sgte orden de compra?</h3>
+<div>
+    <h4>orden de compra Arriendo Equipo N°@Model.numeroOrdenCompraArriendoEquipo / @Model.anio</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha
+        </dt>
+
+        <dd>
+            @RentaMaq.Models.Formateador.fechaCompletaToString(Model.fecha)
+        </dd>
+        
+
+        <dt>
+            Numero Orden de Compra
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroOrdenCompraArriendoEquipo) / @Html.DisplayFor(model => model.anio)
+        </dd>
+     
+
+        <dt>
+            Proveedor
+        </dt>
+
+        <dd>
+            @ViewBag.nombreProveedor
+        </dd>        
+
+        <dt>
+
+            Fecha Plazo Entrega
+        </dt>
+
+        <dd>
+            @{
+                if (Model.plazoEntrega.Year == 2000) { 
+                    <text>Por Confirmar</text>
+                }
+                else { 
+                    <text>@RentaMaq.Models.Formateador.fechaCompletaToString(Model.fecha)</text>
+                }
+            }
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personaRetira)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personaRetira)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.formaPago)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.formaPago)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver Atras", "Index")
+        </div>
+    }
+</div>

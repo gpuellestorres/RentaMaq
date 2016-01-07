@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - RentaMaq</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/bundles/sticky-footer")
+    @RenderSection("scripts", required: false)
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("RentaMaq", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @if (Session["ID"] != null)
+                {
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Generar Documentos<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Orden de Pedido", "Index", "OrdenDePedido")</li>
+                                <li>@Html.ActionLink("Orden de Pedido de Combustible", "Index", "ordenPedidoCombustible")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Cotización de Arriendo de Equipos", "Index", "cotizacionArriendoEquipos")</li>
+                                <li>@Html.ActionLink("Cotización de Traslado", "Index", "CotizacionDeTraslado")</li>
+                                <li>@Html.ActionLink("Cotización de Servicios", "Index", "CotizacionServicios")</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Adquisiciones<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Pedidos", "Index", "pedidos")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Solicitud de Cotización", "Index", "solicitudDeCotizacion")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Órdenes de Compra de Productos", "Index", "OrdenDeCompraGeneral")</li>
+                                <li>@Html.ActionLink("Órdenes de Compra de Equipos", "Index", "ordenDeCompraArriendoEquipo")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Lista de Proveedores", "Index", "Proveedor")</li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Indicadores Clave de Proveedores", "IndicadoresClave", "Proveedor")</li>
+                                    <li>@Html.ActionLink("Indicadores Clave de Productos", "IndicadoresClave", "Producto")</li>
+                                @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(9, int.Parse(Session["ID"].ToString())))
+                                {
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Lista de correos para alertas de Órdenes de Compra de Productos", "avisosCorreo", "OrdenDeCompraGeneral")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Inventario <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Productos", "Index", "Producto")</li>
+                                <li>@Html.ActionLink("Ingresos y Salidas de Stock", "Index", "Maestro")</li>
+                                <li>@Html.ActionLink("Bodegas", "Index", "Bodegas")</li>
+                                <li class="divider"></li>
+                                    <li>@Html.ActionLink("Reporte Ingresos/Egresos de productos", "reporteExistencias", "Producto")</li>
+                                    <li>@Html.ActionLink("Indicadores Clave de Equipos", "Index", "indicadorPorEquipo")</li>
+                                @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(9, int.Parse(Session["ID"].ToString())))
+                                {
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Lista de correos para alertas de Stock Critico", "listaCorreosStockCritico", "Maestro")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Control Equipos <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Marcas", "Index", "Marcas")</li>
+                                <li>@Html.ActionLink("Modelos", "Index", "Modelos")</li>
+                                <li>@Html.ActionLink("Tipos de Equipo", "Index", "tipoEquipo")</li>
+                                <li>@Html.ActionLink("Equipos", "Index", "Equipos")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Reports de Combustible", "Index", "reportCombustible")</li>
+                                <li>@Html.ActionLink("Registros de Horómetro y/o Kilometraje", "Index", "registrokmhm")</li>
+                                <li>@Html.ActionLink("Mantenciones Preventivas", "Index", "mantencionPreventiva")</li>
+                                <li>@Html.ActionLink("Hoja Ruta Mantenedores", "Index", "hojaRutaMantenedores")</li>
+                                <li>@Html.ActionLink("Chequeos Preventivos", "Index", "chequeoPreventivo")</li>
+                                <li>@Html.ActionLink("Órdenes de Trabajo", "Index", "ordenDeTrabajoGeneral")</li>
+                                <li>@Html.ActionLink("Trabajos Pendientes Órdenes de Trabajo", "trabajosPendientes", "ordenDeTrabajoGeneral")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Indicadores de Materiales Utilizados en Órdenes de Trabajo", "Costos", "ordenDeTrabajoGeneral")</li>
+                                <li>@Html.ActionLink("Indicadores de Materiales Utilizados en Órdenes de Trabajo, agrupados por Equipo", "CostosPorEquipo", "ordenDeTrabajoGeneral")</li>
+                                <li>@Html.ActionLink("Programa de Mantenciones de Equipos", "programaMantencion", "equipos")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Estadísticas de Mantención", "Indicadores", "indicadoresDeMantencion")</li>
+                                @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(9, int.Parse(Session["ID"].ToString())))
+                                {
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Lista de correos para alertas de Mantenimiento", "Index", "alertasMantenimiento")</li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                }
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Session["ID"] == null)
+                    {
+                        <li><a href="@Url.Action("Login", "Usuarios")">Ingresar</a></li>
+                    }
+                    else
+                    {
+                        @*@if (RentaMaq.Models.roles.tienePermiso(9, int.Parse(Session["ID"].ToString())))
+                        {*@
+                            int productosStockCritico = @RentaMaq.Models.Producto.cantidadProductosStockCritico();
+                            bool existenOCPendientes = RentaMaq.Models.OrdenDeCompraGeneral.existenPendientes();
+                            int cantidadOCEPendientes = RentaMaq.Models.ordenDeCompraArriendoEquipo.cantidadOrdenCompraEquiposPendientes();
+                            
+                            int cantidadMantencionesPreventivasPendientes = RentaMaq.Models.equipos.obtenerCantidadMantencionesPendientes();
+                            int cantidadLubricacionesPendientes = RentaMaq.Models.equipos.obtenerCantidadLubricacionesPendientes();
+                            
+                            int cantidadCertificacionVencida = RentaMaq.Models.detalleEquipo.cantidadEquiposCertificacionVencida();
+                            int cantidadRevisionTecnicaVencida = RentaMaq.Models.detalleEquipo.cantidadEquiposRevisionTecnicaVencida();
+                            int cantidadPermisoCirculacionVencida = RentaMaq.Models.detalleEquipo.cantidadEquiposPermisoCirculacionVencida();
+                            int cantidadSeguroVencido = RentaMaq.Models.detalleEquipo.cantidadSeguroVencido();
+
+                            int cantidadTrabajosPendientesOT = RentaMaq.Models.ordenDeTrabajoGeneral.cantidadTrabajosPendientes();
+                            //RentaMaq.Models.equipos.enviarAlertasMantenimiento();
+                            RentaMaq.Models.equipos.enviarAlertasUrgenteMantenimiento();
+                            
+                            <text>
+                                @if (productosStockCritico > 0 || existenOCPendientes || cantidadOCEPendientes > 0 
+                                    || cantidadMantencionesPreventivasPendientes > 0 || cantidadLubricacionesPendientes > 0
+                                    || cantidadCertificacionVencida > 0 || cantidadRevisionTecnicaVencida > 0
+                                    || cantidadPermisoCirculacionVencida > 0 || cantidadSeguroVencido > 0 || cantidadTrabajosPendientesOT>0)
+                                    {
+                                        //aquí colocar todos los indicadores de alerta, con uno mayor a cero, se debe mostrar esta sección
+
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span>  <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @if (productosStockCritico > 0)
+                                            {
+                                                <li><a href="@Url.Action("productosStockCritico", "Producto")">Hay productos con stock crítico: (@productosStockCritico en total)</a></li>
+                                            }
+                                            @if (existenOCPendientes)
+                                            {
+                                                <li><a href="@Url.Action("Index", "OrdenDeCompraGeneral", new { estado = "PENDIENTES" })">Hay órdenes de compra con productos por llegar</a></li>
+                                            }
+                                            @if (cantidadOCEPendientes > 0)
+                                            {
+                                                <li><a href="@Url.Action("Index", "ordenDeCompraArriendoEquipo", new { estado = "PENDIENTE" })">Hay órdenes de compra con equipos por llegar</a></li>
+                                            }
+                                            @if (cantidadMantencionesPreventivasPendientes > 0)
+                                            {
+                                                <li><a href="@Url.Action("Pendientes", "mantencionPreventiva")">Hay @cantidadMantencionesPreventivasPendientes mantencion/es preventiva/s de equipo/s pendiente/s o próxima/s</a></li>
+                                            }
+                                            @if (cantidadLubricacionesPendientes > 0)
+                                            {
+                                                <li><a target="_blank" href="@Url.Action("HojaRutaMantenedoresPrevia", "Report")">Hay @cantidadLubricacionesPendientes equipo/s con lubricacion/es pendiente/s o próxima/s</a></li>
+                                            }
+                                            @if (cantidadCertificacionVencida > 0)
+                                            {
+                                                <li><a href="@Url.Action("equiposCertificacionVencida", "equipos")">Hay equipos con certificaciones vencidas o próximas: (@cantidadCertificacionVencida en total)</a></li>
+                                            }
+                                            @if (cantidadRevisionTecnicaVencida > 0)
+                                            {
+                                                <li><a href="@Url.Action("equiposRevisionTecnicaVencida", "equipos")">Hay equipos con revision tecnica vencidas o próximas: (@cantidadRevisionTecnicaVencida en total)</a></li>
+                                            }
+                                            @if (cantidadPermisoCirculacionVencida > 0)
+                                            {
+                                                <li><a href="@Url.Action("equiposPermisoCirculacionVencida", "equipos")">Hay equipos con permiso circulacion vencidos o próximos: (@cantidadPermisoCirculacionVencida en total)</a></li>
+                                            }
+                                            @if (cantidadSeguroVencido > 0)
+                                            {
+                                                <li><a href="@Url.Action("equiposSeguroVencida", "equipos")">Hay equipos con seguro vencido o próximas: (@cantidadSeguroVencido en total)</a></li>
+                                            }
+                                            @if (cantidadTrabajosPendientesOT > 0)
+                                            {
+                                                <li><a href="@Url.Action("trabajosPendientes", "ordenDeTrabajoGeneral")">Hay Trabajos Pendientes: (@cantidadTrabajosPendientesOT en total)</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </text>
+                            @**@
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Mi Cuenta  <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (RentaMaq.Models.roles.tienePermiso(9, int.Parse(Session["ID"].ToString())))
+                                {
+                                <li><a href="@Url.Action("Index", "Usuarios")">Gestionar Usuarios</a></li>
+                                }
+
+                                <li><a href="@Url.Action("ModificarMiContraseña", "Usuarios")">Cambiar Contraseña</a></li>
+                                <li><a href="@Url.Action("CerrarSesion", "Usuarios")">Cerrar Sesión</a></li>
+                            </ul>
+                        </li>
+                    }
+                    <li></li>
+                </ul>
+                @*@Html.Partial("_LoginPartial")*@
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer class="footer">
+            <p>&copy; @DateTime.Now.Year - <a target="_blank" href="http://www.puntodesarrollo.com">puntodesarrollo ltda</a></p>
+        </footer>
+    </div>
+
+    
+</body>
+</html>

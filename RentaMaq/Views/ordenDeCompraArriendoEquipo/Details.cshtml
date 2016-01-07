@@ -1,0 +1,151 @@
+﻿@model RentaMaq.Models.ordenDeCompraArriendoEquipo
+
+@{
+    ViewBag.Title = "Detalle Orden De Compra Arriendo Equipo";
+    string fecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+    string fechaPlazoEntrega = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.plazoEntrega);
+    
+    if (Model.plazoEntrega.Year == 2000)
+    
+        fechaPlazoEntrega = "";
+    
+}
+
+<h2>Detalle Orden de Compra Arriendo Equipos @Model.numeroOrdenCompraArriendoEquipo</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ordenDeCompraArriendoEquipoID)
+
+        @{ 
+    string FECHA = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+        }
+       
+        <div class="form-group">
+            <label class="control-label col-md-2" for="fecha">Fecha de Orden de Compra</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="5/11/2015" required readonly>
+            </div>
+            @Html.LabelFor(model => model.numeroOrdenCompraArriendoEquipo, "Numero Orden de Compra Arriendo ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input type="text" name="numeroOrdenCompraArriendoEquipo" value="@Model.numeroOrdenCompraArriendoEquipo" class="form-control hidden" readonly />
+                <input type="text" name="anio" value="@Model.anio" class="form-control hidden" readonly />
+                <input type="text" name="estado" value="@Model.estado" class="form-control hidden" readonly />
+                <input type="text" name="falso" value="@(Model.numeroOrdenCompraArriendoEquipo + "/" + Model.anio)" class="form-control" readonly />
+            </div>
+        </div>
+        <hr />
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ProveedorID">Se&#241;ores:</label>
+            <div class="col-md-4">
+                <select name="ProveedorID" class="form-control proveedor" required readonly>
+                    <option value="@Model.ProveedorID">@(new RentaMaq.DAL.Context().Proveedores.Find(Model.ProveedorID).nombreProveedor)</option>
+                </select>
+
+            </div>
+            <label class="control-label col-md-2" for="dirigidoA">Atencion A:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="dirigidoA" name="dirigidoA" type="text" value="@Model.dirigidoA" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="dirigidoA" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-2">Texto de Orden de Compra:</label>
+            <div class="col-md-10">
+                <textarea class="form-control" name="texto1" id="texto1" rows="5" style="max-width: 100% !important; width:97%;" readonly placeholder="Por medio de la presente y junto con saludar,....">@Model.texto1</textarea>
+            </div>
+        </div>
+        <hr />
+
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Descripcion del Equipo</th>
+                        <th>Valor Hora</th>
+                        <th>Horas Minimas @Model.tipoHorasMinimas</th>
+                        <th>Duracion Del Arriendo</th>
+                        <th>Lugar de Faena</th>
+                        <th>Condiciones de Pago</th>                        
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                    @foreach (RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo detalleOrdenDeCompraArriendoEquipo in (List<RentaMaq.Models.detalleOrdenDeCompraArriendoEquipo>)ViewData["detalleOrdenDeCompraArriendoEquipo"])
+                    {
+                        <tr>
+                            <td>
+                                <input class="form-control descripcionProducto" type="text" name="descripcionProducto" id="descripcionProducto" value="@detalleOrdenDeCompraArriendoEquipo.descripcionEquipo" required readonly />
+                            </td>
+
+                            <td>
+                                <input class="form-control valorHora" type="text" name="valorHora" id="valorHora" value="@detalleOrdenDeCompraArriendoEquipo.valorHora" required readonly />
+                            </td>
+
+                            <td>
+                                <input class="form-control horasMinimasMensuales" type="text" name="horasMinimasMensuales" id="horasMinimasMensuales" value="@detalleOrdenDeCompraArriendoEquipo.horasMinimasMensuales" required readonly />
+                            </td>
+
+                            <td>
+                                <input class="form-control duracionDelArriendo" type="text" name="duracionDelArriendo" id="duracionDelArriendo" value="@detalleOrdenDeCompraArriendoEquipo.duracionArriendo" required readonly />
+                            </td>
+                            <td>
+                                <input class="form-control lugarFaena" type="text" name="lugarFaena" id="lugarFaena" value="@detalleOrdenDeCompraArriendoEquipo.lugarDeFaena" required readonly />
+                            </td>
+                            <td>
+                                <input class="form-control condicionesPago" type="text" name="condicionesPago" id="condicionesPago" value="@detalleOrdenDeCompraArriendoEquipo.condicionesDePago" required readonly />
+                            </td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>           
+        </div>
+        <div class="clearfix"></div>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.plazoEntrega, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+
+                        <input class="form-control" id="plazoEntrega" name="plazoEntrega" value="@fechaPlazoEntrega" readonly>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.personaRetira, "Persona que retira ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        <input class="form-control" id="plazoEntrega" name="plazoEntrega" value="@Model.personaRetira" readonly>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.formaPago, "Forma de Pago ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        <input class="form-control" id="plazoEntrega" name="plazoEntrega" value="@Model.formaPago" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+        <div class="modal-footer">
+                @Html.ActionLink("Volver Atras", "Index")
+            
+
+        </div>
+    </div>
+}
+

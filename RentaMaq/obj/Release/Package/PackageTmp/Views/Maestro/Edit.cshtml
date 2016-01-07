@@ -1,0 +1,264 @@
+﻿@model RentaMaq.Models.Maestro
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Editar</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Maestro</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MaestroID)        
+        @Html.HiddenFor(model => model.ProductoID)
+        
+        <input name="entrante" value="@ViewBag.cantidadEntrante" hidden/>
+        <input name="saliente" value="@ViewBag.cantidadSaliente" hidden />
+
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fecha,"Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="The field fecha must be a date." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha)" required> 
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductoID,"Codigo Producto", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => new RentaMaq.DAL.Context().Productos.Find(int.Parse(model.ProductoID)).numeroDeParte, new { htmlAttributes = new { @class = "form-control" ,@readonly="readonly"} })
+                @Html.ValidationMessageFor(model => model.ProductoID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @if (ViewBag.verificador.Equals("entrada"))
+        {
+            <text>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.cantidadEntrante, "Cantidad Entrante", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.cantidadEntrante, new { htmlAttributes = new { @class = "form-control Int", min = "0" } })
+                        @Html.ValidationMessageFor(model => model.cantidadEntrante, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </text>
+        }
+        else
+        {
+            <text>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.cantidadSaliente, "Cantidad Saliente", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.cantidadSaliente, new { htmlAttributes = new { @class = "form-control Int", min = "0" } })
+                        @Html.ValidationMessageFor(model => model.cantidadSaliente, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </text>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.facturaDespacho, "Factura/Guia Despacho", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.facturaDespacho, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.facturaDespacho, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.proveedor,"Proveedor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class="form-control" name="proveedor" id="proveedor">
+
+                    @foreach (RentaMaq.Models.Proveedor Proveedor in (List<RentaMaq.Models.Proveedor>)ViewData["Proveedores"])
+                    {
+                        if (@Model.proveedor!=null && @Model.proveedor.Equals(@Proveedor.nombreProveedor))
+                        {
+                            <option value="@Proveedor.nombreProveedor" selected>@Proveedor.nombreProveedor</option>
+                        }
+                        else
+                        {
+                            <option value="@Proveedor.nombreProveedor">@Proveedor.nombreProveedor</option>
+                        }
+
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.valorUnitario,"Valor Unitario", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.valorUnitario, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.valorUnitario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.valorTotal,"Valor Total", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.valorTotal, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.valorTotal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.afiEquipo,"Afi. Equipo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.afiEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.afiEquipo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.entragadoA,"Entregado A:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.entragadoA, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.entragadoA, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.motivo,"Motivo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.motivo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.motivo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.numeroFormulario,"N° Formulario", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.numeroFormulario, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.numeroFormulario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.observaciones, "Observaciones", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.observaciones, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-success btn-lg btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver Atras", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <script>
+
+        $(document).ready(function () {
+            var cantidadSalienteMaxima = 0;
+            try {
+                $(".ProductoID").select2({
+                    placeholder: "Seleccione un producto"
+                });
+            } catch (error) {
+
+            }
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+            $('.Int').bind('keypress', function (event) {
+                var regex = new RegExp("^([0-9]*|[.]*)$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+            $("#ProductoID").change(function () {
+                var codigo = $("#ProductoID").val();
+                $.ajax({
+                    url: "/Maestro/obtenerNombreProducto",
+                    data: { "numeroDeParte": codigo },
+                    success: function (retorno) {
+                        cantidadSalienteMaxima = retorno.stockActual;
+                        $("#descripcionProducto").val(retorno.descripcion);
+                        $("#valorUnitario").val(retorno.precioUnitario);
+                        $("#cantidadSaliente").attr("placeholder", retorno.stockActual + " en Stock ...");
+                    }
+                });
+            });
+
+            $("#valorUnitario").change(function () {
+                obtenerTotal();
+            });
+            $("#cantidadEntrante").focusout(function () {
+                obtenerTotal();
+            });
+            /*$("#cantidadSaliente").focusout(function () {
+                
+                var cantidadASalir = $("#cantidadSaliente").val();                
+                if (cantidadASalir > cantidadSalienteMaxima) {
+                    alert("Solo hay " + cantidadSalienteMaxima + " productos en stock. Ingrese una cantidad igual o menor.")
+                    $("#cantidadSaliente").focus();
+                }
+                obtenerTotal();
+            });*/
+        });
+
+        function obtenerTotal() {
+            var valorUnitario = $("#valorUnitario").val();
+            var cantidadEntrante = $("#cantidadEntrante").val();
+            var cantidadSaliente = $("#cantidadSaliente").val();
+
+            if ((valorUnitario != '') && (cantidadEntrante != undefined)) {
+                var valorTotal = parseInt(valorUnitario) * parseInt(cantidadEntrante);
+                $("#valorTotal").val(valorTotal);
+            } else if ((valorUnitario != '') && (cantidadSaliente != undefined)) {
+                var valorTotal = parseInt(valorUnitario) * parseInt(cantidadSaliente);
+                $("#valorTotal").val(valorTotal);
+            }
+        }
+
+
+        function formato_precio(n) {
+            var number = new String(n);
+            var result = "";
+            isNegative = false;
+            if (number.indexOf("-") > -1) {
+                number = number.substr(1);
+                isNegative = true;
+            }
+
+            while (number.length > 3) {
+                result = '.' + number.substr(number.length - 3) + result;
+
+                number = number.substring(0, number.length - 3);
+
+            }
+            result = number + result;
+            if (isNegative) result = '-' + result;
+
+            return '$' + result;
+        }
+
+    </script>
+      
+}

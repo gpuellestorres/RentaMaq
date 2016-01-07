@@ -1,0 +1,145 @@
+﻿@model RentaMaq.Models.Producto
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Ingresar Nuevo Producto</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Producto</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ProductoID">N° de Parte</label>            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.numeroDeParte, new { htmlAttributes = new { @class = "form-control", required = "required"  } })
+                @Html.ValidationMessageFor(model => model.numeroDeParte, "", new { @class = "text-danger"})
+                <div id="mensajeErrorCodigo" class="alert alert-danger hidden">
+                    <strong>Error: </strong> Ya existe el producto con este codigo
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="descripcion">Descripcion</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="idBodega">Bodega</label>
+            <div class="col-md-10">
+                <select class="form-control idBodega" name="idBodega">
+                    @foreach (RentaMaq.Models.Bodegas Bodega in (new RentaMaq.DAL.Context().bodegas.ToList()))
+                    {
+                        <option value="@Bodega.BodegasID">@Bodega.nombre/@Bodega.ubicacion</option>
+
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.codigo,"Codigo Interno", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.codigo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.codigo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="precioUnitario">Precio Unitario</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.precioUnitario, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.precioUnitario, "", new { @class = "text-danger" })
+            </div>
+        </div>        
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="descripcion2">Descripcion 2</label>            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.descripcion2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.descripcion2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="stockMinimo">Stock Minimo</label>            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.stockMinimo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.stockMinimo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="unidadDeMedida">Unidad de Medida</label>            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.unidadDeMedida, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.unidadDeMedida, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ubicacion">Ubicacion</label>            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+       
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear Producto" id="BtnCrear" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a Lista", "Index")
+</div>
+
+@section Scripts {    
+    @Scripts.Render("~/bundles/jqueryval")
+        
+    <script>
+        $(document).ready(function () {
+
+            $("#numeroDeParte").change(function () {
+                var codigo = $("#numeroDeParte").val();
+                $.ajax({
+                    url: "/Producto/verificarExistenciaCodigo",
+                    data: { "numeroDeParte": codigo },
+
+                    success: function (retorno) {
+
+                        if (retorno == 'false') {
+
+                            $("#mensajeErrorCodigo").addClass("hidden");
+                            $("#BtnCrear").removeAttr("disabled");
+                        } else {
+
+                            $("#mensajeErrorCodigo").removeClass("hidden");
+                            $("#BtnCrear").attr("disabled", "disabled");
+                        }
+                    }
+                });
+
+
+            });
+
+
+        });
+
+    </script>
+    
+}

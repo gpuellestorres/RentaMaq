@@ -1,0 +1,299 @@
+﻿@model RentaMaq.Models.cotizacionServicios
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Editar cotización de servicios</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.cotizacionServiciosID)
+
+        <div class="form-group">
+            @{
+                string FECHA = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+            }
+            <label class="control-label col-md-2" for="fecha">Fecha</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="13/11/2015" required">
+            </div>
+            <label class="control-label col-md-2" for="numeroCotizacion">Cotizacion de Servicio N&#176;: </label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="numeroCotizacion" name="numeroCotizacion" type="text" value="@Model.numeroCotizacion" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="numeroCotizacion" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="datosClienteEmpresa">Empresa:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteEmpresa" name="datosClienteEmpresa" type="text" value="@Model.datosClienteEmpresa" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteEmpresa" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="datosClienteRut">Rut:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteRut" name="datosClienteRut" type="text" value="@Model.datosClienteRut" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteRut" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="datosClienteDomicilio">Domicilio:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteDomicilio" name="datosClienteDomicilio" type="text" value="@Model.datosClienteDomicilio" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteDomicilio" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="datosClienteSolicitadoPor">Solicitado Por:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteSolicitadoPor" name="datosClienteSolicitadoPor" type="text" value="@Model.datosClienteSolicitadoPor" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteSolicitadoPor" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        @{
+    List<string> categorias = Model.ObtenerCategorias();
+        }
+        <input class="hidden" type="number" name="cantidadCategorias" id="cantidadCategorias" value="@categorias.Count" />
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Encabezado:</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="encabezado" id="encabezado" style="max-width: 92% !important; width:92%; resize:none !important">@Model.encabezado</textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="col-md-2 control-label">DESCRIPCIÓN DEL SERVICIO</label>
+            <div class="col-md-4">
+                <textarea class="form-control descripcionServicio" name="descripcionServicio" id="descripcionServicio" rows="1" style="max-width: 100% !important; width:100%; resize:none !important">@Model.descripcionServicio</textarea>
+            </div>
+            <label class="control-label col-md-2">VALOR TOTAL (NETO)</label>
+            <div class="col-md-4">
+                <input class="form-control valorTotal" type="text" name="valorTotal" id="valorTotal" value="@Model.valorTotal" required />
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-12 divCategorias" id="divCategorias">
+            @for (int i=0;i<categorias.Count;i++){
+            {
+                <div class="divCategoria">
+                    @if (i == 0) 
+                    { 
+                        <h3 id="hServicio">Detalle del servicio:</h3>
+                    }
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <h4 class="col-md-12">Categoría:</h4>
+                            <div class="col-md-10">
+                                <textarea class="form-control categoria" name="categoria@((int)(i+1))" id="categoria@((int)(i+1))" rows="1" style="width:100%; max-width:100%; resize:none !important" placeholder="General" required>@categorias[i]</textarea>
+                            </div>
+                            <div class="col-md-2"><a href="#DivDetalles" class="btn btn-danger eliminarCategoria" id="General"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></div>
+                        </div>
+                    </div>
+                    <div id="seccionServicios" class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table table-condensed" id="tableGeneral">
+                                <thead>
+                                    <tr>
+                                        <th>Cargo</th>
+                                        <th class="col-md-2">Turno</th>
+                                        <th class="col-md-2">N° de personas</th>
+                                        <th class="col-md-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(RentaMaq.Models.detalleServicioCotizacionServicios Detalle in RentaMaq.Models.detalleServicioCotizacionServicios.obtenerDetalle(Model.cotizacionServiciosID, categorias[i])){
+                                        <tr>
+                                            <td><input type="text" class="form-control" name="cargoGeneral@((int)(i+1))" id="cargoGeneral" value="@Detalle.cargo" placeholder="Administrador de Contrato" required /></td>
+                                            <td><input type="text" class="form-control" name="turnoGeneral@((int)(i+1))" id="turnoGeneral" value="@Detalle.turno" placeholder="5X2" required /></td>
+                                            <td><input type="number" class="form-control" name="cantidadGeneral@((int)(i+1))" id="cantidadGeneral" value="@Detalle.numeroPersonas" required /></td>
+                                            <td><a href="#DivDetalles" class="btn btn-danger eliminarItemCategoria" id="eliminarItemCategoria"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                                        </tr>}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#divcategorias" id="nuevoItemCategoria" class="btn btn-primary nuevoItemCategoria"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            }
+        </div>
+        <div class="clearfix"></div>
+        <div class="modal-footer">
+            <a href="#divcategorias" id="nuevaCategoria" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nueva Categoría</a>
+        </div>
+        <hr />
+        <div class="col-md-12">
+            <h3 id="hEquipos">Equipos:</h3>
+            <div id="seccionEquipos" class="table-responsive">
+                <table class="table table-condensed" id="tableEquipos">
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th class="col-md-3">Cantidad</th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (RentaMaq.Models.detalleEquiposCotizacionServicios Detalle in new RentaMaq.DAL.Context().detalleEquiposCotizacionServicios.Where(s => s.CotizacionServiciosID == Model.cotizacionServiciosID).ToList())
+                        {
+                            <tr>
+                                <td><textarea class="form-control" name="equipoEquipo" id="equipoEquipo" rows="1" style="width:97%; max-width:97%; resize:none !important" required>@Detalle.equipo</textarea></td>
+                                <td><input type="number" class="form-control" name="cantidadEquipo" id="cantidadEquipo" value="@Detalle.cantidad" required /></td>
+                                <td><a href="#DivDetalles" class="btn btn-danger eliminarEquipo" id="eliminarEquipo"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#hEquipos" id="nuevoEquipo" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Equipo</a>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Nota:</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="nota" id="nota" style="max-width: 92% !important; width:92%; resize:none !important">@Model.nota</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="faena">Faena.</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="faena" name="faena" required="required" type="text" value="@Model.faena" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="faena" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="tiempo">Tiempo de Arriendo. </label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="tiempo" name="tiempo" required="required" type="text" value="@Model.tiempo" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="tiempo" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            @Html.ActionLink("Volver", "Index")&nbsp;
+            <input type="submit" value="Save" class="btn btn-default btn-success btn-lg" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+@{
+    List<string> categorias = Model.ObtenerCategorias();
+}
+    <script>
+
+        $(document).ready(function () {
+            var numeroCategorias = @(categorias.Count);
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $("#nuevaCategoria").click(function () {
+                numeroCategorias++;
+                console.log("Agregar nueva categoría");
+                var divCategorias = $(this).closest(".divCategoria");
+
+                $("#cantidadCategorias").val(numeroCategorias);
+
+                ultimoDivCategorias = $(".divCategorias").find(".divCategoria:last");
+
+                console.log(ultimoDivCategorias);
+
+                ultimoDivCategorias.after('<div class="divCategoria"><div class="col-md-3"><div class="form-group"><h4 class="col-md-12">Categoría:</h4><div class="col-md-10"><textarea class="form-control categoria" name="categoria' + numeroCategorias + '" id="categoria' + numeroCategorias + '" rows="1" style="width:100%; max-width:100%; resize:none !important" placeholder="General" required></textarea></div><div class="col-md-2"><a href="#DivDetalles" class="btn btn-danger eliminarCategoria" id="General"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></div></div></div><div id="seccionServicios" class="col-md-9"><div class="table-responsive"><table class="table table-condensed" id="tableGeneral"><thead><tr><th>Cargo</th><th class="col-md-2">Turno</th><th class="col-md-2">N° de personas</th><th class="col-md-1"></th></tr></thead><tbody><tr><td><input type="text" class="form-control" name="cargoGeneral' + numeroCategorias + '" id="cargoGeneral" value="" placeholder="Administrador de Contrato" required /></td><td><input type="text" class="form-control" name="turnoGeneral' + numeroCategorias + '" id="turnoGeneral" value="" placeholder="5X2" required /></td><td><input type="number" class="form-control" name="cantidadGeneral' + numeroCategorias + '" id="cantidadGeneral" value="0" required /></td><td><a href="#DivDetalles" class="btn btn-danger eliminarItemCategoria" id="eliminarItemCategoria"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td></tr></tbody></table></div><div class="modal-footer"><a href="#divcategorias" id="nuevoItemCategoria" class="btn btn-primary nuevoItemCategoria"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a></div></div></div>');
+            });
+
+            $('body').on('click', '.eliminarCategoria', function (e) {
+                console.log("Eliminar ítem en categorías");
+                var divCategorias = $(this).closest(".divCategoria");
+
+                if ($("body").find(".divCategoria").length == 1) return;
+
+                divCategorias.remove();
+            });
+
+            $("#nuevoEquipo").click(function () {
+                console.log("Agregar nuevo equipo");
+                var $tableBody = $('#tableEquipos').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find("#equipoEquipo").val("");
+                $temp.find("#cantidadEquipo").val("0");
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+            });
+
+            $('body').on('click', '.eliminarEquipo', function (e) {
+                console.log("Eliminar ítem en equipos");
+                var $tableBody = $('#tableEquipos').find("tbody");
+
+                if ($tableBody.find("tr").length == 1) return;
+
+                item = $(this).closest("tr")
+
+                item.remove();
+            });
+
+            $('body').on('click', '.nuevoItemCategoria', function (e) {
+                console.log("Agregar ítem de categoría");
+                var divPrevio = $(this).closest("div #seccionServicios");
+
+                console.log(divPrevio);
+
+                var $tableBody = divPrevio.find("tbody");
+
+                console.log($tableBody);
+
+                $trLast = $tableBody.find("tr:last");
+
+                console.log($trLast);
+
+                $temp = $trLast.clone();
+
+                console.log($temp);
+
+                $temp.find("#cantidadGeneral").val("0");
+                $temp.find("#turnoGeneral").val("");
+                $temp.find("#cargoGeneral").val("");
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+            });
+
+            $('body').on('click', '.eliminarItemCategoria', function (e) {
+                console.log("Eliminar ítem en categorías");
+                var $tableBody = $(this).closest("tbody");
+
+                if ($tableBody.find("tr").length == 1) return;
+
+                item = $(this).closest("tr")
+
+                item.remove();
+            });
+        });
+
+    </script>
+
+
+}

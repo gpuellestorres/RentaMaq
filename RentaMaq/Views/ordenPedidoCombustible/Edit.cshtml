@@ -1,0 +1,196 @@
+﻿@model RentaMaq.Models.ordenPedidoCombustible
+
+@{
+    ViewBag.Title = "Edit";
+    string fecha = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+}
+
+<h2>Editar Orden de Pedido</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-inline">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ordenPedidoCombustibleID)
+        @Html.HiddenFor(model => model.anio)
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.numeroOrdenPedido, "Orden de Pedido N°: ", htmlAttributes: new { @class = "control-label col-md-8" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.numeroOrdenPedido, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.numeroOrdenPedido, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.destinatario, "Señores: ", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.destinatario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.destinatario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-8">
+
+                    <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" value="@fecha" required">
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-12">
+                    <textarea class="form-control" name="encabezado" id="encabezado" style="max-width: 100% !important; width:100%;">@Model.encabezado</textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Trabajo a Realizar</th>
+                        <th>
+                            Persona Responsable
+                        </th>
+                        <th>Detalle</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                @foreach (RentaMaq.Models.detalleOrdenPedidoCombustible detalle in (List<RentaMaq.Models.detalleOrdenPedidoCombustible>)ViewData["detalleOrdenPedidoCombustible"])
+                {
+                    <tr id="trItems">
+                        <td>
+                            <input class="form-control trabajoRealizar" type="text" name="trabajoRealizar" value="@detalle.trabajoRealizar" required />
+                        </td>
+
+                        <td>
+                            <input class="form-control personaResponsable" type="text" name="personaResponsable" value="@detalle.personaResponsable" required />
+                        </td>
+
+                        <td>
+                            <input class="form-control detalle" type="text" name="detalle" value="@detalle.detalle" required />
+                        </td>
+                        <td>
+                            <input class="form-control cantidad" type="text" name="cantidad" value="@detalle.cantidad" required />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarItem" id="botonEliminarItem"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                }    
+                </tbody>
+            </table>
+            <br />
+            <div class="col-sm-3">
+                <a id="botonAgregarItem" class="btn btn-block btn-primary botonAgregarItem"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Equipo</a>
+            </div>
+
+        </div>
+        <br />
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.nombreQuienAutoriza, "Nombre Solicitante ", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-8">
+                    <select class="form-control" name="nombreQuienAutoriza">
+                        @if (@Model.nombreQuienAutoriza.Equals("SR. DAVID TRIGO CORDERO"))
+                        {
+                            <option value="SR. DAVID TRIGO CORDERO" selected>SR. DAVID TRIGO CORDERO</option>
+                            <option value="SRA. ORIETTA ARAYA PANGUE">SRA. ORIETTA ARAYA PANGUE</option>
+                        }
+                        else
+                        {
+                            <option value="SR. DAVID TRIGO CORDERO">SR. DAVID TRIGO CORDERO</option>
+                            <option value="SRA. ORIETTA ARAYA PANGUE" selected>SRA. ORIETTA ARAYA PANGUE</option>
+                        }                      
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-9 col-lg-12">
+                    <input type="submit" value="Guardar" class="btn btn-success btn-lg btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a lista de Orden de Pedido", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = @ViewBag.cantidadDetalle;
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".botonAgregarItem").click(function () {
+
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find('.trabajoRealizar').val('');
+                $temp.find('.personaResponsable').val('');
+                $temp.find('.detalle').val('');
+                $temp.find('.cantidad').val('');
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                numeroItem++;
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarItem", function () {
+                var element = this;
+                if (numeroItem > 1) {
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este item , ya que la solicitud debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+        });
+
+    </script>
+
+
+}
+
+

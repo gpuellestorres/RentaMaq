@@ -1,0 +1,235 @@
+﻿@model RentaMaq.Models.reportCombustible
+
+@{
+    ViewBag.Title = "Agregar Report";
+}
+
+<h2>Agregar</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Report de Combustible</h4>
+        <hr />
+
+        @if (((List<RentaMaq.Models.equipos>)ViewBag.Equipos).Count > 0)
+            {
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.numeroReport, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control text-box single-line" id="numeroReport" name="numeroReport" 
+                    type="number" value="" />
+                    <div id="mensajeErrorCodigo" class="alert alert-danger hidden">
+                        <strong>Error: </strong> Ya existe un Report con este número
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.usuario, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.usuario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.usuario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            
+            List<RentaMaq.Models.equipos> Equipos = (List<RentaMaq.Models.equipos>)ViewBag.Equipos;
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.equiposID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <select name="equipoID" id="equipoID" class="form-control" required>
+                        @foreach (RentaMaq.Models.equipos equipo in Equipos)
+                        {
+                            <option value="@equipo.ID">@equipo.numeroAFI - @equipo.ModeloID.nombreModelo - @equipo.ModeloID.MarcaID.NombreMarca</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.denominacionEquipo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.denominacionEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.denominacionEquipo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.horometro, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control text-box single-line"
+                            data-val="true" data-val-number="The field Horómetro must be a number." 
+                           data-val-required="The Horómetro field is required." id="horometro" 
+                           name="horometro" type="number" value="@RentaMaq.Models.reportCombustible.obtenerUltimo(Equipos[0].ID).horometro" />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="horometro" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.kilometraje, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control text-box single-line" data-val="true" 
+                           data-val-number="The field Kilometraje must be a number." 
+                           data-val-required="The Kilometraje field is required." id="kilometraje" name="kilometraje"
+                            type="number" value="@RentaMaq.Models.reportCombustible.obtenerUltimo(Equipos[0].ID).kilometraje" />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="kilometraje" data-valmsg-replace="true"></span>
+
+                </div>
+            </div>
+
+                DateTime Ahora = DateTime.Now;
+                string ahora = Ahora.Year + "";
+                string mes = Ahora.Month + "";
+                if (mes.Length == 1){
+                    mes = "0" + mes;
+                }
+                string dia = Ahora.Day + "";
+                if (dia.Length == 1){
+                    dia = "0" + dia;
+                }
+                string hora = Ahora.Hour + "";
+                if (hora.Length == 1){
+                    hora = "0" + hora;
+                }
+                string minuto = Ahora.Minute + "";
+                if (minuto.Length == 1){
+                    minuto = "0" + minuto;
+                }
+
+                ahora += "/" + mes + "/" + dia + " " + hora + ":" + minuto;
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.fechaHora, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control text-box single-line" data-val="true"
+                            data-val-date="The field Fecha y Hora must be a date." 
+                           data-val-required="The Fecha y Hora field is required." id="fechaHora" name="fechaHora"
+                            type="datetime" value="@ahora" />
+                    @Html.ValidationMessageFor(model => model.fechaHora, "Utilice por favor el siguiente formato: AAAA/MM/DD hh:mm", new { @class = "text-info" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.litros, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.litros, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.litros, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.operador, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.operador, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.operador, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.quienCarga, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.quienCarga, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.quienCarga, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.responsable, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.responsable, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.responsable, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.comentario, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.comentario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.comentario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Agregar" id="BtnCrear" class="btn btn-default" />
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <br />
+            <div class="col-md-8">
+                <h3>No posee todavía ningún equipo agregado en el sistema. <br>Por favor, agregue un equipo antes de agregar un Report de Combustible</h3>
+            </div>
+            <br />
+            <div class="clearfix"></div>
+            <br />
+
+        }
+</div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+            $("#numeroReport").change(function () {
+                var codigo = $("#numeroReport").val();
+                $.ajax({
+                    url: "/reportCombustible/verificarNumero",
+                    data: { "numero": codigo },
+
+                    success: function (retorno) {
+
+                        if (retorno == 'false') {
+
+                            $("#mensajeErrorCodigo").addClass("hidden");
+                            $("#BtnCrear").removeAttr("disabled");
+                        } else {
+
+                            $("#mensajeErrorCodigo").removeClass("hidden");
+                            $("#BtnCrear").attr("disabled", "disabled");
+                        }
+                    }
+                });
+            });
+
+            $('body').on('change', '#equipoID', function (e) {
+                {
+                    console.log("Obtener Datos");
+                    esteCampo = $(this);
+                    $.ajax({
+                        url: "/reportCombustible/obtenerUltimosDatos", data: { "idEquipo": esteCampo.val() },
+                        success: function (retorno) {
+                            console.log(retorno);
+                            $("#horometro").val(retorno.split(";")[0]);
+                            $("#kilometraje").val(retorno.split(";")[1]);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿@model RentaMaq.Models.Modelo
+
+@{
+    ViewBag.Title = "Eliminar Modelo";
+}
+
+<h2>Eliminar</h2>
+
+@if (!RentaMaq.Models.Modelo.SeUsa(Model.ModeloID)) {
+
+<h3>¿Está seguro/a de que quiere eliminar el Modelo?</h3>
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MarcaID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MarcaID.NombreMarca)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nombreModelo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombreModelo)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>
+
+    }
+else
+{
+    <br />
+    <div class="col-md-8">
+        <h3>El Modelo se utiliza en uno o más equipos del sistema, por lo que no se puede eliminar</h3>
+    </div>
+    <br />
+    <div class="clearfix"></div>
+    <br />
+
+    using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+}

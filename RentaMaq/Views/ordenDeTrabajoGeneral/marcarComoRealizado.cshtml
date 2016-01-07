@@ -1,0 +1,110 @@
+﻿@model RentaMaq.Models.ordenDeTrabajoGeneral
+@{    
+      
+    ViewBag.Title = "Trabajo Pendiente Orden de Trabajo";
+
+    string fechaOTAbierta = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fechaOTAbierta);
+    string fechaOTCerrada = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fechaOTCerrada);
+   
+    string fechaTrabajosPendientesPorRealizar = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fechaTrabajosPendientesPorRealizar);
+
+}
+
+<h2>Trabajo Pendiente Orden de Trabajo General</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-6">
+                @Html.HiddenFor(model => model.ordenDeTrabajoGeneralID)
+                @Html.LabelFor(model => model.numeroFolio, "Folio N°", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Model.numeroFolio
+                </div>
+            </div>
+        </div>       
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.fechaOTAbierta, "Fecha OT Abierta", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @fechaOTAbierta
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.fechaOTCerrada, "Fecha OT Cerrada", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @fechaOTCerrada
+                    </div>
+                </div>              
+            </div>
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.idEquipo, "Equipo", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                        @ViewBag.Equipo
+                    </div>
+                </div>                
+            </div>
+        </div>              
+        <hr />               
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Trabajo que se realizo</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="trabajoRealizar" id="trabajoRealizar" style="max-width: 100% !important; width:100%;" readonly>@Model.trabajoRealizar</textarea>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h4>Conclusiones Del Trabajo Realizado</h4>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="conclusionesTrabajoRealizado" id="conclusionesTrabajoRealizado" style="max-width: 100% !important; width:100%;" readonly>@Model.conclusionesTrabajoRealizado</textarea>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    @Html.LabelFor(model => model.estadoEquipo, "Estado Equipo", htmlAttributes: new { @class = "control-label col-md-6", @style = "text-align: left !important;" })
+                    <div class="col-md-6">
+                       @Model.estadoEquipo
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <h3>Trabajos Pendientes por Realizar</h3>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="trabajosPendientesPorRealizar" id="trabajosPendientesPorRealizar" style="max-width: 100% !important; width:100%;" readonly>@Model.trabajosPendientesPorRealizar</textarea>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    <label class="control-label">Fecha Limite de Trabajo Pendiente</label>
+                    @fechaTrabajosPendientesPorRealizar
+                </div>
+            </div>
+        </div>
+        <hr />               
+        <br />
+        <br />
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-9 col-lg-12">
+                    <input type="submit" value="Marcar como Realizado" class="btn btn-success btn-lg btn-default col-md-3" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a Lista de OTs con Trabajos Pendientes", "trabajosPendientes")
+</div>

@@ -1,0 +1,174 @@
+﻿@model RentaMaq.Models.cotizacionServicios
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles de cotización de servicios</h2>
+
+<div>
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.cotizacionServiciosID)
+
+        <div class="form-group">
+            @{
+                string FECHA = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+            }
+            <label class="control-label col-md-2" for="fecha">Fecha</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="13/11/2015" required" readonly>
+            </div>
+            <label class="control-label col-md-2" for="numeroCotizacion">Cotizacion de Servicio N&#176;: </label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="numeroCotizacion" name="numeroCotizacion" type="text" value="@Model.numeroCotizacion" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="numeroCotizacion" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="datosClienteEmpresa">Empresa:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteEmpresa" name="datosClienteEmpresa" type="text" value="@Model.datosClienteEmpresa" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteEmpresa" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="datosClienteRut">Rut:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteRut" name="datosClienteRut" type="text" value="@Model.datosClienteRut" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteRut" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="datosClienteDomicilio">Domicilio:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteDomicilio" name="datosClienteDomicilio" type="text" value="@Model.datosClienteDomicilio" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteDomicilio" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="datosClienteSolicitadoPor">Solicitado Por:</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="datosClienteSolicitadoPor" name="datosClienteSolicitadoPor" type="text" value="@Model.datosClienteSolicitadoPor" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="datosClienteSolicitadoPor" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        @{
+            List<string> categorias = Model.ObtenerCategorias();
+        }
+        <input class="hidden" type="number" name="cantidadCategorias" id="cantidadCategorias" value="@categorias.Count" readonly />
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Encabezado:</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="encabezado" id="encabezado" style="max-width: 92% !important; width:92%; resize:none !important" readonly>@Model.encabezado</textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="col-md-2 control-label">DESCRIPCIÓN DEL SERVICIO</label>
+            <div class="col-md-4">
+                <textarea class="form-control descripcionServicio" name="descripcionServicio" id="descripcionServicio" rows="1" style="max-width: 100% !important; width:100%; resize:none !important" readonly>@Model.descripcionServicio</textarea>
+            </div>
+            <label class="control-label col-md-2">VALOR TOTAL (NETO)</label>
+            <div class="col-md-4">
+                <input class="form-control valorTotal" type="text" name="valorTotal" id="valorTotal" value="@Model.valorTotal" required readonly />
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-12 divCategorias" id="divCategorias">
+            @for (int i = 0; i < categorias.Count; i++)
+            {
+                {
+                    <div class="divCategoria">
+                        @if (i == 0)
+                        {
+                            <h3 id="hServicio">Detalle del servicio:</h3>
+                        }
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <h4 class="col-md-12">Categoría:</h4>
+                                <div class="col-md-10">
+                                    <textarea class="form-control categoria" name="categoria@((int)(i+1))" id="categoria@((int)(i+1))" rows="1" style="width:100%; max-width:100%; resize:none !important" placeholder="General" required readonly>@categorias[i]</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="seccionServicios" class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table table-condensed" id="tableGeneral">
+                                    <thead>
+                                        <tr>
+                                            <th>Cargo</th>
+                                            <th class="col-md-2">Turno</th>
+                                            <th class="col-md-2">N° de personas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (RentaMaq.Models.detalleServicioCotizacionServicios Detalle in RentaMaq.Models.detalleServicioCotizacionServicios.obtenerDetalle(Model.cotizacionServiciosID, categorias[i]))
+                                        {
+                                            <tr>
+                                                <td><input type="text" class="form-control" name="cargoGeneral@((int)(i+1))" id="cargoGeneral" value="@Detalle.cargo" placeholder="Administrador de Contrato" readonly required /></td>
+                                                <td><input type="text" class="form-control" name="turnoGeneral@((int)(i+1))" id="turnoGeneral" value="@Detalle.turno" placeholder="5X2" required readonly /></td>
+                                                <td><input type="number" class="form-control" name="cantidadGeneral@((int)(i+1))" id="cantidadGeneral" value="@Detalle.numeroPersonas" required readonly /></td>
+                                            </tr>}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="col-md-12">
+            <h3 id="hEquipos">Equipos:</h3>
+            <div id="seccionEquipos" class="table-responsive">
+                <table class="table table-condensed" id="tableEquipos">
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th class="col-md-3">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (RentaMaq.Models.detalleEquiposCotizacionServicios Detalle in new RentaMaq.DAL.Context().detalleEquiposCotizacionServicios.Where(s => s.CotizacionServiciosID == Model.cotizacionServiciosID).ToList())
+                        {
+                            <tr>
+                                <td><textarea class="form-control" name="equipoEquipo" id="equipoEquipo" rows="1" style="width:97%; max-width:97%; resize:none !important" readonly required>@Detalle.equipo</textarea></td>
+                                <td><input type="number" class="form-control" name="cantidadEquipo" id="cantidadEquipo" value="@Detalle.cantidad" required readonly /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Nota:</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="nota" id="nota" style="max-width: 92% !important; width:92%; resize:none !important" readonly>@Model.nota</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="faena">Faena.</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="faena" name="faena" required="required" type="text" value="@Model.faena" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="faena" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="tiempo">Tiempo de Arriendo. </label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="tiempo" name="tiempo" required="required" type="text" value="@Model.tiempo" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="tiempo" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            @Html.ActionLink("Volver", "Index")&nbsp;
+        </div>
+    </div>
+</div>

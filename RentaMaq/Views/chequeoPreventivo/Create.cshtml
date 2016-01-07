@@ -1,0 +1,657 @@
+﻿@model RentaMaq.Models.chequeoPreventivo
+
+@{
+    ViewBag.Title = "Crear chequeo Preventivo";
+}
+
+<h2>Nuevo Chequeo Preventivo</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        
+        <div class="row">            
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.numeroChequeoPreventivo, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })
+                @Html.EditorFor(model => model.numeroChequeoPreventivo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.numeroChequeoPreventivo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.codigoEquipo, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })               
+                @Html.EditorFor(model => model.codigoEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.codigoEquipo, "", new { @class = "text-danger" })               
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.fecha, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })
+                <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" required> 
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.hora, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })
+                @Html.EditorFor(model => model.hora, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.hora, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label">DEBE COMPLETARSE A CONCIENCIA Y CON RESPONSABILIDAD</label><br />
+                Marque tick cuando el item se encuentre dentro de estandar, deje en blanco cuando no aplique y marque con una X cuando el elemento esta fuera de estandar.
+            </div>
+        </div>
+        <br /><br /><br />        
+        <div class="row">
+            
+            <div class="col-md-6">
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="refrigerante" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>    
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.refrigerante, htmlAttributes: new { @class = "control-label" })
+                    </div>                                       
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="aceiteMotor" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.aceiteMotor, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="sistemaRefrigeracion" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.sistemaRefrigeracion, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="sistemaHidraulico" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.sistemaHidraulico, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="codigosTestigos" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.codigosTestigos, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="frenoServicio" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.frenoServicio, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="frenoEstacionamiento" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.frenoEstacionamiento, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="frenoEmergencia" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.frenoEmergencia, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="direccion" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.direccion, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="correaVentiladores" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.correaVentiladores, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="lubricacionGeneral" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.lubricacionGeneral, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="fugasAguaAceite" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.fugasAguaAceite, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="elementoDesgaste" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.elementoDesgaste, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="cadenaZapatillaRodillo" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.cadenaZapatillaRodillo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="baldePala" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.baldePala, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="pasadores" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.pasadores, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+                
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="neumaticos" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.neumaticos, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="pernos" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.pernos, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="manguerasOrrings" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.manguerasOrrings, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="cilindrosHidraulicos" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.cilindrosHidraulicos, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+            </div>
+
+            <div class="col-md-6">
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="baterias" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.baterias, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="instalacionElectrica" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.instalacionElectrica, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="alzavidrios" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.alzavidrios, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="asientos" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.asientos, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="cinturonSeguridad" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.cinturonSeguridad, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="aireAcondicionado" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.aireAcondicionado, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="limpiaParabrisas" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.limpiaParabrisas, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="vidrios" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.vidrios, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="balizas" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.balizas, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="cintasReflextantes" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.cintasReflextantes, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="cunas" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.cunas, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="cortaCorriente" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.cortaCorriente, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="bocina" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.bocina, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="lucesPrincipales" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.lucesPrincipales, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="intermitentes" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.intermitentes, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="alarmaDeRetroceso" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.alarmaDeRetroceso, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="pertiga" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.pertiga, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="extintor" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.extintor, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="botiquin" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.botiquin, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+
+                <div class="col-md-11">
+                    <div class="col-md-3">
+                        <select type="text" name="neumaticosDeRespuesto" class="form-control multiselect multiselect-icon" role="multiselect">
+                            <option value="No"></option>
+                            <option value="Dentro" data-icon="glyphicon-ok"></option>
+                            <option value="Fuera" data-icon="glyphicon-remove"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(model => model.neumaticosDeRespuesto, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div><br /><br />
+            </div>           
+        </div>         
+        <br /><br /><br /><br /><br />
+        <div class="row">            
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.observacionesGenerales, htmlAttributes: new { @class = "control-label col-md-12",@style = "text-align: left !important;" })
+                <textarea class="form-control" name="observacionesGenerales" style="max-width: 100% !important; width:100%;"></textarea>
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nivelCombustible, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })
+                <select class="form-control" name="nivelCombustible">
+                    <option value="0">0</option>
+                    <option value="0.05">0.05</option>
+                    <option value="0.10">0.10</option>
+                    <option value="0.15">0.15</option>
+                    <option value="0.20">0.20</option>
+                    <option value="0.25">0.25</option>
+                    <option value="0.30">0.30</option>
+                    <option value="0.35">0.35</option>
+                    <option value="0.40">0.40</option>
+                    <option value="0.45">0.45</option>
+                    <option value="0.50">0.50</option>
+                    <option value="0.55">0.55</option>
+                    <option value="0.60">0.60</option>
+                    <option value="0.65">0.65</option>
+                    <option value="0.70">0.70</option>
+                    <option value="0.75">0.75</option>
+                    <option value="0.80">0.80</option>
+                    <option value="0.85">0.85</option>
+                    <option value="0.90">0.90</option>
+                    <option value="0.95">0.95</option>
+                    <option value="1">1</option>
+                </select>
+            </div>
+        </div>
+        <br /><br /><br />
+        <div class="row">            
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nombreResponsableEntrega, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })
+                @Html.EditorFor(model => model.nombreResponsableEntrega, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombreResponsableEntrega, "", new { @class = "text-danger" })
+            </div>           
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nombreResponsableRecepcion, htmlAttributes: new { @class = "control-label col-md-12", @style = "text-align: left !important;" })
+                @Html.EditorFor(model => model.nombreResponsableRecepcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombreResponsableRecepcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br /><br /><br />               
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-9 col-lg-12">
+                    <input type="submit" value="Crear" class="btn btn-success btn-lg btn-default col-md-3" />
+                </div>
+            </div>
+        </div>          
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver Atras", "Index")
+</div>
+@section Scripts {
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.filestyle/1.1.0/js/bootstrap-filestyle.min.js"> </script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")  
+    @Scripts.Render("~/Scripts/multiSelectIcon.js")
+    <script>
+        $(document).ready(function () {
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });                                 
+
+        });
+    </script>
+
+
+}

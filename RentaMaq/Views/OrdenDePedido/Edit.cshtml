@@ -1,0 +1,170 @@
+﻿@model RentaMaq.Models.OrdenDePedido
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Editar Orden de Pedido</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.OrdenDePedidoID)
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="numeroOrden">Número de Orden</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Numero de Orden must be a number." data-val-required="The Numero de Orden field is required." id="numeroOrden" name="numeroOrden" type="number" value="@Model.numeroOrden" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="numeroOrden" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="a_o">A&#241;o</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="The field Año must be a number." data-val-required="The Año field is required." id="a_o" name="año" type="number" value="@Model.año" readonly />
+                <span class="field-validation-valid text-danger" data-valmsg-for="año" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="se_ores">Cliente</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="se_ores" name="señores" type="text" value="@Model.señores" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="señores" data-valmsg-replace="true"></span>
+            </div>
+            @{
+            string FECHA = Model.fecha.Day + "/" + Model.fecha.Month + "/" + Model.fecha.Year;
+            }
+            <label class="control-label col-md-2" for="fecha">Fecha</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fecha" name="fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@FECHA">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="encabezado">Encabezado</label>
+            <div class="col-md-10">
+                <textarea rows="5" name="encabezado" id="encabezado" class="form-control" style="max-width:92%; width:92% !important">@Model.encabezado</textarea>
+                <span class="field-validation-valid text-danger" data-valmsg-for="encabezado" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="trabajoARealizar">Trabajo a realizar</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="trabajoARealizar" name="trabajoARealizar" type="text" value="@Model.trabajoARealizar" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="trabajoARealizar" data-valmsg-replace="true"></span>
+            </div>
+            <label class="control-label col-md-2" for="personaResponsable">Persona Responsable</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="personaResponsable" name="personaResponsable" type="text" value="@Model.personaResponsable" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="personaResponsable" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12" id="DivDetalles">
+            <h4>Detalle:</h4>
+            <div class="table-responsive">
+                <table class="table table-condensed" id="tableItems">
+                    <thead>
+                        <tr>
+                            <th>Detalle</th>
+                            <th class="col-md-3">Cantidad</th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (RentaMaq.Models.detalleOrdenPedido Detalle in new RentaMaq.DAL.Context().DetalleOrdenesPedido.Where(s => s.OrdenDePedidoID == Model.OrdenDePedidoID).ToList())
+                        {
+                        <tr>
+                            <td><textarea class="form-control" name="detalleDetalle" id="detalleDetalle" rows="1" style="width:97%; max-width:97%; resize:none !important" required>@Detalle.detalle</textarea></td>
+                            <td><input type="number" class="form-control" name="cantidadDetalle" id="cantidadDetalle" value="@Detalle.cantidad" required /></td>
+                            <td><a href="#DivDetalles" class="btn btn-danger eliminarDetalle" id="eliminarDetalle"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#DivDetalles" id="nuevoDetalle" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="nombreSolicitante">Nombre de Solicitante</label>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="nombreSolicitante" name="nombreSolicitante" type="text" value="@Model.nombreSolicitante" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="nombreSolicitante" data-valmsg-replace="true"></span>
+            </div>
+            @{
+            string FECHASOLICITUD = @Model.fechaSolicitud.Day + "/" + Model.fechaSolicitud.Month + "/" + Model.fechaSolicitud.Year;
+            }
+            <label class="control-label col-md-2" for="fechaSolicitud">Fecha de Solicitud</label>
+            <div class="col-md-4">
+                <input class="form-control fecha" id="fechaSolicitud" name="fechaSolicitud"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                       type="text" value="@FECHASOLICITUD">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Fecha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+                @Html.ActionLink("Volver", "Index")&nbsp;
+                <input type="submit" value="Guardar" class="btn btn-default btn-lg btn-success" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+        $(document).ready(function () {
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $("#nuevoDetalle").click(function () {
+                console.log("Nuevo ítem en detalle");
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                $temp = $trLast.clone();
+
+                $temp.find("#detalleDetalle").val("");
+                $temp.find("#cantidadDetalle").val("0");
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                console.log($trNew);
+            });
+
+            $('body').on('click', '.eliminarDetalle', function (e) {
+                console.log("Eliminar ítem en detalle");
+                var $tableBody = $('#tableItems').find("tbody");
+
+                if ($tableBody.find("tr").length == 1) return;
+
+                item = $(this).closest("tr")
+
+                item.remove();
+            });
+
+        });
+    </script>
+}

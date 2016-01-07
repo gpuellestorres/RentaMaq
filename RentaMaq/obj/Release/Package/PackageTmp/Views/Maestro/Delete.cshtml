@@ -1,0 +1,120 @@
+﻿@model RentaMaq.Models.Maestro
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar </h2>
+
+<h3>¿Esta seguro de eliminar este registro?</h3>
+<div>
+    <h4>Maestro</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductoID)
+        </dt>
+
+        <dd>
+            @(new RentaMaq.DAL.Context().Productos.Find(int.Parse(Model.ProductoID)).numeroDeParte)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cantidadEntrante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidadEntrante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cantidadSaliente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidadSaliente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.facturaDespacho)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.facturaDespacho)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.proveedor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proveedor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorUnitario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorUnitario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorTotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.afiEquipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.afiEquipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.entragadoA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.entragadoA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.motivo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.motivo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.numeroFormulario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroFormulario)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver Atras", "Index")
+        </div>
+    }
+</div>

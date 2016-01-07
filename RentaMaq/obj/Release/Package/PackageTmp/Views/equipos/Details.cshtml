@@ -1,0 +1,120 @@
+﻿@model RentaMaq.Models.equipos
+
+@{
+    ViewBag.Title = "Detalles Equipo";
+    RentaMaq.Models.detalleEquipo detalleEquipo = new RentaMaq.Models.detalleEquipo();
+    if (ViewBag.verificadorDetalle.Equals("si"))
+    {
+        detalleEquipo = (RentaMaq.Models.detalleEquipo)ViewData["detalleEquipo"];
+
+    }
+    string inicioCertificacion = @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo.inicioCertificacion);
+    string terminoCertificacion = @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo.terminoCertificacion);
+    string revisionTecnica = @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo.revisionTecnica);
+    string permisoCirculacion = @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo.permisoCirculacion);
+    string seguro = @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo.seguro);
+
+}
+
+
+
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Equipo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt style="text-align: left">
+            Tipo Equipo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipoEquipo)
+        </dd>
+
+        <dt style="text-align: left">
+            Patente Equipo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.patenteEquipo)
+        </dd>
+
+        <dt style="text-align: left">
+            Año
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.año)
+        </dd>
+
+        <dt style="text-align: left">
+            Numero AFI
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroAFI)
+        </dd>
+        <dt style="text-align: left">
+            Área de Trabajo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.areaTrabajo)
+        </dd>
+        <dt style="text-align: left">
+            Descripción
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+    </dl>
+
+    <div class="table-responsive" id="contenedorProductos">
+        <table class="table" id="tableItems">
+            <thead>
+                <tr>
+                    <th>Inicio Certificacion</th>
+                    <th>Termino Certificacion</th>
+                    <th>Revision Tecnica</th>
+                    <th>Permiso Circulacion</th>
+                    <th>Seguro</th>
+                    <th>Proveedor</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyItems">
+                <tr id="trItems">
+                    <td class="tdNumeroItem">
+                        @inicioCertificacion
+                    </td>
+
+                    <td>
+                        @terminoCertificacion
+                    </td>
+
+                    <td>
+                        @revisionTecnica
+                    </td>
+
+                    <td>
+                        @permisoCirculacion
+                    </td>
+                    <td>
+                        @seguro
+                    </td>
+                    <td>
+                        @detalleEquipo.proveedor
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Volver", "Index")
+</p>

@@ -1,0 +1,198 @@
+﻿@model RentaMaq.Models.reportCombustible
+
+@{
+    ViewBag.Title = "Editar Report";
+}
+
+<h2>Editar</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Report de Combustible</h4>        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            <input type="number" name="numeroReportAnterior" id="numeroReportAnterior" value="@Model.numeroReport" class="hidden" />
+            @Html.LabelFor(model => model.numeroReport, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="numeroReport" name="numeroReport"
+                       type="number" value="@Model.numeroReport" />
+                <div id="mensajeErrorCodigo" class="alert alert-danger hidden">
+                    <strong>Error: </strong> Ya existe un Report con este número
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.usuario, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.usuario, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.usuario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.equiposID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="equipoID" id="equipoID" class="form-control" required>
+                    @foreach (RentaMaq.Models.equipos equipo in (List<RentaMaq.Models.equipos>)ViewBag.Equipos)
+                    {
+                        if (equipo.ID.Equals(Model.equiposID.ID)) { 
+                            <option value="@equipo.ID" selected>@equipo.numeroAFI - @equipo.ModeloID.nombreModelo - @equipo.ModeloID.MarcaID.NombreMarca</option>
+                        }
+                        else
+                        {
+                            <option value="@equipo.ID">@equipo.numeroAFI - @equipo.ModeloID.nombreModelo - @equipo.ModeloID.MarcaID.NombreMarca</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.denominacionEquipo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.denominacionEquipo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.denominacionEquipo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.horometro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.horometro, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.horometro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.kilometraje, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.kilometraje, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.kilometraje, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @{
+            string fecha = Model.fechaHora.Year + "";
+            string mes = Model.fechaHora.Month + "";
+            if (mes.Length == 1) { mes = "0" + mes; }
+            string dia = Model.fechaHora.Day + "";
+            if (dia.Length == 1) { dia = "0" + dia; }
+
+            string hora = Model.fechaHora.Hour + "";
+            if (hora.Length == 1) { hora = "0" + hora; }
+            string minuto = Model.fechaHora.Minute + "";
+            if (minuto.Length == 1) { minuto = "0" + minuto; }
+
+
+            fecha += "/" + mes + "/" + dia + " " + hora + ":" + minuto;
+            }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fechaHora, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" data-val="true" 
+                       data-val-date="The field Fecha y Hora must be a date." 
+                       data-val-required="Este valor es requerido." 
+                       id="fechaHora" name="fechaHora" type="datetime" value="@fecha" />
+                @Html.ValidationMessageFor(model => model.fechaHora, "Utilice por favor el siguiente formato: AAAA/MM/DD hh:mm", new { @class = "text-info" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.litros, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.litros, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.litros, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.operador, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.operador, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.operador, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quienCarga, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quienCarga, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.quienCarga, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.responsable, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.responsable, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.responsable, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.comentario, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.comentario, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.comentario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+        $(document).ready(function () {
+
+            $("#numeroReport").change(function () {
+                var codigo = $("#numeroReport").val();
+                var numeroReportAnterior = $("#numeroReportAnterior").val();
+                $.ajax({
+                    url: "/reportCombustible/verificarNumero",
+                    data: { "numero": codigo },
+
+                    success: function (retorno) {
+
+                        if (retorno == 'false' || codigo==numeroReportAnterior) {
+
+                            $("#mensajeErrorCodigo").addClass("hidden");
+                            $("#BtnCrear").removeAttr("disabled");
+                        } else {
+
+                            $("#mensajeErrorCodigo").removeClass("hidden");
+                            $("#BtnCrear").attr("disabled", "disabled");
+                        }
+                    }
+                });
+            });
+
+        });
+</script>
+}

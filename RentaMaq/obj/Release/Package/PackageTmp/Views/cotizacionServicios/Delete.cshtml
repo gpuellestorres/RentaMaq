@@ -1,0 +1,120 @@
+﻿@model RentaMaq.Models.cotizacionServicios
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar cotización de servicios</h2>
+
+<h3>¿Está seguro/a de eliminar la cotización?</h3>
+<div>
+    <h4>Datos:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.numeroCotizacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numeroCotizacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datosClienteEmpresa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datosClienteEmpresa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datosClienteRut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datosClienteRut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datosClienteDomicilio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datosClienteDomicilio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datosClienteSolicitadoPor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datosClienteSolicitadoPor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.encabezado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.encabezado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.descripcionServicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcionServicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorTotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nota)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nota)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.faena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.faena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tiempo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tiempo)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

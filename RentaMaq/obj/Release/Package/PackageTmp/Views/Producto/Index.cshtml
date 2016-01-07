@@ -1,0 +1,208 @@
+﻿@model IEnumerable<RentaMaq.Models.Producto>
+
+@{
+    ViewBag.Title = "Productos";
+}
+
+<h2>Productos</h2>
+
+@{
+    bool tienePermiso1 = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(1, int.Parse(Session["ID"].ToString()))){
+        tienePermiso1 = true;
+    }
+}
+
+<div class="row">
+    <div class="col-md-12">
+@if (tienePermiso1)
+{
+    <p>
+        @Html.ActionLink("Crear Nuevo Producto", "Create")
+    </p>
+}
+        <div class="col-lg-12">
+            <div class="input-group" id="divBuscador">
+                <form class="form-horizontal" role="form" enctype="multipart/form-data" method="post">
+                    <input type="text" class="form-control" id="codigoProducto" name="codigoProducto" placeholder="Ingrese Codigo Producto a buscar" required>
+                    <input type="submit" class="form-control" value="Buscar" formaction="/Producto/BuscarProducto/" />
+                </form>
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <label class="col-md-12">Descripción o número de parte</label>
+                <input class="form-control" name="descripcion" id="descripcion" />
+            </div> 
+            <div class="col-md-3">
+                <label class="col-md-12">Bodega</label>
+                <select class="form-control idBodega" name="idBodega" id="idBodega">
+                    <option value="TODAS">Todas</option>
+                    @foreach (RentaMaq.Models.Bodegas Bodega in (new RentaMaq.DAL.Context().bodegas.ToList()))
+                    {
+                        <option value="@Bodega.BodegasID">@Bodega.nombre/@Bodega.ubicacion</option>
+                    }
+                </select>
+            </div> 
+            <div class="col-md-3">
+                <label class="col-md-12">Stock</label>
+                <select class="form-control stockCritico" name="stockCritico" id="stockCritico">
+                    <option value="TODOS">Todos</option>
+                    <option value="CRITICO">Stock Critico</option>
+                </select>
+            </div>          
+            <div class="col-md-3">
+                <label class="col-md-12"></label>
+                <input class="form-control" id="botonFiltro" value="Buscar" type="button" />
+            </div>
+        </div>
+
+    </div>
+    
+</div>   
+<hr />
+    <table class="table">
+        <tr>
+            <th>
+                N° de Parte
+            </th>
+            <th>
+                Descripcion
+            </th>
+            <th>
+                Codigo Interno
+            </th>
+            <th>
+                Precio Unitario
+            </th>
+            <th>
+                Stock Actual
+            </th>
+            <th>
+                Bodega
+            </th>
+            <th></th>
+        </tr>
+        <tbody id="contenedor">
+            @{
+                System.Collections.Hashtable bodegas = new System.Collections.Hashtable();
+                List<RentaMaq.Models.Bodegas> listaBodegas = new RentaMaq.DAL.Context().bodegas.ToList();
+
+                foreach (RentaMaq.Models.Bodegas bodega in listaBodegas)
+                {
+                    bodegas.Add(bodega.BodegasID, bodega);
+                }
+            }
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroDeParte)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.precioUnitario)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.stockActual)
+                    </td>
+                    <td>                        
+                            @(((RentaMaq.Models.Bodegas)bodegas[item.idBodega]).nombre)                        
+                    </td>
+                    <td>
+                        @if (tienePermiso1)
+                        {
+                            <text>
+                                @Html.ActionLink("Editar", "Edit", new { id = item.ProductoID }) |
+                                @Html.ActionLink("Detalle", "Details", new { id = item.ProductoID }) |
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.ProductoID })
+                            </text>
+                        }
+                        else
+                        {
+                            <text>
+                                @Html.ActionLink("Detalle", "Details", new { id = item.ProductoID })
+                            </text>
+                        }
+                    </td>
+                </tr>
+            }            
+        </tbody>
+    </table>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        
+        <script>
+
+    $(document).ready(function () {
+        $("#BotonBuscar").click(function () {
+            var div = $("#contenedor");
+            $.getJSON('/Producto/FiltrarProductosStockCriticos',
+                function (data) {
+                    div.empty();
+                    $.each(data, function (i, item) {
+                        div.append("<tr><td>" + item.numeroDeParte + "</td><td>" + item.descripcion + "</td><td>" + item.codigo + "</td><td>" + item.precioUnitario + "</td><td>" + item.stockActual + "</td>" +
+                       "<td><a href='/Producto/Edit/" + item.ProductoID + "'>Editar</a>|<a href='/Producto/Details/" + item.ProductoID + "'>Detalle</a>|<a href='/Producto/Delete/" + item.ProductoID + "'>Eliminar</a></td></tr>");
+                    });
+                });
+
+        });
+
+        $("#botonFiltro").click(function () {
+            var idBodega = $("#idBodega").val();
+            var stockCritico = $("#stockCritico").val();
+            var descripcion = $("#descripcion").val();
+            var div = $("#contenedor");
+            $.getJSON('/Producto/Filtrar', { "idBodega": idBodega, "stockCritico": stockCritico, "descripcion":descripcion },
+                    function (data) {
+                        div.empty();
+                        $.each(data, function (i, item) {
+                            @if (tienePermiso1) {
+                                        <text>
+                            div.append("<tr><td>" + item.numeroDeParte + "</td><td>" + item.descripcion + "</td><td>" + item.codigo + "</td><td>" + item.precioUnitario + "</td><td>" + item.stockActual + "</td>" +
+                            "<td><a href='/Producto/Edit/" + item.ProductoID + "'>Editar</a>|<a href='/Producto/Details/" + item.ProductoID + "'>Detalle</a>|<a href='/Producto/Delete/" + item.ProductoID + "'>Eliminar</a></td></tr>");
+                            </text>
+                            }
+                            else{
+                                <text>
+                            div.append("<tr><td>" + item.numeroDeParte + "</td><td>" + item.descripcion + "</td><td>" + item.codigo + "</td><td>" + item.precioUnitario + "</td><td>" + item.stockActual + "</td>" +
+                            "<td><a href='/Producto/Details/" + item.ProductoID + "'>Detalle</a></td></tr>");
+                                </text>
+                            }
+
+                        });
+                    });
+
+        });
+
+
+        function formatoFechaJson(entrada) {
+            var dateString = entrada.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+        function verificadorNull(variable) {
+            if (variable == null) {
+                return "";
+            } else {
+                return variable;
+            }
+            return variable;
+        }
+    });
+        </script>
+    }

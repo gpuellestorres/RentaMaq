@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="container">
+    @if (ViewBag.mensaje != null && ViewBag.mensaje == "Contraseña cambiada")
+    {
+        <div class="col-md-12">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                Su contraseña se ha modificado correctamente. Ingrese nuevamente al sistema
+            </div>
+        </div>
+        <div class="clear-fix"></div>
+    }
+    @if (ViewBag.mensaje != null && ViewBag.mensaje == "login erroneo")
+    {
+        <div class="col-md-12">
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                Usuario y/o password erróneos
+            </div>
+        </div>
+        <div class="clear-fix"></div>
+    }
+    <br class="xs-hidden">
+    <br class="xs-hidden">
+    <br class="xs-hidden">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="page-header">
+                <h2 class="text-center">ADMINISTRADOR - Renta-Maq</h2>
+            </div>
+            <div class=" login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Por favor ingrese sus datos</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="post" action="@Url.Action("verificarLogin", "Usuarios" )">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Nombre de usuario" name="nombre" type="text"
+                                       autofocus required style="max-width:100% ; width:100% !important">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Password" name="password" type="password"
+                                       value="" required style="max-width:100% ; width:100% !important">
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button href="index.html" class="btn btn-lg btn-success btn-block">Ingresar</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

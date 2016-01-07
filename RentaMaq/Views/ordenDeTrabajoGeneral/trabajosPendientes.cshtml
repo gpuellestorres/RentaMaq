@@ -1,0 +1,82 @@
+﻿@model IEnumerable<RentaMaq.Models.ordenDeTrabajoGeneral>
+
+@{
+    ViewBag.Title = "Ordenes de Trabajo Pendientes";
+
+    System.Collections.Hashtable tablaEquipos = new System.Collections.Hashtable();
+
+    foreach (RentaMaq.Models.ordenDeTrabajoGeneral orden in Model)
+    {
+        if (!tablaEquipos.ContainsKey(orden.idEquipo))
+        {
+            RentaMaq.Models.equipos Equipo = RentaMaq.Models.equipos.Obtener(int.Parse(orden.idEquipo));
+            //string afi= new RentaMaq.DAL.Context().Equipos.Find(int.Parse(orden.idEquipo)).numeroAFI;
+            tablaEquipos.Add(orden.idEquipo, Equipo);
+        }
+    }
+}
+
+<h2>Ordenes de Trabajo con Trabajo Pendiente</h2>
+<div class="clearfix"></div>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Numero de Folio
+            </th>
+            <th>
+                Fecha OT Abierta
+            </th>
+            <th>
+                Fecha OT Cerrada
+            </th>
+            <th>
+                Número AFI
+            </th>
+            <th>
+                Tipo de Equipo
+            </th>
+            <th>
+                Fecha Trabajo Pendiente
+            </th>
+            <th></th>
+        </tr>
+        <tbody id="contenedor">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroFolio)
+                    </td>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fechaOTAbierta)
+
+                    </td>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fechaOTCerrada)
+                    </td>
+                    <td>
+                        @(((RentaMaq.Models.equipos)tablaEquipos[item.idEquipo]).numeroAFI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tipoEquipo)
+                    </td>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fechaTrabajosPendientesPorRealizar)
+                    </td>
+                    <td>                        
+                        @Html.ActionLink("Ver OT", "Details", new { id = item.ordenDeTrabajoGeneralID }) 
+                        @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(16, int.Parse(Session["ID"].ToString())))
+                        {
+                            <text>
+                            | 
+                            <br />
+                            @Html.ActionLink("Generar Nueva OT con Trabajo Pendiente", "generarOTTrabajoPendiente", new { id = item.ordenDeTrabajoGeneralID })                        
+                            </text>
+                        } 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,178 @@
+﻿@model IEnumerable<RentaMaq.Models.ordenDeTrabajoGeneral>
+
+@{
+    ViewBag.Title = "órdenes de Trabajo";
+    System.Collections.Hashtable tablaEquipos = new System.Collections.Hashtable();
+
+    foreach (RentaMaq.Models.ordenDeTrabajoGeneral orden in Model)
+    {
+        if (!tablaEquipos.ContainsKey(orden.idEquipo))
+        {
+            RentaMaq.Models.equipos Equipo = RentaMaq.Models.equipos.Obtener(int.Parse(orden.idEquipo));
+            //string afi= new RentaMaq.DAL.Context().Equipos.Find(int.Parse(orden.idEquipo)).numeroAFI;
+            tablaEquipos.Add(orden.idEquipo, Equipo);
+        }
+    }
+}
+<div class="col-sm-4">
+    <h3>Órdenes de Trabajo</h3>
+</div>
+
+@{
+    string FECHA1 = "", FECHA2 = "";
+
+    DateTime Inicio = (DateTime)ViewBag.Inicio;
+    DateTime Termino = (DateTime)ViewBag.Termino;
+
+    FECHA1 = Inicio.Day + "/" + Inicio.Month + "/" + Inicio.Year;
+    FECHA2 = Termino.Day + "/" + Termino.Month + "/" + Termino.Year;
+}
+<br />
+<div class="col-md-11">    
+    <div class="col-md-4">
+        <h4><small>Filtro de fechas (Fecha OT abierta):</small></h4>
+    </div>
+    <div class="col-md-2">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA1">
+
+    </div>
+    <div class="col-md-2">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@FECHA2">
+    </div>
+    <div class="col-md-2">
+        <select class="form-control equipos" name="IDEquipo" id="IDEquipo">
+            <option value="">Todos</option>
+            @foreach (RentaMaq.Models.equipos Equipo in tablaEquipos.Values)
+            {
+                <option value="@Equipo.ID">@Equipo.numeroAFI</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<p>
+    @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(16, int.Parse(Session["ID"].ToString())))
+    {
+        @Html.ActionLink("Crear Nueva", "Create")
+    }
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Numero de Folio
+            </th>
+            <th>
+                Fecha OT Abierta
+            </th>
+            <th>
+                Fecha OT Cerrada
+            </th>
+            <th>
+                Número AFI
+            </th>
+            <th>
+                Tipo de Equipo
+            </th>
+
+            <th>
+                Tipo de Mantenimiento
+            </th>
+            <th>
+                Fecha Trabajo Pendiente
+            </th>
+            <th></th>
+        </tr>
+        <tbody id="contenedor">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroFolio)
+                    </td>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fechaOTAbierta)
+
+                    </td>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fechaOTCerrada)
+                    </td>
+                    <td>
+                        @(((RentaMaq.Models.equipos)tablaEquipos[item.idEquipo]).numeroAFI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tipoEquipo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tipoMantenimientoARealizar)
+                    </td>
+                    <td>
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(item.fechaTrabajosPendientesPorRealizar)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.ordenDeTrabajoGeneralID }) |
+                        @Html.ActionLink("Detalle", "Details", new { id = item.ordenDeTrabajoGeneralID }) |
+                        @Html.ActionLink("Borrar", "Delete", new { id = item.ordenDeTrabajoGeneralID })|
+                        <br />
+                        @Html.ActionLink("Generar PDF", "ordenDeTrabajoGeneral", "Report", new { id = item.ordenDeTrabajoGeneralID }, new { target = "_blank" }) 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+<br /><br /><br />
+<p>
+    <div>
+        @Html.ActionLink("Lista de OTs con Trabajos Pendientes", "trabajosPendientes")
+    </div>
+</p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <link href="~/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
+    <script>
+        $(document).ready(function () {
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".equipos").select2();
+
+            $("#Boton").click(function () {
+                var fecha1 = $("#fecha1").val();
+                var fecha2 = $("#fecha2").val();
+                var IDEquipo = $("#IDEquipo").val();
+
+                fecha1 = fecha1.replace("/", "-").replace("/", "-");
+                fecha2 = fecha2.replace("/", "-").replace("/", "-");
+
+                if (fecha1 == "" || fecha2 == "") {
+                    alert("Debe ingresar ambas fechas");
+                }
+                else {
+                    console.log(fecha1 + "-" + fecha2);
+                    ruta = "/ordenDeTrabajoGeneral/Index?inicio=" + fecha1 + "&termino=" + fecha2 + "&IDEquipo=" + IDEquipo;
+                    console.log(ruta);
+                    window.location.href = ruta
+                }
+            });
+        });
+    </script>
+}

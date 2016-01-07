@@ -1,0 +1,178 @@
+﻿@model IEnumerable<RentaMaq.Models.solicitudDeCotizacion>
+
+@{
+    ViewBag.Title = "Solicitude de Cotizacion";
+   
+}
+
+<h2>Solicitudes de Cotizacion</h2>
+<div class="col-md-8">
+    <br />
+    <div class="col-md-4">
+        <h4><small>Filtro de fechas:</small></h4>
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha1" name="fecha1" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@ViewBag.fechaAnterior">
+
+    </div>
+    <div class="col-md-3">
+        <input class="form-control fecha" id="fecha2" name="fecha2" data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+               data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+               type="text" value="@ViewBag.fechaActual">
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" id="Boton" value="Buscar" type="button" />
+    </div>
+</div>
+<div class="clearfix"></div>
+
+@if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(5, int.Parse(Session["ID"].ToString())))
+{
+    <p>
+        @Html.ActionLink("Crear Nueva Solicitud", "Create")
+    </p>
+}
+
+<div class="table-responsive">
+<table class="table">
+    <tr>
+        <th>
+           Numero de Solicitud de Cotizacion
+        </th>               
+        <th>
+            Fecha
+        </th>
+        <th>
+            Proveedor
+        </th>        
+        <th>
+            Autor
+        </th>
+        <th></th>
+    </tr>
+    <tbody id="contenedor">
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.numeroSolicitudDeCotizacion)
+        </td>        
+        <td>
+            @RentaMaq.Models.Formateador.fechaCompletaToString(item.fecha)            
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.proveedor)
+        </td>        
+        <td>
+            @Html.DisplayFor(modelItem => item.escritoPor)
+        </td>
+        <td>
+            @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(5, int.Parse(Session["ID"].ToString())))
+            {
+                <text>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.solicitudDeCotizacionID }) |
+                    @Html.ActionLink("Detalle", "Details", new { id = item.solicitudDeCotizacionID }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.solicitudDeCotizacionID }) |
+                    <br />
+                    <a target="_blank" href="@Url.Action("solicitudDeCotizacion", "Report", new { controller = "Report", id = item.solicitudDeCotizacionID })">Descargar PDF</a>
+                </text>
+            }
+            else
+            {
+                <text>
+                    @Html.ActionLink("Detalle", "Details", new { id = item.solicitudDeCotizacionID }) |
+                    <br />
+                    <a target="_blank" href="@Url.Action("solicitudDeCotizacion", "Report", new { controller = "Report", id = item.solicitudDeCotizacionID })">Descargar PDF</a>
+                </text>
+            }
+        </td>
+
+    </tr>
+}
+    </tbody>
+</table>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+
+    <script>
+        $(document).ready(function () {
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+
+            $("#Boton").click(function () {
+                var fecha1 = $("#fecha1").val();
+                var fecha2 = $("#fecha2").val();
+                if (fecha1 == "" || fecha2 == "") {
+                    alert("Debe ingresar ambas fechas");
+                } else {
+                    var div = $("#contenedor");
+                    $.getJSON('/solicitudDeCotizacion/Filtrar', { "fecha1": fecha1, "fecha2": fecha2 },
+                        function (data) {
+                            div.empty();                          
+                            $.each(data, function (i, item) {
+                                div.append("<tr><td>" + item.numeroSolicitudDeCotizacion + "</td><td>" + formatoFechaJson(item.fecha) + "</td><td>" + item.proveedor + "</td><td>" + item.escritoPor + "</td>" +
+                                         "<td><a href='/solicitudDeCotizacion/Edit/" + item.solicitudDeCotizacionID + "'>Editar</a>|<a href='/solicitudDeCotizacion/Details/" + item.solicitudDeCotizacionID + "'>Detalle</a>|<a href='/solicitudDeCotizacion/Delete/" + item.solicitudDeCotizacionID + "'>Eliminar</a></td></tr>");
+
+                            });
+                        });
+                }
+            });
+
+        });
+
+        function formatoFechaJson(entrada) {
+            var dateString = entrada.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var newDate = new Date(currentTime);
+            newDate.setDate(newDate.getDate() + 1);
+            var month = newDate.getMonth() + 1;
+            var day = newDate.getDate();
+            var year = newDate.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+        function verificadorNull(variable) {
+            if (variable == null) {
+                return "";
+            } else {
+                return variable;
+            }
+            return variable;
+        }
+        function formatoPrecio(n) {
+
+            if (n == null) {
+                return "";
+            }
+            var number = new String(n);
+            var result = "";
+            isNegative = false;
+            if (number.indexOf("-") > -1) {
+                number = number.substr(1);
+                isNegative = true;
+            }
+
+            while (number.length > 3) {
+                result = '.' + number.substr(number.length - 3) + result;
+
+                number = number.substring(0, number.length - 3);
+
+            }
+            result = number + result;
+            if (isNegative) result = '-' + result;
+
+            return '$' + result;
+        }
+
+    </script>
+}
+

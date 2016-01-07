@@ -1,0 +1,84 @@
+﻿@model IEnumerable<RentaMaq.Models.equipos>
+
+@{
+    ViewBag.Title = "Equipos"+ ViewBag.titulo;
+    List<RentaMaq.Models.detalleEquipo> detalleEquipo = new List<RentaMaq.Models.detalleEquipo>();
+    detalleEquipo = (List<RentaMaq.Models.detalleEquipo>)ViewData["detalleEquipo"];
+    int contador = 0;  
+}
+
+<h2>Equipos Con @ViewBag.titulo</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.tipoEquipo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.patenteEquipo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.año)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.numeroAFI)
+        </th>
+       
+        <th>
+            @ViewBag.variable
+        </th>        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        
+        <tr>
+            <td>
+                @(new RentaMaq.DAL.Context().tipoEquipoes.Find(int.Parse(item.tipoEquipo)).nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.patenteEquipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.año)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.numeroAFI)
+            </td>            
+            <td>
+                @{
+                    if (ViewBag.variable.Equals("Fecha Termino Certificacion")) { 
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo[contador].terminoCertificacion)
+                    }
+                    else if (ViewBag.variable.Equals("Revision Tecnica")) { 
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo[contador].revisionTecnica)
+                    }
+                    else if (ViewBag.variable.Equals("Permiso Circulacion"))
+                    {
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo[contador].permisoCirculacion)
+                    }
+                    else if (ViewBag.variable.Equals("Seguro"))
+                    {
+                        @RentaMaq.Models.Formateador.fechaCompletaToString(detalleEquipo[contador].seguro)
+                    }
+
+                }
+                
+                                                
+            </td>           
+            <td>
+                @Html.ActionLink("Detalles", "Details", new { id = item.ID })
+                @if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(11, int.Parse(Session["ID"].ToString())))
+                {
+                    <text>
+                        | @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.ID })
+                    </text>
+                }
+            </td>
+        </tr>
+        contador++;
+    }
+
+</table>

@@ -1,0 +1,154 @@
+﻿@model IEnumerable<RentaMaq.Models.equipos>
+
+@{
+    ViewBag.Title = "Índice";
+    bool tienePermiso = false;
+    if (Session["ID"] != null && RentaMaq.Models.roles.tienePermiso(11, int.Parse(Session["ID"].ToString())))
+    {
+        tienePermiso = true;
+    }
+}
+
+<h2>Equipos</h2>
+
+<p>
+    @if (tienePermiso)
+    {
+
+        @Html.ActionLink("Crear Nuevo", "Create")
+    }
+
+
+</p>
+<div class="table-responsive">
+    <table class="table table-condensed">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.patenteEquipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.numeroAFI)
+            </th>
+            <th>
+                Horómetro Actual
+            </th>
+            <th>
+                Kilometraje Actual
+            </th>
+            <th>
+                Fecha Última Mantención Realizada
+            </th>
+            <th>
+                HM/KM Última Mantención Realizada
+            </th>
+            <th>
+                HM/KM Próxima Mantención
+            </th>
+            <th>
+                HM/KM Restantes
+            </th>
+            <th>
+                Promedio Diario
+            </th>
+        </tr>
+
+        @{
+            RentaMaq.DAL.Context db = new RentaMaq.DAL.Context();
+            List<RentaMaq.Models.tipoEquipo> tiposEquipos = db.tipoEquipoes.ToList();
+
+            System.Collections.Hashtable tiposEquiposHash = new System.Collections.Hashtable();
+
+            foreach (RentaMaq.Models.tipoEquipo te in tiposEquipos)
+            {
+                tiposEquiposHash.Add(te.tipoEquipoID, te.nombre);
+            }
+        }
+
+        @foreach (var item in Model)
+        {
+            RentaMaq.Models.detalleEquipo DetalleEquipo = db.detalleEquipos.SingleOrDefault(s => s.EquipoID == item.ID);
+            List<RentaMaq.Models.mantencionPreventiva> mantenciones = db.mantencionPreventivas.Where(s => s.equipoID== item.ID).OrderByDescending(s=>s.fecha).Take(1).ToList();
+            RentaMaq.Models.mantencionPreventiva MantencionPreventiva= new RentaMaq.Models.mantencionPreventiva();
+            if (mantenciones.Count > 0) 
+            {
+                MantencionPreventiva = mantenciones[0];
+            }
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.patenteEquipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.numeroAFI)
+                </td>
+                @{
+            RentaMaq.Models.registrokmhm registro = RentaMaq.Models.registrokmhm.obtenerUltimo(item.ID);
+                }
+                <td>
+                    @registro.horometro
+                </td>
+                <td>
+                    @registro.kilometraje
+                </td>
+                @if (MantencionPreventiva.fecha.Equals(new DateTime(1, 1, 1)))
+                {
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                }
+                else
+                {
+                    <td>
+                        @(RentaMaq.Models.formatearString.fechaSinHoraDiaPrimero(MantencionPreventiva.fecha))
+                    </td>
+                    if (MantencionPreventiva.horometroActual > 0)
+                    {
+                        <td>@MantencionPreventiva.horometroActual (HM)</td>
+                    }
+                    else
+                    {
+                        <td>@MantencionPreventiva.kilometrajeActual (KM)</td>
+                    }
+                    if (MantencionPreventiva.horometroProximaMantencion > 0)
+                    {
+                        <td>@MantencionPreventiva.horometroProximaMantencion (HM)</td>
+                        if (registro.horometro > MantencionPreventiva.horometroProximaMantencion)
+                        {
+                            <td class="text-danger">@(MantencionPreventiva.horometroProximaMantencion - registro.horometro)</td>
+                        }
+                        else if ((registro.horometro + 50) > MantencionPreventiva.horometroProximaMantencion)
+                        {
+                            <td class="text-warning">@(MantencionPreventiva.horometroProximaMantencion - registro.horometro)</td>
+                        }
+                        else
+                        {
+                            <td class="text-success">@(MantencionPreventiva.horometroProximaMantencion - registro.horometro)</td>
+                        }
+                        double promedioDiario = (registro.horometro - MantencionPreventiva.horometroActual) / (DateTime.Now - MantencionPreventiva.fecha).TotalDays;
+                        <td class="text-success">@promedioDiario</td>
+                    }
+                    else
+                    {
+                        <td>@MantencionPreventiva.kilometrajeProximaMantencion (KM)</td>
+                        if (registro.kilometraje > MantencionPreventiva.kilometrajeProximaMantencion)
+                        {
+                            <td class="text-danger">@(MantencionPreventiva.kilometrajeProximaMantencion - registro.kilometraje)</td>
+                        }
+                        else if ((registro.kilometraje + 500) > MantencionPreventiva.kilometrajeProximaMantencion)
+                        {
+                            <td class="text-warning">@(MantencionPreventiva.kilometrajeProximaMantencion - registro.kilometraje)</td>
+                        }
+                        else
+                        {
+                            <td class="text-success">@(MantencionPreventiva.kilometrajeProximaMantencion - registro.kilometraje)</td>
+                        }
+                        double promedioDiario = (registro.kilometraje - MantencionPreventiva.kilometrajeActual) / (DateTime.Now - MantencionPreventiva.fecha).TotalDays;
+                        <td class="text-success">@promedioDiario</td>
+                    }
+                }                
+            </tr>
+        }
+
+    </table>
+</div>

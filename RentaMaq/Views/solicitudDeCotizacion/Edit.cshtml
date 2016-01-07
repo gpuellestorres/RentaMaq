@@ -1,0 +1,315 @@
+﻿@model RentaMaq.Models.solicitudDeCotizacion
+
+@{
+    ViewBag.Title = "Editar Solicitud de Cotizacion";
+}
+
+<h2>Editar Solicitud de Cotizacion N° @Model.solicitudDeCotizacionID</h2>
+
+@{
+    
+
+    string fechaSolicitud = @RentaMaq.Models.Formateador.fechaCompletaToString(@Model.fecha);
+    
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-inline">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            @Html.HiddenFor(model => model.solicitudDeCotizacionID)            
+        </div>     
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.fecha, "Fecha de Solicitud", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+
+                    <input class="form-control fecha" id="fecha" name="fecha" data-val-date="El valor debe ser una fecha." data-val-required="El campo fecha es obligatorio."
+                           data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]"
+                           type="text" value="@fechaSolicitud" required">
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.numeroSolicitudDeCotizacion, "SOLICITUD DE COTIZACIÓN Nº", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.numeroSolicitudDeCotizacion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.numeroSolicitudDeCotizacion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.proveedor, "Señores:", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-6">
+                    <select name="proveedor" class="form-control proveedor">
+                        @foreach (RentaMaq.Models.Proveedor Proveedor in (List<RentaMaq.Models.Proveedor>)ViewData["Proveedores"])
+                        {
+                             if (@Model.proveedor.Equals(@Proveedor.nombreProveedor))
+                             {
+                                <option value="@Proveedor.nombreProveedor" selected>@Proveedor.nombreProveedor</option>
+                             }else
+                             {
+                                <option value="@Proveedor.nombreProveedor" selected>@Proveedor.nombreProveedor</option>
+                             }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-group col-md-9">
+                @Html.LabelFor(model => model.escritoPor, "Solicitud Emitida Por:", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-4" style="right: 30px">
+                    <input type="text" class="form-control" required name="escritoPor" id="escritoPor" value="@Model.escritoPor" />
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" required name="escritoPorCargo" id="escritoPorCargo" value="@Model.escritoPorCargo" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-12">
+                    <textarea class="form-control" name="emitidoPor" id="emitidoPor" style="max-width: 100% !important; width:100%;" placeholder="Mediante el presente y junto con saludarle...">@Model.emitidoPor</textarea>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="table-responsive" id="contenedorProductos">
+            <table class="table" id="tableItems">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Descripcion</th>
+                        <th>Código del Producto</th>
+                        <th>Cantidad</th>
+                        <th>Tipo de Compra</th>
+                        <th>Código Interno RentaMaq</th>
+                        <th>Lugar de Faena</th>  
+                        <th></th>                      
+                    </tr>
+                </thead>
+                <tbody id="tbodyItems">
+                @foreach (RentaMaq.Models.detalleSolicitudDeCotizacion detalleSolicitud in (List<RentaMaq.Models.detalleSolicitudDeCotizacion>)ViewData["detalleSolicitudDeCotizacion"])
+                 {
+                    <tr id="trItems">
+                        <td class="tdNumeroItem">
+                            @detalleSolicitud.numeroItem
+                        </td>
+
+                        <td>
+                            <input class="form-control descripcionProducto" type="text" name="descripcionProducto" id="descripcionProducto" value="@detalleSolicitud.descripcionItem" required />
+                        </td>
+
+                        <td class="tdSelect">
+                            <input class="form-control productos" type="text" name="productos" id="productos" value="@detalleSolicitud.codigoProducto" required /> 
+                        </td>
+
+                        <td>
+                            <input class="form-control cantidad double" type="text" name="cantidad" id="cantidad" min="0"  value="@detalleSolicitud.cantidad" required />
+                        </td>
+                        <td>
+                            <select name="tipoCompra" class="form-control tipoCompra" onchange="cambiarTipoCompra(this)">
+                                <option>seleccionar</option>
+                                @if (@detalleSolicitud.tipoCompra.Equals("STOCK"))
+                                {                                        
+                               
+                                    <option value="STOCK" selected>Stock</option>
+                                    <option value="DIRECTA">Directa</option>
+                                }
+                                else
+                                {                                    
+                                    <option value="STOCK">Stock</option>
+                                    <option value="DIRECTA" selected>Directa</option>
+                                }
+                                
+                                
+                            </select>
+                        </td>
+                        <td>
+                            @if (@detalleSolicitud.tipoCompra.Equals("STOCK")) { 
+                                
+                                <input class="form-control codigoInternoRentamaq" type="text" name="codigoInternoRentamaq" value="@detalleSolicitud.codigoInterno" id="codigoInternoRentamaq" required />
+                                <select class="form-control hidden selectStock" name="">
+                                    @foreach (RentaMaq.Models.equipos Equipos in (List<RentaMaq.Models.equipos>)ViewData["Equipos"])
+                                    {
+                                        <option value="@Equipos.ID">@Equipos.numeroAFI/@Equipos.patenteEquipo/@Equipos.tipoEquipo</option>
+                                    }
+                                </select>                                
+                            }else{
+                                
+                                <input class="form-control hidden codigoInternoRentamaq" type="text" name="" value="" id="codigoInternoRentamaq" required />
+                                <select class="form-control selectStock" name="codigoInternoRentamaq">
+                                    @foreach (RentaMaq.Models.equipos Equipos in (List<RentaMaq.Models.equipos>)ViewData["Equipos"])
+                                    {    
+                                        if (@detalleSolicitud.codigoInterno.Equals(@Equipos.ID.ToString()))
+                                        {
+                                            <option value="@Equipos.ID" selected>@Equipos.numeroAFI/@Equipos.patenteEquipo/@Equipos.tipoEquipo</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Equipos.ID">@Equipos.numeroAFI/@Equipos.patenteEquipo/@Equipos.tipoEquipo</option>
+                                        }
+
+
+                                    }
+                                </select>                                
+                            }                                                    
+                        </td>
+
+                        <td>
+                            <input class="form-control lugarDeFaena" type="text" name="lugarDeFaena" id="lugarDeFaena" value="@detalleSolicitud.lugarDeFaena" required />
+                        </td>
+                        <td>
+                            <a class="btn btn-danger botonEliminarItem" id="botonEliminarItem"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                           
+                        </td>
+                     
+                    </tr>
+                }   
+                </tbody>
+            </table>
+            <br />
+             <div class="col-sm-2">
+                <a id="botonAgregarItem" class="btn btn-block btn-primary botonAgregarItem"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Nuevo Ítem</a>
+            </div>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-10 col-lg-12">
+                    <input type="submit" value="Guardar Cambios" class="btn btn-success btn-lg btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver a lista de Cotizaciones", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var numeroItem = @ViewBag.cantidadDetalle;
+            $(".proveedor").select2();           
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $(".botonAgregarItem").click(function () {
+
+                numeroItem++;
+                var $tableBody = $('#tableItems').find("tbody");
+                $trLast = $tableBody.find("tr:last");
+
+                var $options = $trLast.find(".productos > option").clone();
+
+                $temp = $trLast.clone();
+
+                //$temp.find(".tdSelect").html('');
+                //$temp.find(".tdSelect").append("<select name='productos'  class='form-control productos' onchange='cambiarProducto(this)'>");
+
+                //$temp.find(".productos").append($options);
+                //$temp.find(".productos").select2();
+                $temp.find('.productos').val('');    
+                $temp.find(".select2-container--default").css({ 'width': "141px" });
+                $temp.find('.tdNumeroItem').html(numeroItem);
+                $temp.find('.descripcionProducto').val('');
+                $temp.find('.cantidad').val('');
+                $temp.find('.codigoInternoRentamaq').val('');
+                $temp.find('.lugarDeFaena').val('');
+
+                $trNew = $temp;
+                $trLast.after($trNew);
+                return false;
+            });
+
+
+            $(document).on("click", ".botonEliminarItem", function () {                
+                var element = this;
+                if (numeroItem > 1) {
+
+                    $(element).closest('tr').remove();
+                    numeroItem--;
+                } else {
+                    alert("No puede eliminar este item , ya que la solicitud debe por lo menos tener uno.")
+                }
+                return false;
+            });
+
+            $('.double').bind('keypress', function (event) {
+                var regex = new RegExp("^([0-9]*.[0-9]*)$");
+                var textoActual = $(this).val();
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+                else if (key == '.' && textoActual.indexOf(".") >= 0) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+        });
+
+
+        function cambiarProducto(elemento) {
+            var numeroDeParte = elemento.value;
+            var inputProducto = $(elemento).closest('tr').find('.descripcionProducto');
+
+
+            $.ajax({
+                url: "/solicitudDeCotizacion/obtenerNombreProducto", data: { "numeroDeParte": numeroDeParte },
+                success: function (retorno) {
+                    $(elemento).closest('tr').find('.descripcionProducto').val(retorno);
+                }
+            });
+        }
+        function cambiarTipoCompra(elemento) {
+            var valor = elemento.value;
+            var select = $(elemento).closest('tr').find('.selectStock');
+            var input = $(elemento).closest('tr').find('.codigoInternoRentamaq');
+            if (valor == "STOCK") {
+                input.attr("name", "codigoInternoRentamaq");
+                select.addClass("hidden");
+                select.removeAttr("name");
+                input.removeClass("hidden");
+            } else if(valor == "DIRECTA") {
+                select.attr("name", "codigoInternoRentamaq");
+                input.addClass("hidden");
+                input.removeAttr("name");
+                select.removeClass("hidden");
+            }
+        }
+
+
+    </script>
+
+
+}

@@ -1,0 +1,125 @@
+﻿@model RentaMaq.Models.registrokmhm
+
+@{
+    ViewBag.Title = "Agregar Registro HM/KM";
+}
+
+<h2>Agregar Registro de Horómetro y/o Kilómetraje</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Datos:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.equipoID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @{
+                List<RentaMaq.Models.equipos> equipos = RentaMaq.Models.equipos.todos();
+            }
+            <div class="col-md-10">
+                <select class="form-control select2" id="equipoID" name="equipoID" required>
+                    @foreach(RentaMaq.Models.equipos equipo in equipos)
+                    {
+                        <option value="@equipo.ID">@equipo.numeroAFI / @equipo.ModeloID.nombreModelo - @equipo.ModeloID.MarcaID.NombreMarca</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.equipoID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.kilometraje, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (equipos.Count > 0)
+                {
+                    <input class="form-control" type="number" name="kilometraje" id="kilometraje" value="@RentaMaq.Models.equipos.obtenerUltimoKilometraje(equipos[0].ID)" required />
+                }
+                else
+                {
+                    <input class="form-control" type="number" name="kilometraje" id="kilometraje" value="0" required />
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.horometro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (equipos.Count > 0)
+                {
+                    <input class="form-control" type="number" name="horometro" id="horometro" value="@RentaMaq.Models.equipos.obtenerUltimoHorometro(equipos[0].ID)" required />
+                }
+                else
+                {
+                    <input class="form-control" type="number" name="horometro" id="horometro" value="0" required />
+                }
+            </div>
+        </div>
+        @{
+            string HOY = "" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year;
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control fecha" id="fecha" name="fecha"
+                       data-val-date="Ingrese por favor una fecha." data-val-required="El campo fecha es obligatorio."
+                       data-date-format="DD/MM/YYYY" pattern="[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]" value="@HOY"
+                       type="text" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
+    @Scripts.Render("~/Scripts/datetimepicker/moment.js")
+    @Scripts.Render("~/Scripts/datetimepicker/bootstrap-datetimepicker.js")
+
+
+    <script>
+        $(document).ready(function () {
+            try {
+
+                $(".select2").select2({
+                    placeholder: "Seleccione un equipo"
+                });
+                console.log("aquí");
+            } catch (error) {
+                console.log(error);
+            }
+
+            $(".fecha").datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
+            });
+
+            $('body').on('change', '#equipoID', function (e) {
+                {
+                    console.log("Obtener Datos");
+                    esteCampo = $(this);
+                    $.ajax({
+                        url: "/reportCombustible/obtenerUltimosDatos", data: { "idEquipo": esteCampo.val() },
+                        success: function (retorno) {
+                            console.log(retorno);
+                            $("#horometro").val(retorno.split(";")[0]);
+                            $("#kilometraje").val(retorno.split(";")[1]);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
